@@ -10,20 +10,20 @@
                     <div class="col-lg-12">
                         <div class="bs-component">
                             <input type="text" id="trip_title" name="trip_title" class="form-control"
-                                value="{{ $data->trip_title }}" placeholder="Trip Title" required/>
+                                value="{{ $data->trip_title }}" placeholder="Trip Title" required />
                         </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="bs-component">
                             <input type="text" id="" name="uri" class="form-control"
-                                value="{{ $data->uri }}" placeholder="Trip Uri" required/>
+                                value="{{ $data->uri }}" placeholder="Trip Uri" required />
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-lg-12">
                         <div class="bs-component">
-                            <textarea type="text" id="sub_title" name="sub_title" class="form-control" placeholder="Sub Title" >{{ $data->sub_title }}</textarea>
+                            <textarea type="text" id="sub_title" name="sub_title" class="form-control" placeholder="Sub Title">{{ $data->sub_title }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
 
         <div class="panel">
             <div class="panel-heading">
-                <span class="panel-title"> Trip Details </span>
+                <span class="panel-title"> Trip Facts </span>
             </div>
             <div class="panel-body">
                 <div class="form-group">
@@ -205,7 +205,8 @@
                 <div class="form-group">
                     <div class="col-lg-12">
                         <div class="bs-component">
-                            <textarea class="my-editor form-control" name="trip_content" id="trip_content" placeholder="Trip Content" rows="9">{{ $data->trip_content }}</textarea>
+                            <textarea class="my-editor form-control" name="trip_content" id="trip_content" placeholder="Trip Content"
+                                rows="9">{{ $data->trip_content }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -220,8 +221,7 @@
                 <div class="form-group">
                     <div class="col-lg-12">
                         <div class="bs-component">
-                            <textarea class="my-editor form-control" id="trip_highlight" name="trip_highlight"
-                                placeholder="Trip Gears List">{{ $data->trip_highlight }}</textarea>
+                            <textarea class="my-editor form-control" id="trip_highlight" name="trip_highlight" placeholder="Trip Gears List">{{ $data->trip_highlight }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -371,7 +371,8 @@
                                             <label class="option">
                                                 <input type="radio" name="destination[]"
                                                     value="{{ $row->id }}"
-                                                    {{ in_array($row->id, $checked_destinations) ? 'checked' : '' }} required>
+                                                    {{ in_array($row->id, $checked_destinations) ? 'checked' : '' }}
+                                                    required>
                                                 <span class="checkbox"></span> {{ $row->title }}
                                             </label>
                                         </li>
@@ -390,12 +391,14 @@
                         <option value="" disabled> Select Trip Type </option>
                         @if ($trip_type->count(0 > 0))
                             @foreach ($trip_type as $row)
-                                @if($row->id != 3)
-                                    <option value="{{ $row->id }}" @if ($data->trip_type == $row->id) selected @endif>
+                                @if ($row->id != 3)
+                                    <option value="{{ $row->id }}"
+                                        @if ($data->trip_type == $row->id) selected @endif>
                                         {{ $row->trip_type }}
                                     </option>
                                 @else
-                                    <option value="{{ $row->id }}" @if ($data->trip_type == $row->id) selected @endif>
+                                    <option value="{{ $row->id }}"
+                                        @if ($data->trip_type == $row->id) selected @endif>
                                         Tours
                                     </option>
                                 @endif
@@ -419,7 +422,8 @@
                                         <li>
                                             <label class="option">
                                                 <input type="radio" name="activity[]" value="{{ $row->id }}"
-                                                    {{ in_array($row->id, $checked_activities) ? 'checked' : '' }} required>
+                                                    {{ in_array($row->id, $checked_activities) ? 'checked' : '' }}
+                                                    required>
                                                 <span class="checkbox"></span> {{ $row->title }}
                                             </label>
                                         </li>
@@ -535,7 +539,8 @@
                 <div class="hd_show_con">
                     <div id="xedit" class="bs-component">
                         <label class="field prepend-icon append-button file mb20">
-                            <span class="button btn btn-primary">{{ $data->thumbnail ? 'Change' : 'Choose File' }}</span>
+                            <span
+                                class="button btn btn-primary">{{ $data->thumbnail ? 'Change' : 'Choose File' }}</span>
                             <input type="file" class="gui-file" name="thumbnail" id="file1"
                                 onChange="document.getElementById('Thumbnail').value = this.value;">
                             <input type="text" class="gui-input" id="Thumbnail"
@@ -557,7 +562,8 @@
                     <div class="hd_show_con">
                         <div id="xedit" class="bs-component">
                             <label class="field text">
-                                <input type="text" name="thumbnail_alt" class="form-control" placeholder="" value="{{ $data->thumbnail_alt }}" />
+                                <input type="text" name="thumbnail_alt" class="form-control" placeholder=""
+                                    value="{{ $data->thumbnail_alt }}" />
                             </label>
                         </div>
                     </div>
@@ -570,7 +576,8 @@
                 <div class="hd_show_con">
                     <div class="bs-component">
                         <label class="field prepend-icon append-button file mb20">
-                            <span class="button btn btn-primary">{{ $data->trip_map ? 'Change' : 'Choose File' }}</span>
+                            <span
+                                class="button btn btn-primary">{{ $data->trip_map ? 'Change' : 'Choose File' }}</span>
                             <input type="file" class="gui-file" name="trip_map" id="file2"
                                 onChange="document.getElementById('trip_map').value = this.value;">
                             <input type="text" class="gui-input" id="trip_map"
@@ -592,7 +599,8 @@
                     <div class="hd_show_con">
                         <div id="xedit" class="bs-component">
                             <label class="field text">
-                                <input type="text" name="tripmap_alt" class="form-control" placeholder="" value="{{ $data->tripmap_alt }}" />
+                                <input type="text" name="tripmap_alt" class="form-control" placeholder=""
+                                    value="{{ $data->tripmap_alt }}" />
                             </label>
                         </div>
                     </div>
@@ -615,13 +623,15 @@
             <!--                </label>-->
             <!--            </label>-->
             <!--        </div>-->
-            <!--        @if ($data->trip_chart)-->
+            <!--        @if ($data->trip_chart)
+-->
             <!--            <div class="delete-fe-image chart_id{{ $data->id }}">-->
             <!--                <img src="{{ asset(env('PUBLIC_PATH') . 'uploads/original/' . $data->trip_chart) }}"-->
             <!--                    width="200px" />-->
             <!--                <a href="#{{ $data->id }}" class="chartdelete">X</a>-->
             <!--            </div>-->
-            <!--        @endif-->
+            <!--
+@endif-->
             <!--        <small> (Width: 1500px Height: 1500px) </small>-->
             <!--    </div>-->
             <!--</div>-->
@@ -653,7 +663,8 @@
                     <div class="hd_show_con">
                         <div id="xedit" class="bs-component">
                             <label class="field text">
-                                <input type="text" name="banner_alt" class="form-control" placeholder="" value="{{ $data->banner_alt }}" />
+                                <input type="text" name="banner_alt" class="form-control" placeholder=""
+                                    value="{{ $data->banner_alt }}" />
                             </label>
                         </div>
                     </div>
