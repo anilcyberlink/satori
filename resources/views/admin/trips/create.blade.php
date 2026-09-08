@@ -17,7 +17,8 @@
 
                 <footer>
                     <div id="publishing-action">
-                        <button type="submit" name="submit" class="btn btn-success" value="publish" id="publishBtn"> Publish</button>
+                        <button type="submit" name="submit" class="btn btn-success" value="publish" id="publishBtn">
+                            Publish</button>
                     </div>
                     <div class="clearfix"></div>
                 </footer>
@@ -42,6 +43,8 @@
                                     <li class="nav-item"><a class="nav-link" href="#tab_7" data-toggle="tab"> DATES </a>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_8" data-toggle="tab"> FAQ's </a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="#tab_9" data-toggle="tab"> Multi </a>
                                     </li>
                                     <!--<li class="nav-item"><a class="nav-link" href="#tab_6" data-toggle="tab"> BANNER </a></li>   -->
                                 </ul>
@@ -72,6 +75,9 @@
                                     <div class="tab-pane" id="tab_8">
                                         @include('admin.trips.create.create-faqs')
                                     </div>
+                                    <div class="tab-pane" id="tab_9">
+                                        @include('admin.trips.create.create-multi-itinerary')
+                                    </div>
                                 </div>
                                 <!-- /.tab-content -->
                             </div><!-- /.card-body -->
@@ -88,9 +94,8 @@
 @endsection
 @section('scripts')
     <script type="text/javascript">
-
         /******** For Itinerary *******/
-        jQuery(document).delegate('a.add-itinerary', 'click', function (e) {
+        jQuery(document).delegate('a.add-itinerary', 'click', function(e) {
             e.preventDefault();
             var content = jQuery('#row_additional .row'),
                 size = jQuery('#row_body >.row').length + 1,
@@ -103,7 +108,7 @@
             element.find('.sn').html(size);
         });
 
-        jQuery(document).delegate('button.delete-itinerary', 'click', function (e) {
+        jQuery(document).delegate('button.delete-itinerary', 'click', function(e) {
             e.preventDefault();
             var makeConfirm = confirm("Are you sure You want to delete");
             if (makeConfirm == true) {
@@ -117,7 +122,7 @@
         });
         /******** End For Itinerary *******/
         /******** For Schedule *******/
-        jQuery(document).delegate('a.add-schedule', 'click', function (e) {
+        jQuery(document).delegate('a.add-schedule', 'click', function(e) {
             e.preventDefault();
             var content = jQuery('#row_schedule_additional .row'),
                 size = jQuery('#row_schedule_body >.row').length + 1,
@@ -129,7 +134,7 @@
             element.find('.sn').html(size);
         });
 
-        jQuery(document).delegate('button.delete-schedule', 'click', function (e) {
+        jQuery(document).delegate('button.delete-schedule', 'click', function(e) {
             e.preventDefault();
             var makeConfirm = confirm("Are you sure You want to delete");
             if (makeConfirm == true) {
@@ -144,7 +149,7 @@
         /******** End For Schedule *******/
 
         /******** For Gear *******/
-        jQuery(document).delegate('a.add-gear', 'click', function (e) {
+        jQuery(document).delegate('a.add-gear', 'click', function(e) {
             e.preventDefault();
             var content = jQuery('#row_gear_additional .row'),
                 size = jQuery('#row_gear_body >.row').length + 1,
@@ -156,7 +161,7 @@
             element.find('.sn').html(size);
         });
 
-        jQuery(document).delegate('button.delete-gear', 'click', function (e) {
+        jQuery(document).delegate('button.delete-gear', 'click', function(e) {
             e.preventDefault();
             var makeConfirm = confirm("Are you sure You want to delete");
             if (makeConfirm == true) {
@@ -170,7 +175,7 @@
         });
         /******** End For Gear *******/
         /******** For FAQs *******/
-        jQuery(document).delegate('a.add-faq', 'click', function (e) {
+        jQuery(document).delegate('a.add-faq', 'click', function(e) {
             e.preventDefault();
             var content = jQuery('#row_faq_additional .row'),
                 size = jQuery('#row_faq_body >.row').length + 1,
@@ -182,7 +187,7 @@
             element.find('.sn').html(size);
         });
 
-        jQuery(document).delegate('button.delete-faq', 'click', function (e) {
+        jQuery(document).delegate('button.delete-faq', 'click', function(e) {
             e.preventDefault();
             var makeConfirm = confirm("Are you sure You want to delete");
             if (makeConfirm == true) {
@@ -190,7 +195,7 @@
                 var targetDiv = jQuery(this).attr('targetDiv');
                 jQuery('#faq-rec-' + id).remove();
                 //regnerate index number on table
-                $('#row_body .row').each(function (index) {
+                $('#row_body .row').each(function(index) {
                     $(this).find('span.sn').html(index + 1);
                 });
                 return true;
@@ -201,7 +206,7 @@
         /******** End For FAQs *******/
 
         /******** For Testimonial ***********/
-        jQuery(document).delegate('a.add-testimonial', 'click', function (e) {
+        jQuery(document).delegate('a.add-testimonial', 'click', function(e) {
             e.preventDefault();
             var content = jQuery('#row_testimonial_additional .row'),
                 size = jQuery('#row_testimonial_body >.row').length + 1,
@@ -213,7 +218,7 @@
             element.find('.sn').html(size);
         });
 
-        jQuery(document).delegate('button.delete-testimonial', 'click', function (e) {
+        jQuery(document).delegate('button.delete-testimonial', 'click', function(e) {
             e.preventDefault();
             var makeConfirm = confirm("Are you sure You want to delete");
             if (makeConfirm == true) {
@@ -221,7 +226,7 @@
                 var targetDiv = jQuery(this).attr('targetDiv');
                 jQuery('#testimonial-rec-' + id).remove();
                 //regnerate index number on table
-                $('#row_testimonial_body .row').each(function (index) {
+                $('#row_testimonial_body .row').each(function(index) {
                     $(this).find('span.sn').html(index + 1);
                 });
                 return true;
@@ -231,7 +236,7 @@
         });
         /******** End For Testimonial *********/
         /******** For Info ***********/
-        jQuery(document).delegate('a.add-info', 'click', function (e) {
+        jQuery(document).delegate('a.add-info', 'click', function(e) {
             e.preventDefault();
             var content = jQuery('#row_info_additional .row'),
                 size = jQuery('#row_info_body >.row').length + 1,
@@ -243,7 +248,7 @@
             element.find('.sn').html(size);
         });
 
-        jQuery(document).delegate('button.delete-info', 'click', function (e) {
+        jQuery(document).delegate('button.delete-info', 'click', function(e) {
             e.preventDefault();
             var makeConfirm = confirm("Are you sure You want to delete");
             if (makeConfirm == true) {
@@ -251,7 +256,7 @@
                 var targetDiv = jQuery(this).attr('targetDiv');
                 jQuery('#info-rec-' + id).remove();
                 //regnerate index number on table
-                $('#row_info_body .row').each(function (index) {
+                $('#row_info_body .row').each(function(index) {
                     $(this).find('span.sn').html(index + 1);
                 });
                 return true;
@@ -262,7 +267,7 @@
         /******** End For Info *********/
 
         /* start of banner*/
-        jQuery(document).delegate('a.add-banner', 'click', function (e) {
+        jQuery(document).delegate('a.add-banner', 'click', function(e) {
             e.preventDefault();
             var content = jQuery('#row_banner_additional .row'),
                 size = jQuery('#row_banner_body >.row').length + 1,
@@ -274,7 +279,7 @@
             element.find('.sn').html(size);
         });
 
-        jQuery(document).delegate('button.delete-banner', 'click', function (e) {
+        jQuery(document).delegate('button.delete-banner', 'click', function(e) {
             e.preventDefault();
             var makeConfirm = confirm("Are you sure You want to delete");
             if (makeConfirm == true) {
@@ -282,7 +287,7 @@
                 var targetDiv = jQuery(this).attr('targetDiv');
                 jQuery('#banner-rec-' + id).remove();
                 //regnerate index number on table
-                $('#row_banner_body .row').each(function (index) {
+                $('#row_banner_body .row').each(function(index) {
                     $(this).find('span.sn').html(index + 1);
                 });
                 return true;
@@ -291,13 +296,13 @@
             }
         });
 
-        $(function () {
+        $(function() {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $("#tripData").on('submit', function (e) {
+            $("#tripData").on('submit', function(e) {
                 tinymce.triggerSave();
                 e.preventDefault();
 
@@ -316,12 +321,12 @@
                     cache: false,
                     processData: false,
                     contentType: false,
-                    beforeSend: function () { },
-                    success: function (data) {
+                    beforeSend: function() {},
+                    success: function(data) {
                         if (data.status == 'success') {
                             document.getElementById("tripData").reset();
                             toastr.success(data.message);
-                            setTimeout(function () {
+                            setTimeout(function() {
                                 location.reload();
                             }, 1000);
                             // alert("here");
@@ -329,14 +334,14 @@
 
                         // Re-enable if validation errors returned
                         if (data.errors) {
-                            jQuery.each(data.errors, function (key, value) {
+                            jQuery.each(data.errors, function(key, value) {
                                 toastr.error(value);
                             });
                             btn.disabled = false;
                             btn.innerHTML = "Publish";
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         // Re-enable on HTTP error
                         btn.disabled = false;
                         btn.innerHTML = "Publish";
@@ -351,8 +356,8 @@
         });
 
         // ## //
-        $(document).ready(function () {
-            $('#trip_title').on('change', function () {
+        $(document).ready(function() {
+            $('#trip_title').on('change', function() {
                 var trip_title;
                 trip_title = $('#trip_title').val();
                 trip_title = trip_title.replace(/[^a-zA-Z0-9 ]+/g, "");
@@ -362,10 +367,9 @@
         });
 
         // Go back link
-        $('.backlink').click(function () {
+        $('.backlink').click(function() {
             var url = '<?= url()->previous() ?>';
             window.location = url;
         });
-
     </script>
 @endsection
