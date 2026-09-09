@@ -99,6 +99,11 @@
 
             <div class="mi-itinerary-actions">
 
+                <button type="button" class="mi-btn mi-btn-outline-info mi-duplicate-itinerary">
+                    <i class="fa fa-clone"></i>
+                    Duplicate
+                </button>
+
                 <button type="button" class="mi-btn mi-btn-outline-danger mi-remove-itinerary">
                     <i class="fa fa-trash"></i>
                     Remove
@@ -832,3 +837,39 @@
 
 })();
 </script>
+
+CREATE TABLE `cl_multi_itineraries` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+
+  `trip_detail_id` BIGINT UNSIGNED NOT NULL,
+
+  -- Season / itinerary-variant level info
+  `season` VARCHAR(20) NOT NULL,                 -- summer | winter | autumn
+  `itinerary_no` TINYINT UNSIGNED NOT NULL DEFAULT 1,   -- 1, 2, or 3
+  `itinerary_title` VARCHAR(255) DEFAULT NULL,
+  `itinerary_description` TEXT DEFAULT NULL,
+  `itinerary_status` TINYINT(1) NOT NULL DEFAULT 1,     -- 1 = Active, 0 = Inactive
+
+  -- Day level info
+  `day_ordering` INT UNSIGNED DEFAULT NULL,
+  `day_label` VARCHAR(50) DEFAULT NULL,          -- "Day 01"
+  `day_title` VARCHAR(255) DEFAULT NULL,
+  `day_date` VARCHAR(100) DEFAULT NULL,
+  `max_altitude` VARCHAR(100) DEFAULT NULL,
+  `accommodation` VARCHAR(150) DEFAULT NULL,
+  `meals` VARCHAR(255) DEFAULT NULL,
+  `activities` VARCHAR(255) DEFAULT NULL,
+  `day_content` TEXT DEFAULT NULL,
+
+  `created_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL,
+
+  PRIMARY KEY (`id`),
+  KEY `idx_trip_season_itinerary` (`trip_detail_id`, `season`, `itinerary_no`),
+
+  CONSTRAINT `fk_multi_itinerary_trip`
+    FOREIGN KEY (`trip_detail_id`)
+    REFERENCES `cl_trip_details` (`id`)
+    ON DELETE CASCADE
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

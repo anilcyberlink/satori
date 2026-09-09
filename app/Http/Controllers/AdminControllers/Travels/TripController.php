@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AdminControllers\Travels;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Travels\TripModel;
+use App\Models\Travels\MultiItineraryModel;
 use App\Models\Travels\TripBanner;
 use Illuminate\Support\Facades\DB;
 use App\Models\Travels\RegionModel;
@@ -161,7 +162,7 @@ class TripController extends Controller
                     'errors' => $validator->errors()->all()
                 ]);
             }
-            // dd( $request->all() ,Str::slug($request->uri));
+            // dd( $request->all());
 
             $data = $request->all();
 
@@ -400,6 +401,63 @@ class TripController extends Controller
                 }
             }
 
+            // Insert Multi-Season Itinerary (Summer / Winter / Autumn, up to 3 each)
+            if ($request->has('itineraries') && is_array($request->itineraries)) {
+
+                foreach ($request->itineraries as $season => $itineraryList) {
+
+                    if (!is_array($itineraryList)) {
+                        continue;
+                    }
+
+                    foreach ($itineraryList as $itineraryIndex => $itineraryData) {
+
+                        $itineraryNo          = $itineraryIndex + 1; // 1, 2, or 3
+                        $itineraryTitle       = $itineraryData['title'] ?? null;
+                        $itineraryDescription = $itineraryData['description'] ?? null;
+                        $itineraryStatus      = $itineraryData['status'] ?? 1;
+                        $days                 = $itineraryData['days'] ?? [];
+
+                        if (empty($days)) {
+                            // Itinerary was added but has no days yet -- still save
+                            // the itinerary title/description so it isn't lost.
+                            MultiItineraryModel::create([
+                                'trip_detail_id'         => $last_id,
+                                'season'                 => $season,
+                                'itinerary_no'           => $itineraryNo,
+                                'itinerary_title'        => $itineraryTitle,
+                                'itinerary_description'  => $itineraryDescription,
+                                'itinerary_status'       => $itineraryStatus,
+                            ]);
+
+                            continue;
+                        }
+
+                        foreach ($days as $day) {
+
+                            MultiItineraryModel::create([
+                                'trip_detail_id'         => $last_id,
+                                'season'                 => $season,
+                                'itinerary_no'           => $itineraryNo,
+                                'itinerary_title'        => $itineraryTitle,
+                                'itinerary_description'  => $itineraryDescription,
+                                'itinerary_status'       => $itineraryStatus,
+
+                                'day_ordering'           => $day['ordering'] ?? null,
+                                'day_label'              => $day['day'] ?? null,
+                                'day_title'              => $day['title'] ?? null,
+                                'day_date'               => $day['date'] ?? null,
+                                'max_altitude'           => $day['max_altitude'] ?? null,
+                                'accommodation'          => $day['accommodation'] ?? null,
+                                'meals'                  => $day['meals'] ?? null,
+                                'activities'             => $day['activities'] ?? null,
+                                'day_content'            => $day['content'] ?? null,
+                            ]);
+                        }
+                    }
+                }
+            }
+
             /************Attach******************/
             $_data = TripModel::find($last_id);
             $_data->destinations()->attach($request->destination);
@@ -475,9 +533,67 @@ class TripController extends Controller
         $expeditions = ActivityModel::where('activity_parent', 'expedition')->get();
         $activity = ActivityModel::where('activity_parent', 'activity')->get();
         $packages = ActivityModel::where('activity_parent', 'package')->get();
+
+        $multi_itineraries = MultiItineraryModel::where('trip_detail_id', $id)
+            ->orderBy('season', 'asc')
+            ->orderBy('itinerary_no', 'asc')
+            ->orderBy('day_ordering', 'asc')
+            ->get()
+            ->groupBy('season')
+            ->map(function ($seasonItems) {
+
+                return $seasonItems
+                    ->groupBy('itinerary_no')
+                    ->map(function ($itineraryItems) {
+
+                        $first = $itineraryItems->first();
+
+                        return [
+                            'id' => $first->id,
+
+                            'itinerary_no' => $first->itinerary_no,
+
+                            'title' => $first->itinerary_title,
+
+                            'description' => $first->itinerary_description,
+
+                            'status' => $first->itinerary_status,
+
+                            'days' => $itineraryItems
+                                ->filter(function ($item) {
+                                    return !is_null($item->day_ordering)
+                                        || !is_null($item->day_label)
+                                        || !is_null($item->day_title)
+                                        || !is_null($item->day_date)
+                                        || !is_null($item->day_content);
+                                })
+                                ->values()
+                                ->map(function ($day) {
+
+                                    return [
+                                        'id' => $day->id,
+                                        'ordering' => $day->day_ordering,
+                                        'day' => $day->day_label,
+                                        'title' => $day->day_title,
+                                        'date' => $day->day_date,
+                                        'max_altitude' => $day->max_altitude,
+                                        'accommodation' => $day->accommodation,
+                                        'meals' => $day->meals,
+                                        'activities' => $day->activities,
+                                        'content' => $day->day_content,
+                                    ];
+                                })
+                                ->toArray(),
+                        ];
+                    })
+                    ->values()
+                    ->toArray();
+            })
+            ->toArray();
+
         if ($training) {
             $trip_type = TripTypeModel::where('trip_type', 'Package')->get();
-            return view('admin.training-package.edit', compact('trek', 'all_trips', 'data', 'trip_type', 'destinations', 'regions', 'activities', 'trip_groups', 'checked_destinations', 'checked_regions', 'checked_activities', 'checked_tripgroups', 'schedules', 'itineraries', 'gears', 'costincludes', 'costexcludes', 'grades', 'banner', 'expeditions', 'trekking', 'availability', 'faqs', 'activity', 'packages'));
+            return view('admin.training-package.edit', compact('trek', 'all_trips', 'data', 'trip_type', 'destinations', 'regions', 'activities', 'trip_groups', 'checked_destinations', 'checked_regions', 'checked_activities', 'checked_tripgroups', 'schedules', 'itineraries', 'gears', 'costincludes', 'costexcludes', 'grades', 'banner', 'expeditions', 'trekking', 'availability', 'faqs', 'activity', 'packages', 'multi_itineraries'));
         }
         return view('admin.trips.edit', compact(
             'trek',
@@ -504,7 +620,8 @@ class TripController extends Controller
             'availability',
             'faqs',
             'activity',
-            'packages'
+            'packages',
+            'multi_itineraries'
         ));
     }
 
@@ -987,6 +1104,66 @@ class TripController extends Controller
                         $infoData->save();
                     }
                     $sn_info++;
+                }
+            }
+
+            // Delete all existing multi-season itineraries
+            MultiItineraryModel::where('trip_detail_id', $data->id)->delete();
+
+            // Insert the submitted multi-season itineraries again
+            if ($request->has('itineraries') && is_array($request->itineraries)) {
+
+                foreach ($request->itineraries as $season => $itineraryList) {
+
+                    if (!is_array($itineraryList)) {
+                        continue;
+                    }
+
+                    foreach ($itineraryList as $itineraryIndex => $itineraryData) {
+
+                        $itineraryNo          = $itineraryIndex + 1;
+                        $itineraryTitle       = $itineraryData['title'] ?? null;
+                        $itineraryDescription = $itineraryData['description'] ?? null;
+                        $itineraryStatus      = $itineraryData['status'] ?? 1;
+                        $days                 = $itineraryData['days'] ?? [];
+
+                        // If itinerary has no days, still save the itinerary
+                        if (empty($days)) {
+
+                            MultiItineraryModel::create([
+                                'trip_detail_id'        => $data->id,
+                                'season'                => $season,
+                                'itinerary_no'          => $itineraryNo,
+                                'itinerary_title'       => $itineraryTitle,
+                                'itinerary_description' => $itineraryDescription,
+                                'itinerary_status'      => $itineraryStatus,
+                            ]);
+
+                            continue;
+                        }
+
+                        foreach ($days as $day) {
+
+                            MultiItineraryModel::create([
+                                'trip_detail_id'        => $data->id,
+                                'season'                => $season,
+                                'itinerary_no'          => $itineraryNo,
+                                'itinerary_title'       => $itineraryTitle,
+                                'itinerary_description' => $itineraryDescription,
+                                'itinerary_status'      => $itineraryStatus,
+
+                                'day_ordering'          => $day['ordering'] ?? null,
+                                'day_label'             => $day['day'] ?? null,
+                                'day_title'             => $day['title'] ?? null,
+                                'day_date'              => $day['date'] ?? null,
+                                'max_altitude'          => $day['max_altitude'] ?? null,
+                                'accommodation'         => $day['accommodation'] ?? null,
+                                'meals'                 => $day['meals'] ?? null,
+                                'activities'            => $day['activities'] ?? null,
+                                'day_content'           => $day['content'] ?? null,
+                            ]);
+                        }
+                    }
                 }
             }
 

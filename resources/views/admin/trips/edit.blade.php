@@ -40,6 +40,8 @@
                                     <li class="nav-item"><a class="nav-link" href="#tab_7" data-toggle="tab"> DATES</a></li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_8" data-toggle="tab"> FAQ's </a>
                                     </li>
+                                    <li class="nav-item"><a class="nav-link" href="#tab_9" data-toggle="tab"> Multi </a>
+                                    </li>
 
                                     <!--<li class="nav-item"><a class="nav-link" href="#tab_6" data-toggle="tab"> BANNER</a></li>-->
                                 </ul>
@@ -69,6 +71,9 @@
                                     </div>
                                     <div class="tab-pane" id="tab_8">
                                         @include('admin.trips.edit.edit-faqs')
+                                    </div>
+                                    <div class="tab-pane" id="tab_9">
+                                        @include('admin.trips.edit.edit-multi-itinerary')
                                     </div>
                                 </div>
                                 <!-- /.tab-content -->
