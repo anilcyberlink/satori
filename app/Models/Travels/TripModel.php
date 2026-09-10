@@ -11,6 +11,7 @@ class TripModel extends Model
         'trip_title',
         'sub_title',
         'duration',
+        'location',
         'max_altitude',
         'best_season',
         'walking_per_day',

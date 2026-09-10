@@ -100,7 +100,7 @@
         <!-- HEADER (repeats on every page) -->
         <header>
             <div style="text-align:center;">
-                <img src="{{ public_path('theme-assets/logo.svg') }}"
+                <img src="{{ public_path('theme-assets/cbrlink.png') }}"
                     style="height:45px; display:block; margin:0 auto;">
                 <div style="font-size:11px; margin-top:5px;">
                     <a href="https://summit8000.com/" style="color:#333; text-decoration:none;" target="_blank">

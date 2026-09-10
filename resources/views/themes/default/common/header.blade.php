@@ -17,7 +17,7 @@
     <meta property="og:image:height" content="630">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
-    
+
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('title')">
     <meta name="twitter:description" content="@yield('meta_description')">
@@ -31,7 +31,7 @@
     <link rel="canonical" href="{{ url()->current() }}" />
     <link href="{{ asset('theme-assets/css/app.css') }}" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('theme-assets/assets/favicon/apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('theme-assets/assets/favicon/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('theme-assets/assets/favicon/favicon-16x16.png') }}">
@@ -45,8 +45,8 @@
         "@type": "TravelAgency",
         "name": "Summit 8000",
         "url": "https://summit8000.com",
-        "logo": "{{ asset('theme-assets/logo.svg') }}",
-        "image": "{{ asset('theme-assets/logo.svg') }}",
+        "logo": "{{ asset('theme-assets/cbrlink.png') }}",
+        "image": "{{ asset('theme-assets/cbrlink.png') }}",
         "address": {
             "@type": "PostalAddress",
             "addressLocality": "Kathmandu",
@@ -99,7 +99,7 @@
 
             <!-- Logo -->
             <a href="{{ url('/') }}" class="flex items-center py-5">
-                <img src="{{ asset('theme-assets/logo.svg') }}" class=" h-10" />
+                <img src="{{ asset('theme-assets/cbrlink.png') }}" class=" h-10" />
             </a>
 
             <!-- Right Side -->
@@ -294,7 +294,7 @@
         tabindex="-1" aria-labelledby="drawer-disable-body-scrolling-label">
         <div class="border-b border-default pb-4 flex items-center ">
             <a href="{{ url('/') }}" class="flex items-center space-x-2 rtl:space-x-reverse">
-                <img src="{{ asset('theme-assets/logo.svg') }}" alt="Summit8000" class="h-8 md:h-10">
+                <img src="{{ asset('theme-assets/cbrlink.png') }}" alt="Summit8000" class="h-8 md:h-10">
             </a>
             <button type="button" data-drawer-hide="drawer-disable-body-scrolling" aria-controls="drawer-disable-body-scrolling" class=" bg-transparent hover:text-heading hover:bg-neutral-tertiary-medium rounded-base w-9 h-9 absolute top-2.5 end-2.5 flex items-center justify-center">
                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">

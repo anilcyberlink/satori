@@ -16,7 +16,7 @@
                 <!-- Header -->
                 <tr>
                     <td style="background:#0d6efd; padding:20px; text-align:center;">
-                        <img src="{{ asset('theme-assets/logo.svg') }}" width="150" alt="Logo" style="margin-bottom:10px;">
+                        <img src="{{ asset('theme-assets/cbrlink.png') }}" width="150" alt="Logo" style="margin-bottom:10px;">
                         <h2 style="color:#ffffff; margin:0;">New Contact Inquiry</h2>
                     </td>
                 </tr>

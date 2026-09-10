@@ -32,7 +32,9 @@
                                 <ul class="nav nav-pills ml-auto p4 mb10 mt10 nav-custom">
                                     <li class="nav-item active"><a class="nav-link active" href="#tab_1"
                                             data-toggle="tab">GENERAL</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">ITINERARY</a>
+                                    <li class="nav-item"><a class="nav-link" href="#tab_9" data-toggle="tab"> ITINERARY </a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">MILESTONES</a>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab"> COST
                                             INCLUDES</a></li>
@@ -43,8 +45,6 @@
                                     <li class="nav-item"><a class="nav-link" href="#tab_7" data-toggle="tab"> DATES </a>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_8" data-toggle="tab"> FAQ's </a>
-                                    </li>
-                                    <li class="nav-item"><a class="nav-link" href="#tab_9" data-toggle="tab"> Multi </a>
                                     </li>
                                     <!--<li class="nav-item"><a class="nav-link" href="#tab_6" data-toggle="tab"> BANNER </a></li>   -->
                                 </ul>

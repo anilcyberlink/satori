@@ -15,7 +15,7 @@
     <!-- Header -->
     <tr>
         <td style="background:#0f3e5e; padding:20px; text-align:center; color:#ffffff;">
-            <img src="{{ asset('theme-assets/logo.svg') }}" style="width: 150px;" alt="Summit8000" />
+            <img src="{{ asset('theme-assets/cbrlink.png') }}" style="width: 150px;" alt="Summit8000" />
         </td>
     </tr>
 

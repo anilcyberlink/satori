@@ -25,14 +25,14 @@
                <div class="row no-gutters">
                   <div class="col-md-6">
                      <img src="{{ asset('theme-assets/assets/2.jpg') }}" alt="login" class="login-card-img">
-                 
+
                   </div>
 
                   <div class="col-md-6">
                      <div class="card-body">
                         <div class="brand-wrapper">
-                           <img src="{{  asset('theme-assets/logo.svg') }}" alt="logo" width="200">
-                         
+                           <img src="{{  asset('theme-assets/cbrlink.png') }}" alt="logo" width="200">
+
                         </div>
                           <!-- Error Message -->
                             @if(session('status'))
@@ -42,7 +42,7 @@
                                 </div>
                             @endif
                         <p class="login-card-description">Sign into your account</p>
-                         
+
                         <form class="needs-validation"  method="POST" action="{{ route('login') }}">
                             {{ csrf_field() }}
                            <div class="form-group">
@@ -74,7 +74,7 @@
                            </div>
                              <!-- Recaptcha Input -->
                             <input type="hidden" id="g_recaptcha_response" name="g_recaptcha_response" />
-                           <button id="login" class="btn btn-block login-btn mb-4" type="submit">Sign In</button>                
+                           <button id="login" class="btn btn-block login-btn mb-4" type="submit">Sign In</button>
                         </form>
                      </div>
                   </div>
@@ -91,5 +91,5 @@
     });
     </script>
    </body>
-   
+
 </html>

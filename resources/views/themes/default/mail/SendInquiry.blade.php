@@ -18,7 +18,7 @@
 <div style="margin:0 auto; max-width:700px; width:100%;">
     <blockquote>
         <div style="background:#FFF; padding:8px 0px; margin-bottom:5px;">
-            <img src="{{ asset('theme-assets/logo.svg') }}" style="width: 25%"/>
+            <img src="{{ asset('theme-assets/cbrlink.png') }}" style="width: 25%"/>
         </div>
     </blockquote>
     <h3>Customise Trip</h3>
@@ -40,8 +40,8 @@
             <td><strong>Trip</strong></td>
             <td>{{ tripdetail($trip)->trip_title }}</td>
         </tr>
-    
-        
+
+
         <tr>
             <td><strong>Message</strong></td>
             <td>{{ $messages }}</td>

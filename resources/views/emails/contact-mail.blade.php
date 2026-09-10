@@ -178,7 +178,7 @@
                 <tr>
                     <td class="email-masthead">
 
-                        <img src="{{ asset('theme-assets/images/logo.svg') }}" style="max-height: 40px" alt="company logo">
+                        <img src="{{ asset('theme-assets/images/cbrlink.png') }}" style="max-height: 40px" alt="company logo">
                         <a class="email-masthead_name">Shangrila Eco Trek</a>
                     </td>
                 </tr>
