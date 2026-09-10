@@ -61,7 +61,7 @@
                     <img src="{{ asset('uploads/original/' . $setting->logo) }}" alt="{{ config('app.name') }}"
                         width="100" />
                     @else --}}
-                    <img src="{{ asset('theme-assets/logo.svg') }}" alt="{{ config('app.name') }}" width="100" />
+                    <img src="{{ asset('theme-assets/cbrlink.png') }}" alt="{{ config('app.name') }}" width="100" />
                     {{-- @endif --}}
                 </a>
                 <span id="toggle_sidemenu_l" class="ad ad-lines"></span>

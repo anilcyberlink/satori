@@ -35,7 +35,7 @@
     <div style="margin:0 auto; max-width:700px; background:#fff; padding:20px;">
 
         <div style="text-align:center; margin-bottom:20px;">
-            <img src="{{ asset('theme-assets/logo.svg') }}" style="width: 150px;" />
+            <img src="{{ asset('theme-assets/cbrlink.png') }}" style="width: 150px;" />
         </div>
 
         <h2>Dear {{ $data->full_name }},</h2>

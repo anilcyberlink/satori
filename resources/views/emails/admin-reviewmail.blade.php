@@ -18,7 +18,7 @@
 <div style="margin:0 auto; max-width:700px; width:100%;">
     <blockquote>
         <div style="background:#FFF; padding:8px 0px; margin-bottom:5px;">
-            <img src="{{ asset(env('PUBLIC_PATH').'/themes-assets/images/logo.svg') }}" style="width: 25%"/>
+            <img src="{{ asset(env('PUBLIC_PATH').'/themes-assets/images/cbrlink.png') }}" style="width: 25%"/>
         </div>
     </blockquote>
     <h3>Review Details:</h3>

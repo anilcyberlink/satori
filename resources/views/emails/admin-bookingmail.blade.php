@@ -28,7 +28,7 @@
 
         <blockquote>
             <div style="background:#FFF; padding:8px 0px; margin-bottom:5px;">
-                <img src="{{ asset('theme-assets/logo.svg') }}" style="width: 25%" />
+                <img src="{{ asset('theme-assets/cbrlink.png') }}" style="width: 25%" />
             </div>
         </blockquote>
 

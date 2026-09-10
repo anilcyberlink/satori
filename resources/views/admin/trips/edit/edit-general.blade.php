@@ -37,6 +37,70 @@
             <div class="panel-body">
                 <div class="form-group">
                     <div class="col-lg-6">
+                        <div class="bs-component">
+                            <label>Location</label>
+                            <input type="text" name="location" class="form-control"
+                                value="{{ $data->location }}" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="bs-component">
+                            <label>Max Elevation</label>
+                            <input type="text" name="max_altitude" class="form-control"
+                                value="{{ $data->max_altitude }}" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="bs-component">
+                            <label>Start Date</label>
+                            <input type="text" name="start_date" class="form-control"
+                                value="{{ $data->start_date }}" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="bs-component">
+                            <label>End Date</label>
+                            <input type="text" name="end_date" class="form-control"
+                                value="{{ $data->end_date }}" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="bs-component">
+                            <label>Route</label>
+                            <input type="text" name="route" class="form-control"
+                                value="{{ $data->route }}" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="bs-component">
+                            <label>Meals</label>
+                            <input type="text" name="meals" class="form-control"
+                                value="{{ $data->meals }}" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="bs-component">
+                            <label>Duration</label>
+                            <input type="text" name="duration" class="form-control"
+                                value="{{ $data->duration }}" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="bs-component">
+                            <label>Accomodation</label>
+                            <input type="text" name="accommodation" class="form-control"
+                                value="{{ $data->accommodation }}" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
                         <div class="bs-component ">
                             <label>Trip Difficulty</label>
                             @if ($trek->count() > 0)
@@ -52,22 +116,6 @@
 
                         </div>
                     </div>
-                    {{-- <div class="col-lg-6">
-                    <div class="bs-component">
-                         <label>Grade Message</label>
-                         <input type="text" name="status_text" class="form-control" value="{{$data->status_text}}" />
-                        </div>
-                    </div>                  --}}
-                    <div class="col-lg-6">
-                        <div class="bs-component">
-                            <label>Max Elevation</label>
-                            <input type="text" name="max_altitude" class="form-control"
-                                value="{{ $data->max_altitude }}" />
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-
 
                     <div class="col-lg-6">
                         <div class="bs-component">
@@ -79,97 +127,12 @@
 
                     <div class="col-lg-6">
                         <div class="bs-component">
-                            <label>Season</label>
-                            <input type="text" name="best_season" class="form-control"
-                                value="{{ $data->best_season }}" />
-
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-lg-6">
-                        <div class="bs-component">
-                            <label>Price</label>
-                            <input type="text" name="price" class="form-control" value="{{ $data->price }}" />
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="bs-component">
-                            <label>Duration</label>
-                            <input type="text" min="1" name="duration" class="form-control"
-                                value="{{ $data->duration }}" />
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-lg-6">
-                        <div class="bs-component">
-                            <label>Accommodation</label>
-                            <input type="text" name="accommodation" class="form-control"
-                                value="{{ $data->accommodation }}" />
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="bs-component">
-                            <label>Daily Activity</label>
+                            <label>Activity</label>
                             <input type="text" name="walking_per_day" class="form-control"
                                 value="{{ $data->walking_per_day }}" />
                         </div>
                     </div>
-                </div>
-                <!--       <div class="col-lg-6">-->
-                <!--        <div class="bs-component">-->
-                <!--            <label>Staffs</label>-->
-                <!--            <input type="text" name="peak_name" class="form-control" value="{{ $data->peak_name }}"-->
-                <!--                placeholder="Staff" />-->
-                <!--        </div>-->
-                <!--    </div>-->
 
-                <!--</div>-->
-
-                <!--<div class="form-group">                -->
-                <!--    <div class="col-lg-6">-->
-                <!--        <div class="bs-component">-->
-                <!--            <label>Transportation</label>-->
-                <!--            <input type="text" name="route" class="form-control" value="{{ $data->route }}"-->
-                <!--                placeholder="Transportation" />-->
-                <!--        </div>-->
-                <!--    </div>-->
-                <!--    <div class="col-lg-6">-->
-                <!--        <div class="bs-component">-->
-                <!--            <label>Start / End</label>-->
-                <!--            <input type="text" name="start_date" class="form-control" value="{{ $data->start_date }}"/>-->
-                <!--        </div>-->
-                <!--    </div>-->
-                <!--</div>-->
-                <div class="form-group">
-
-                </div>
-                <!--    <div class="col-lg-6">-->
-                <!--        <div class="bs-component">-->
-                <!--            <label>Discount</label>-->
-                <!--            <input type="text" name="discount" class="form-control"-->
-                <!--                value="{{ $data->discount }}" />-->
-                <!--        </div>-->
-                <!--    </div>-->
-
-                <!--</div>-->
-                <div class="form-group">
-                    <!--<div class="col-lg-6">-->
-                    <!--    <div class="bs-component">-->
-                    <!--        <label>Video ID</label>-->
-                    <!--       <input type="text" class="form-control" name="trip_video" value="{{ $data->trip_video }}"-->
-                    <!--            placeholder="Trip Video" />-->
-                    <!--    </div>-->
-                    <!--</div>-->
-
-                    <div class="col-lg-6">
-                        <div class="bs-component">
-                            <label>Meals</label>
-                            <input type="text" name="meals" class="form-control"
-                                value="{{ $data->meals }}" />
-                        </div>
-                    </div>
                     <div class="col-lg-6">
                         <div class="bs-component">
                             <label>Transportation</label>
@@ -177,23 +140,44 @@
                                 value="{{ $data->peak_name }}" />
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="bs-component">
-                            <label>Start/End</label>
-                            <input type="text" name="route" class="form-control"
-                                value="{{ $data->route }}" />
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="bs-component">
-                            <label>Is Luxury Trip?</label>
-                            <select class="form-control" name="video_status">
-                                <option @if ($data->video_status == 1) selected @endif value="1">Yes</option>
-                                <option @if ($data->video_status == 0) selected @endif value="0">No</option>
-                            </select>
-                        </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-heading">
+                <span class="panel-title">Pricing </span>
+            </div>
+            <div class="panel-body">
+
+                <div class="col-lg-6">
+                    <div class="bs-component">
+                        <label>Price</label>
+                        <input type="text" name="price" class="form-control"
+                            value="{{ $data->price }}" />
                     </div>
                 </div>
+
+                <div class="col-lg-6">
+                    <div class="bs-component">
+                        <label>Season</label>
+                        <input type="text" name="best_season" class="form-control"
+                            value="{{ $data->best_season }}" />
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="bs-component">
+                        <label>Is Luxury Trip?</label>
+                        <select class="form-control" name="video_status">
+                            <option value="0" {{ $data->video_status == 0 ? 'selected' : '' }}>No</option>
+                            <option value="1" {{ $data->video_status == 1 ? 'selected' : '' }}>Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+
             </div>
         </div>
 

@@ -303,11 +303,11 @@ class TripController extends Controller
                     $tripItinerary = new TripItineraryModel();
                     $tripItinerary->trip_detail_id = $last_id;
                     $tripItinerary->ordering = $request->itinerary_ordering[$key];
-                    $tripItinerary->days = $request->itinerary_days[$key];
+                    // $tripItinerary->days = $request->itinerary_days[$key];
                     $tripItinerary->title = $request->itinerary_title[$key];
-                    $tripItinerary->max_altitude = $request->itinerary_max_altitude[$key];
-                    $tripItinerary->distance = $request->itinerary_distance[$key];
-                    $tripItinerary->duration = $request->itinerary_duration[$key];
+                    // $tripItinerary->max_altitude = $request->itinerary_max_altitude[$key];
+                    // $tripItinerary->distance = $request->itinerary_distance[$key];
+                    // $tripItinerary->duration = $request->itinerary_duration[$key];
                     $tripItinerary->content = $request->itinerary_content[$key];
                     $tripItinerary->save();
                     $sn_itinerary++;
@@ -922,11 +922,11 @@ class TripController extends Controller
                         $itineraryData = new TripItineraryModel();
                         $itineraryData->trip_detail_id = $data->id;
                         $itineraryData->ordering = $request->itinerary_ordering[$key];
-                        $itineraryData->days = $request->itinerary_days[$key];
+                        // $itineraryData->days = $request->itinerary_days[$key];
                         $itineraryData->title = $request->itinerary_title[$key];
-                        $itineraryData->max_altitude = $request->itinerary_max_altitude[$key];
-                        $itineraryData->distance = $request->itinerary_distance[$key];
-                        $itineraryData->duration = $request->itinerary_duration[$key];
+                        // $itineraryData->max_altitude = $request->itinerary_max_altitude[$key];
+                        // $itineraryData->distance = $request->itinerary_distance[$key];
+                        // $itineraryData->duration = $request->itinerary_duration[$key];
                         $itineraryData->content = $request->itinerary_content[$key];
                         $itineraryData->save();
                     } else if ($request->itinerary_id[$value] !== null && $request->itinerary_id[$value] !== "") {
@@ -934,11 +934,11 @@ class TripController extends Controller
                         $itineraryData = TripItineraryModel::find($itinerary_id);
                         $itineraryData->trip_detail_id = $data->id;
                         $itineraryData->ordering = $request->itinerary_ordering[$key];
-                        $itineraryData->days = $request->itinerary_days[$key];
+                        // $itineraryData->days = $request->itinerary_days[$key];
                         $itineraryData->title = $request->itinerary_title[$key];
-                        $itineraryData->max_altitude = $request->itinerary_max_altitude[$key];
-                        $itineraryData->distance = $request->itinerary_distance[$key];
-                        $itineraryData->duration = $request->itinerary_duration[$key];
+                        // $itineraryData->max_altitude = $request->itinerary_max_altitude[$key];
+                        // $itineraryData->distance = $request->itinerary_distance[$key];
+                        // $itineraryData->duration = $request->itinerary_duration[$key];
                         $itineraryData->content = $request->itinerary_content[$key];
                         $itineraryData->save();
                     }
