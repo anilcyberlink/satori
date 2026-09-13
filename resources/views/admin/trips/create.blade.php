@@ -34,6 +34,8 @@
                                             data-toggle="tab">GENERAL</a></li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_9" data-toggle="tab"> ITINERARY </a>
                                     </li>
+                                    <li class="nav-item"><a class="nav-link" href="#tab_10" data-toggle="tab"> PACKAGES </a>
+                                    </li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">MILESTONES</a>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab"> COST
@@ -56,6 +58,9 @@
                                     </div>
                                     <div class="tab-pane" id="tab_2">
                                         @include('admin.trips.create.create-itinerary')
+                                    </div>
+                                    <div class="tab-pane" id="tab_10">
+                                        @include('admin.trips.create.create-packages')
                                     </div>
                                     <div class="tab-pane" id="tab_3">
                                         @include('admin.trips.create.create-cost-includes')
