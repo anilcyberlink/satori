@@ -23,6 +23,8 @@ use App\Models\Destinations\DestinationModel;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Travels\TripScheduleModel;
 use App\Models\Faqs\FaqModel;
+use App\Models\Travels\PackageService;
+use App\Models\Travels\PackageDetail;
 
 
 class TripController extends Controller
@@ -162,7 +164,7 @@ class TripController extends Controller
                     'errors' => $validator->errors()->all()
                 ]);
             }
-            // dd( $request->all());
+            // dd($request->all());
 
             $data = $request->all();
 
@@ -458,6 +460,58 @@ class TripController extends Controller
                 }
             }
 
+            // Insert Package Services (Full Board / Base Camp price & description)
+            if ($request->has('package_service') && is_array($request->package_service)) {
+                foreach ($request->package_service as $serviceKey => $serviceData) {
+                    PackageService::create([
+                        'trip_detail_id' => $last_id,
+                        'service'        => $serviceKey,
+                        'price_1'        => $serviceData['price_1'] ?? null,
+                        'price_2'        => $serviceData['price_2'] ?? null,
+                        'description'    => $serviceData['description'] ?? null,
+                    ]);
+                }
+            }
+
+            // Insert Package Details (Price Includes / Excludes, per service)
+            if ($request->has('package_details') && is_array($request->package_details)) {
+                foreach ($request->package_details as $serviceKey => $types) {
+                    if (!is_array($types)) {
+                        continue;
+                    }
+
+                    foreach ($types as $typeKey => $sections) {
+                        if (!is_array($sections)) {
+                            continue;
+                        }
+
+                        foreach ($sections as $sortOrder => $sectionData) {
+                            $title   = $sectionData['title'] ?? null;
+                            $details = $sectionData['details'] ?? [];
+
+                            // Drop any blank detail lines the user left empty
+                            $details = array_values(array_filter($details, function ($d) {
+                                return trim((string) $d) !== '';
+                            }));
+
+                            // Skip a section entirely if it has no title and no details
+                            if (empty($title) && empty($details)) {
+                                continue;
+                            }
+
+                            PackageDetail::create([
+                                'trip_detail_id' => $last_id,
+                                'service'        => $serviceKey,
+                                'type'           => $typeKey,
+                                'title'          => $title,
+                                'details'        => $details,
+                                'sort_order'     => $sortOrder,
+                            ]);
+                        }
+                    }
+                }
+            }
+
             /************Attach******************/
             $_data = TripModel::find($last_id);
             $_data->destinations()->attach($request->destination);
@@ -490,7 +544,14 @@ class TripController extends Controller
      */
     public function edit($id, $training = null)
     {
-        $data = TripModel::find($id);
+        $data = TripModel::with([
+            'fullBoardService',
+            'baseCampService',
+            'packageDetails',
+        ])->findOrFail($id);
+
+        // dd($data);
+
         $checked_destinations = array();
         $checked_regions = array();
         $checked_activities = array();
@@ -910,7 +971,7 @@ class TripController extends Controller
             if (isset($request->itinerary_ordering)) {
                 $keys = array_keys($request->itinerary_ordering);
                 $sn_itinerary = 1;
-                $sn_itinerary_count = count($request->itinerary_days);
+                $sn_itinerary_count = count($request->itinerary_ordering);
                 foreach ($keys as $key => $value) {
                     if ($key + 1 >= $sn_itinerary_count) {
                         continue;
@@ -1107,6 +1168,171 @@ class TripController extends Controller
                 }
             }
 
+            // For Package Options
+
+            /*
+            |--------------------------------------------------------------------------
+            | UPDATE PACKAGE SERVICES
+            |--------------------------------------------------------------------------
+            */
+
+            if (
+                $request->has('package_service') &&
+                is_array($request->package_service)
+            ) {
+
+                foreach ($request->package_service as $serviceKey => $serviceData) {
+
+                    if (!is_array($serviceData)) {
+                        continue;
+                    }
+
+                    PackageService::where('trip_detail_id', $data->id)
+                        ->where('service', $serviceKey)
+                        ->update([
+
+                            'price_1' => $serviceData['price_1'] ?? null,
+
+                            'price_2' => $serviceData['price_2'] ?? null,
+
+                            'description' => $serviceData['description'] ?? null,
+
+                        ]);
+                }
+            }
+
+
+
+            /*
+                |--------------------------------------------------------------------------
+                | UPDATE PACKAGE DETAILS
+                |--------------------------------------------------------------------------
+                |
+                | Price Includes / Price Excludes
+                |
+                | Delete all existing package details for this trip and recreate
+                | them from the submitted form.
+                |
+            */
+
+            PackageDetail::where('trip_detail_id', $data->id)->delete();
+
+
+            if (
+                $request->has('package_details') &&
+                is_array($request->package_details)
+            ) {
+
+                foreach ($request->package_details as $serviceKey => $types) {
+
+                    if (!is_array($types)) {
+                        continue;
+                    }
+
+
+                    foreach ($types as $typeKey => $sections) {
+
+                        if (!is_array($sections)) {
+                            continue;
+                        }
+
+
+                        foreach ($sections as $sortOrder => $sectionData) {
+
+                            if (!is_array($sectionData)) {
+                                continue;
+                            }
+
+
+                            /*
+                |--------------------------------------------------------------------------
+                | Section title
+                |--------------------------------------------------------------------------
+                */
+
+                            $title = trim(
+                                (string) ($sectionData['title'] ?? '')
+                            );
+
+
+                            /*
+                |--------------------------------------------------------------------------
+                | Details
+                |--------------------------------------------------------------------------
+                */
+
+                            $details = $sectionData['details'] ?? [];
+
+
+                            if (!is_array($details)) {
+                                $details = [];
+                            }
+
+
+                            /*
+                |--------------------------------------------------------------------------
+                | Remove empty detail inputs
+                |--------------------------------------------------------------------------
+                */
+
+                            $details = array_values(
+                                array_filter(
+                                    $details,
+                                    function ($detail) {
+
+                                        return trim(
+                                            (string) $detail
+                                        ) !== '';
+                                    }
+                                )
+                            );
+
+
+                            /*
+                |--------------------------------------------------------------------------
+                | Skip completely empty section
+                |--------------------------------------------------------------------------
+                */
+
+                            if (
+                                $title === '' &&
+                                empty($details)
+                            ) {
+                                continue;
+                            }
+
+
+                            /*
+                |--------------------------------------------------------------------------
+                | Insert section
+                |--------------------------------------------------------------------------
+                */
+
+                            PackageDetail::create([
+
+                                'trip_detail_id' => $data->id,
+
+                                'service' => $serviceKey,
+
+                                'type' => $typeKey,
+
+                                'title' => $title !== ''
+                                    ? $title
+                                    : null,
+
+                                'details' => $details,
+
+                                'sort_order' => (int) $sortOrder,
+
+                            ]);
+                        }
+                    }
+                }
+            }
+
+
+
+            // For Multi Itinerary
             // Delete all existing multi-season itineraries
             MultiItineraryModel::where('trip_detail_id', $data->id)->delete();
 

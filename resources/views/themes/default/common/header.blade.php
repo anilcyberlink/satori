@@ -30,7 +30,7 @@
     <!-- Flowbite & Tailwind CDN -->
     <link rel="canonical" href="{{ url()->current() }}" />
     <link href="{{ asset('theme-assets/css/app.css') }}" rel="stylesheet" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
 
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('theme-assets/assets/favicon/apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('theme-assets/assets/favicon/favicon-32x32.png') }}">

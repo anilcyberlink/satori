@@ -3,6 +3,8 @@
 namespace App\Models\Travels;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Travels\PackageDetail;
+use App\Models\Travels\PackageService;
 
 class TripModel extends Model
 {
@@ -111,5 +113,24 @@ class TripModel extends Model
     public function faqs()
     {
         return $this->hasMany('App\Models\Faqs\FaqModel', 'trip_detail_id');
+    }
+    public function packageServices()
+    {
+        return $this->hasMany(PackageService::class, 'trip_detail_id');
+    }
+
+    public function fullBoardService()
+    {
+        return $this->hasOne(PackageService::class, 'trip_detail_id')->where('service', 'full_board');
+    }
+
+    public function baseCampService()
+    {
+        return $this->hasOne(PackageService::class, 'trip_detail_id')->where('service', 'base_camp');
+    }
+
+    public function packageDetails()
+    {
+        return $this->hasMany(PackageDetail::class, 'trip_detail_id');
     }
 }
