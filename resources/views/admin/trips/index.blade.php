@@ -23,7 +23,8 @@
                                     <th style="width:10%;" class="text-center">Visiter</th>
                                     <th style="width:10%;">Best Seller?</th>
                                     <th style="width:10%;">Category</th>
-                                    <th style="width:10%;">Luxury Trip?</th>
+                                    <th style="width:10%;">Past Trips</th>
+                                    {{-- <th style="width:10%;">Luxury Trip?</th> --}}
                                     <th style="width:5%;" class="text-center">Status</th>
                                     <th style="width:10%;" class="text-center">Order</th>
                                 </tr>
@@ -68,15 +69,19 @@
                                                 @endforeach
                                             @endif
                                         </td>
+                                        <td>
+                                            <a href="{{ route('pasttrip.index',$row->id) }}">
+                                                <i class="fa fa-history"></i>Past trips </a>
+                                        </td>
 
-                                        <td style="width:10%;">
+                                        {{-- <td style="width:10%;">
                                             {{ $row->video_status == 1 ? 'Luxury Trip' : '' }}
                                             @if ($row->tripgroups)
                                                 @foreach ($row->tripgroups as $_row)
                                                     <span>{{ $_row->title }}</span><br>
                                                 @endforeach
                                             @endif
-                                        </td>
+                                        </td> --}}
                                         <td class="text-center" style="width:5%;">
                                             <input class="CheckStatus" type="checkbox" name="status"
                                                 data-rowid="{{ $row->id }}" {{ $row->status == 1 ? 'checked' : '' }} />

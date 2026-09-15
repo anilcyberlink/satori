@@ -38,10 +38,9 @@
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">MILESTONES</a>
                                     </li>
-                                    <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab"> COST
-                                            INCLUDES</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="#tab_4" data-toggle="tab"> COST
-                                            EXCLUDES</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab"> HIGHTLIGHTS </a></li>
+                                    {{-- <li class="nav-item"><a class="nav-link" href="#tab_4" data-toggle="tab"> COST
+                                            EXCLUDES</a></li> --}}
                                     <li class="nav-item"><a class="nav-link" href="#tab_5" data-toggle="tab"> PHOTOS </a>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_7" data-toggle="tab"> DATES </a>
@@ -65,9 +64,9 @@
                                     <div class="tab-pane" id="tab_3">
                                         @include('admin.trips.create.create-cost-includes')
                                     </div>
-                                    <div class="tab-pane" id="tab_4">
+                                    {{-- <div class="tab-pane" id="tab_4">
                                         @include('admin.trips.create.create-cost-excludes')
-                                    </div>
+                                    </div> --}}
                                     <div class="tab-pane" id="tab_5">
                                         @include('admin.trips.create.create-gear')
                                     </div>

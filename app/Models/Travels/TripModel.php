@@ -5,6 +5,7 @@ namespace App\Models\Travels;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Travels\PackageDetail;
 use App\Models\Travels\PackageService;
+use App\Models\Travels\PastTripModel;
 
 class TripModel extends Model
 {
@@ -132,5 +133,10 @@ class TripModel extends Model
     public function packageDetails()
     {
         return $this->hasMany(PackageDetail::class, 'trip_detail_id');
+    }
+
+    public function pastTrips()
+    {
+        return $this->hasMany(PastTripModel::class, 'trip_id', 'id');
     }
 }

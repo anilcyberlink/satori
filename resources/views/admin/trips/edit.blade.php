@@ -35,10 +35,10 @@
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab"> MILESTONES </a>
                                     </li>
-                                    <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab"> COST INCLUDES
+                                    <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">HIGHTLIGHTS
                                         </a></li>
-                                    <li class="nav-item"><a class="nav-link" href="#tab_4" data-toggle="tab"> COST EXCLUDES
-                                        </a></li>
+                                    {{-- <li class="nav-item"><a class="nav-link" href="#tab_4" data-toggle="tab"> COST EXCLUDES
+                                        </a></li> --}}
                                     <li class="nav-item"><a class="nav-link" href="#tab_5" data-toggle="tab"> PHOTOS</a>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_7" data-toggle="tab"> DATES</a></li>
