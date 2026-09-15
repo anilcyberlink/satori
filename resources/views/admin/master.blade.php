@@ -182,6 +182,8 @@
                                 Request::segment(2) == 'activity' ||
                                 Request::segment(2) == 'trip' ||
                                 Request::segment(2) == 'training-list' ||
+                                Request::segment(2) == 'past-trips' ||
+                                Request::segment(2) == 'past-images' ||
                                 Request::segment(2) == 'tripgroup'
                             )
                             <a class="accordion-toggle menu-open">
@@ -206,7 +208,7 @@
                                         <span class="sidebar-title"> Trip Categories </span>
                                     </a>
                                 </li>
-                                <li class="{{ Request::segment(2) == 'trip' ? 'active' : '' }}">
+                                <li class="{{ Request::segment(2) == 'trip' || Request::segment(2) == 'past-trips' || Request::segment(2) == 'past-images' ? 'active' : '' }}">
                                     <a href="{{ url('admin/trip') }}">
                                         <span class="fa fa fa-arrows-h"></span>
                                         <span class="sidebar-title"> Trip List </span>
