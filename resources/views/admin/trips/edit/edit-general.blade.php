@@ -254,37 +254,11 @@
                 </div>
             </div>
         </div>
+
         <div class="panel">
-            <div class="panel-heading">
-                <span class="panel-title"> Meta data </span>
-            </div>
-            <div class="panel-body">
-
-                {{-- <div class="form-group">
-                <div class="col-lg-12">
-                    <div class="bs-component">
-                        <input type="text" name="meta_title" class="form-control" value="{{ $data->meta_title }}"
-                            placeholder="Meta Title" />
-                    </div>
-                </div>
-            </div> --}}
-
-                <div class="form-group">
-                    <div class="col-lg-12">
-                        <div class="bs-component">
-                            <input type="text" name="meta_key" class="form-control"
-                                value="{{ $data->meta_key }}" placeholder="Meta Key" />
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-lg-12">
-                        <div class="bs-component">
-                            <textarea class="form-control" name="meta_description" rows="3" placeholder="Meta Description">{{ $data->meta_description }}</textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @include('admin.seo.seo-form', [
+                'seo' => $data->seo ?? null
+            ])
         </div>
     </div>
 
