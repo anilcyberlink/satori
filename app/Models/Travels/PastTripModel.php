@@ -18,7 +18,7 @@ class PastTripModel extends Model
         'sub_title',
         'banner',
     ];
-    
+
     public function trip()
     {
         return $this->belongsTo(TripModel::class,'trip_id');

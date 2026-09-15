@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Travels\PackageDetail;
 use App\Models\Travels\PackageService;
 use App\Models\Travels\PastTripModel;
+use App\Models\SeoMeta;
 
 class TripModel extends Model
 {
@@ -138,5 +139,10 @@ class TripModel extends Model
     public function pastTrips()
     {
         return $this->hasMany(PastTripModel::class, 'trip_id', 'id');
+    }
+
+    public function seo()
+    {
+        return $this->morphOne(SeoMeta::class,'seoable');
     }
 }

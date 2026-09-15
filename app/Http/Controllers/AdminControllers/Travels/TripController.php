@@ -25,15 +25,18 @@ use App\Models\Travels\TripScheduleModel;
 use App\Models\Faqs\FaqModel;
 use App\Models\Travels\PackageService;
 use App\Models\Travels\PackageDetail;
+use App\Services\SeoService;
 
 
 class TripController extends Controller
 {
 
-    public function __construct()
+    protected $seoService;
+    public function __construct(SeoService $seoService)
     {
-        //
+        $this->seoService = $seoService;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -248,8 +251,12 @@ class TripController extends Controller
             }
             $data['is_draft'] = $is_draft;
             $result = TripModel::create($data);
-            $last_id = $result->id;
 
+            // SEO
+            $this->seoService->save($result,$request);
+
+
+            $last_id = $result->id;
 
             // Insert into schedule
             if (isset($request->schedule_ordering)) {
@@ -548,6 +555,7 @@ class TripController extends Controller
             'fullBoardService',
             'baseCampService',
             'packageDetails',
+            'seo'
         ])->findOrFail($id);
 
         // dd($data);
@@ -1395,6 +1403,8 @@ class TripController extends Controller
 
 
             $data->save();
+            $this->seoService->save($data,$request);
+
             return response()->json(['status' => 'success', 'message' => 'Trip Update Successful!']);
         }
         return false;
