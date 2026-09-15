@@ -124,10 +124,27 @@ Route::middleware(['auth'])->group(function () {
         'admin.faq' => 'AdminControllers\Faqs\FaqController',
 
     ]);
-    // For all trips Only for Developer 
+    // For all trips Only for Developer
     Route::get('admin/alltrips','AdminControllers\Travels\TripController@alltrips')->name('admin.trip.all');
     // Upto here
-    
+
+    // Past Trips
+    Route::get('admin/past-trips/{id}','AdminControllers\Travels\PastTripController@index')->name('pasttrip.index');
+    Route::get('admin/past-trips/{id}/create','AdminControllers\Travels\PastTripController@create')->name('pasttrip.create');
+    Route::post('admin/past-trips/store','AdminControllers\Travels\PastTripController@store')->name('pasttrip.store');
+    Route::get('admin/past-trips/{id}/edit','AdminControllers\Travels\PastTripController@edit')->name('pasttrip.edit');
+    Route::put('admin/past-trips/{id}','AdminControllers\Travels\PastTripController@update')->name('pasttrip.update');
+    Route::put('admin/past-trips/{id}/status','AdminControllers\Travels\PastTripController@status')->name('pasttrip.status');
+    Route::delete('admin/past-trips/{id}','AdminControllers\Travels\PastTripController@destroy')->name('pasttrip.destroy');
+
+    // Past Trip Images
+    Route::get('admin/past-images/{id}/create','AdminControllers\Travels\PastTripImageController@addImages')->name('pasttrip.image.create');
+    Route::post('admin/past-images/store','AdminControllers\Travels\PastTripImageController@store')->name('pasttrip.image.store');
+    Route::delete('admin/past-images/{id}','AdminControllers\Travels\PastTripImageController@destroy')->name('pasttrip.image.destroy');
+    Route::get('admin/past-images/{id}/edit','AdminControllers\Travels\PastTripImageController@edit')->name('pasttrip.image.edit');
+    Route::put('admin/past-images/{id}','AdminControllers\Travels\PastTripImageController@update')->name('pasttrip.image.update');
+
+
     Route::get('trip-customize','AdminControllers\Inquiry\TripCustomizeController@index')->name('admin.trip.customize');
     Route::get('trip-plan','AdminControllers\Inquiry\TripCustomizeController@showplan')->name('admin.trip.plan');
     Route::get('trip-private','AdminControllers\Inquiry\TripCustomizeController@showprivate')->name('admin.trip.private');

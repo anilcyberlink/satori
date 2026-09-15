@@ -1,7 +1,7 @@
 <div class="col-md-12">
     <div class="panel">
         <div class="panel-heading">
-            <span class="panel-title"> Cost Includes </span>
+            <span class="panel-title"> TRIP HIGHTLIGHTS </span>
             <a class="btn btn-primary pull-right add-testimonial" data-added="0"><i
                     class="glyphicon glyphicon-plus"></i> Add Row </a>
         </div>

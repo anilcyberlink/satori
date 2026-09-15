@@ -20,13 +20,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <div class="col-lg-12">
                         <div class="bs-component">
                             <textarea type="text" id="sub_title" name="sub_title" class="form-control" placeholder="Sub Title"></textarea>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
         <div class="panel">
