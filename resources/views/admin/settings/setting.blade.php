@@ -26,6 +26,7 @@
                                 <ul class="nav nav-pills ml-auto p4 mb10 mt10 nav-custom">
                                     <li class="nav-item active"><a class="nav-link active" href="#tab_1" data-toggle="tab">Contact Information</a></li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab"> Social Media Links </a></li>
+                                    <li class="nav-item"><a class="nav-link" href="#tab_7" data-toggle="tab"> SEO </a></li>
                                     <!-- <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab"> Logo and
                                             Affiliated Logos </a></li> -->
                                     <!--<li class="nav-item"><a class="nav-link" href="#tab_4" data-toggle="tab"> Flight Information </a></li>-->
@@ -41,7 +42,7 @@
                                     <div class="tab-pane" id="tab_2">
                                         @include('admin.settings.socialMedia')
                                     </div>
-                                    <div class="tab-pane" id="tab_3">
+                                    {{-- <div class="tab-pane" id="tab_3">
                                         @include('admin.settings.logo')
                                     </div>
                                     <div class="tab-pane" id="tab_4">
@@ -52,14 +53,16 @@
                                     </div>
                                     <div class="tab-pane" id="tab_6">
                                         @include('admin.settings.homeStatic')
+                                    </div> --}}
+                                    <div class="tab-pane" id="tab_7">
+                                        @include('admin.seo.seo-form', [
+                                            'seo' => $data->seo ?? null
+                                        ])
                                     </div>
                                 </div>
-                                <!-- /.tab-content -->
-                            </div><!-- /.card-body -->
+                            </div>
                         </div>
-                        <!-- ./card -->
                     </div>
-                    <!-- /.col -->
                 </div>
             </div>
         </section>

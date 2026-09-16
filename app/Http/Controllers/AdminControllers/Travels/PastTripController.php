@@ -8,9 +8,16 @@ use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use App\Models\Travels\TripModel;
 use App\Models\Travels\PastTripModel;
+use App\Services\SeoService;
 
 class PastTripController extends Controller
 {
+    protected $seoService;
+    public function __construct(SeoService $seoService)
+    {
+        $this->seoService = $seoService;
+    }
+
     public function index($id)
     {
         $trip = TripModel::where('id', $id)->first();
@@ -67,6 +74,9 @@ class PastTripController extends Controller
         }
         $pastTrip->save();
 
+        // SEO
+        $this->seoService->save($pastTrip,$request);
+
         return redirect()->route('pasttrip.index', $request->trip_id)->with('success', 'Past trip created successfully.');
     }
     public function status($id)
@@ -82,7 +92,7 @@ class PastTripController extends Controller
 
     public function edit($id)
     {
-        $data = PastTripModel::findOrFail($id);
+        $data = PastTripModel::with('seo')->findOrFail($id);
         $trip = TripModel::findOrFail($data->trip_id);
 
         return view('admin.past-trips.edit',compact('trip', 'data'));
@@ -127,6 +137,8 @@ class PastTripController extends Controller
         }
 
         $data->save();
+        // SEO
+        $this->seoService->save($data,$request);
 
         return redirect()
             ->route('pasttrip.index', $data->trip_id)

@@ -1,14 +1,22 @@
 <?php
 
 namespace App\Http\Controllers\AdminControllers\Posts;
+
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Posts\PostTypeModel;
 use App\Http\Controllers\Controller;
 use Intervention\Image\Facades\Image;
+use App\Services\SeoService;
 
 class PostTypeController extends Controller
 {
+    protected $seoService;
+    public function __construct(SeoService $seoService)
+    {
+        $this->seoService = $seoService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -67,24 +75,13 @@ class PostTypeController extends Controller
         $product_name = '';
         if ($request->hasfile('banner')) {
             $product = $request->file('banner')->getClientOriginalName();
-            $extension = $request->file('banner')->getClientOriginalExtension();
             $product = explode('.', $product);
-            // $product_name = Str::slug($product[0]) . '-' . Str::random(40) . '.' . $extension;
             $product_name = Str::slug($product[0]) . '-' . Str::random(5) . '.webp';
 
             $destinationPath_medium = public_path('uploads/medium');
             $destinationOriginal = public_path('uploads/original');
 
             $product_picture = Image::make($file->getRealPath());
-            $width = Image::make($file->getRealPath())->width();
-            $height = Image::make($file->getRealPath())->height();
-
-            // $product_picture->resize($medium_width, $medium_height, function ($constraint) {
-            //     $constraint->aspectRatio();
-            // })->save($destinationPath_medium . '/' . $product_name);
-
-            // /*Upload Original banner*/
-            // $product_picture->save($destinationOriginal . '/' . $product_name);
             $product_picture->resize($medium_width, $medium_height, function ($constraint) {
                 $constraint->aspectRatio();
             })->encode('webp', 85)->save($destinationPath_medium . '/' . $product_name);
@@ -96,6 +93,9 @@ class PostTypeController extends Controller
         $data['banner'] = $product_name;
         $data['uri'] = Str::slug($request->uri);
         $result = PostTypeModel::create($data);
+        // SEO
+        $this->seoService->save($result,$request);
+
         if ($result) {
             return redirect()->back()->with('success', 'Stored Successfully.');
         }
@@ -120,7 +120,6 @@ class PostTypeController extends Controller
      */
     public function edit(PostTypeModel $postTypeModel, $posttype, $id)
     {
-
         $fileList = scandir(resource_path('views/themes/default/'));
         $filterArray = $this->filter_template($fileList);
 
@@ -134,7 +133,8 @@ class PostTypeController extends Controller
         }
         $templates = $file1;
 
-        $data = PostTypeModel::find($id);
+        $data = PostTypeModel::with('seo')->find($id);
+
         return view('admin.post-type.edit', compact('data', 'templates'));
     }
 
@@ -169,24 +169,11 @@ class PostTypeController extends Controller
                 }
             }
             $category_file = $request->file('banner')->getClientOriginalName();
-            $extension = $request->file('banner')->getClientOriginalExtension();
             $category_file = explode('.', $category_file);
-            // $file_name = Str::slug($category_file[0]) . '-' . Str::random(40) . '.' . $extension;
             $file_name = Str::slug($category_file[0]) . '-' . Str::random(5) . '.webp';
             $destinationPath_medium = public_path('uploads/medium');
             $destinationOriginal = public_path('uploads/original');
-
-
             $product_picture = Image::make($file->getRealPath());
-            $width = Image::make($file->getRealPath())->width();
-            $height = Image::make($file->getRealPath())->height();
-
-            // $product_picture->resize($medium_width, $medium_height, function ($constraint) {
-            //     $constraint->aspectRatio();
-            // })->save($destinationPath_medium . '/' . $file_name);
-
-            // /****Upload Original Image****/
-            // $product_picture->save($destinationOriginal . '/' . $file_name);
             $product_picture->resize($medium_width, $medium_height, function ($constraint) {
                 $constraint->aspectRatio();
             })->encode('webp', 85)->save($destinationPath_medium . '/' . $file_name);
@@ -207,6 +194,9 @@ class PostTypeController extends Controller
         $data->meta_keyword = $request->meta_keyword;
         $data->meta_description = $request->meta_description;
         $data->save();
+        // SEO
+        $this->seoService->save($data,$request);
+
         return redirect()->back()->with('success', 'Update Successful.');
     }
 
@@ -268,5 +258,4 @@ class PostTypeController extends Controller
         $data->save();
         return response('Delete Successful.');
     }
-
 }

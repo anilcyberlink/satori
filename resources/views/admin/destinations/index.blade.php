@@ -1,5 +1,5 @@
 @extends('admin.master')
-@section('title', '')
+@section('title', 'Destination')
 @section('breadcrumb')
     <a href="{{ route('destination.create') }}" class="btn btn-primary btn-sm">Create</a>
 @endsection
@@ -27,19 +27,22 @@
                                         @foreach ($data as $row)
                                             <tr class="id{{ $row->id }}">
                                                 <td class="">{{ $loop->iteration }}</td>
-                                              	<td class=""> <a href="{{url( 'admin/tour-trip'.'/'. $row->id)}}">{{$row->title}}</a></td>
-                                              	 <!--<td class=""><a href="{{route('destination.page.index',$row->id)}}" title="Manage Banner"><i class="fa fa-file-image-o fa fa-2x" aria-hidden="true"></i></a></td>-->
+                                                <td class=""> <a
+                                                        href="{{ url('admin/tour-trip' . '/' . $row->id) }}">{{ $row->title }}</a>
+                                                </td>
+                                                <!--<td class=""><a href="{{ route('destination.page.index', $row->id) }}" title="Manage Banner"><i class="fa fa-file-image-o fa fa-2x" aria-hidden="true"></i></a></td>-->
                                                 <td> {{ $row->ordering }} </td>
                                                 <td> {{ $row->created_at }} </td>
                                                 <td class="text-left">
                                                     <a href="{{ route('destination.edit', $row->id) }}">Edit</a>
-                                                    @if(!is_empty_destination($row->id))
-                                                    | <span class="trash"><a href="{{ $row->id }}" class="btn-delete">Delete</a></span>
+                                                    @if (!is_empty_destination($row->id))
+                                                        | <span class="trash"><a href="{{ $row->id }}"
+                                                                class="btn-delete">Delete</a></span>
                                                     @endif
                                                 </td>
                                             </tr>
                                         @endforeach
-                                         @else
+                                    @else
                                         <tr>
                                             <td colspan="5" class="text-center"> Data Not Available! </td>
                                         </tr>
@@ -62,8 +65,8 @@
                 if (!confirm('Are you sure to delete?')) return false;
                 var csrf = $('meta[name="csrf-token"]').attr('content');
                 var id = $(this).attr('href');
-                var url = '{{ route('destination.destroy', ':id') }}';   
-                url = url.replace(':id', id); 
+                var url = '{{ route('destination.destroy', ':id') }}';
+                url = url.replace(':id', id);
                 $.ajax({
                     type: 'DELETE',
                     url: url,
@@ -79,6 +82,5 @@
                 });
             });
         });
-
     </script>
 @endsection

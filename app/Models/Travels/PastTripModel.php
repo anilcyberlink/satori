@@ -4,10 +4,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Travels\TripModel;
 use App\Models\Travels\PastTripImageModel;
+use App\Models\Traits\HasSeo;
 
 class PastTripModel extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSeo;
     protected $table = 'cl_past_trips';
     protected $fillable = [
         'trip_id',

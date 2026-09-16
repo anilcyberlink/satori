@@ -8,8 +8,7 @@
 
 @section('content')
 
-    <form class="form-horizontal" role="form" action="{{ route('pasttrip.update', $data->id) }}" method="post"
-        enctype="multipart/form-data">
+    <form class="form-horizontal" role="form" action="{{ route('pasttrip.update', $data->id) }}" method="post" enctype="multipart/form-data">
 
         {{ csrf_field() }}
         @method('PUT')
@@ -57,6 +56,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="panel">
+                @include('admin.seo.seo-form', [
+                    'seo' => $data->seo ?? null
+                ])
             </div>
         </div>
 

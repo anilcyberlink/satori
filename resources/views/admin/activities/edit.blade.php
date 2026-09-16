@@ -128,31 +128,11 @@
             <!--        </div>-->
             <!--    </div>-->
             <!--</div>-->
+
             <div class="panel">
-                <div class="panel-heading">
-                    <span class="panel-title">Map and Meta data </span>
-                </div>
-                <div class="panel-body">
-
-                    <div class="form-group">
-                        <label for="inputStandard" class="col-lg-2 control-label">Meta Key</label>
-                        <div class="col-lg-9">
-                            <div class="bs-component">
-                                <input type="text" id="" name="meta_keyword" class="form-control"
-                                    value="{{ $data->meta_keyword }}" placeholder="Meta Key" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-lg-2 control-label" for="textArea3"> Meta Description </label>
-                        <div class="col-lg-9">
-                            <div class="bs-component">
-                                <textarea class="form-control" id="textArea3" name="meta_description" rows="3">{{ $data->meta_description }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @include('admin.seo.seo-form', [
+                    'seo' => $data->seo ?? null
+                ])
             </div>
         </div>
 
@@ -210,10 +190,11 @@
                 </div>
 
                 <div class="sid_bvijay mb10">
-                  <div class="hd_show_con">
-                   Show in Home
-                    <input type="checkbox" name="status" value="{{ $data->status }}"  {{ $data->status == 1 ? 'checked' : '' }}/>
-                  </div>
+                    <div class="hd_show_con">
+                        Show in Home
+                        <input type="checkbox" name="status" value="{{ $data->status }}"
+                            {{ $data->status == 1 ? 'checked' : '' }} />
+                    </div>
                 </div>
 
                 <div class="sid_bvijay mb10">
@@ -236,7 +217,8 @@
                     <div class="hd_show_con">
                         <div id="xedit" class="bs-component">
                             <label class="field text">
-                                <input type="text" name="thumbnail_alt" class="form-control" placeholder="" value="{{ $data->thumbnail_alt }}" />
+                                <input type="text" name="thumbnail_alt" class="form-control" placeholder=""
+                                    value="{{ $data->thumbnail_alt }}" />
                             </label>
                         </div>
                     </div>
@@ -261,7 +243,8 @@
                     <div class="hd_show_con">
                         <div id="xedit" class="bs-component">
                             <label class="field text">
-                                <input type="text" name="banner_alt" class="form-control" placeholder=""  value="{{ $data->banner_alt }}"/>
+                                <input type="text" name="banner_alt" class="form-control" placeholder=""
+                                    value="{{ $data->banner_alt }}" />
                             </label>
                         </div>
                     </div>
