@@ -32,6 +32,7 @@
                                 <ul class="nav nav-pills ml-auto p4 mb10 mt10 nav-custom">
                                     <li class="nav-item active"><a class="nav-link active" href="#tab_1"
                                             data-toggle="tab">GENERAL</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="#tab_6" data-toggle="tab"> BANNER </a></li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_9" data-toggle="tab"> ITINERARY </a>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_10" data-toggle="tab"> PACKAGES </a>
@@ -41,13 +42,12 @@
                                     <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab"> HIGHTLIGHTS </a></li>
                                     {{-- <li class="nav-item"><a class="nav-link" href="#tab_4" data-toggle="tab"> COST
                                             EXCLUDES</a></li> --}}
-                                    <li class="nav-item"><a class="nav-link" href="#tab_5" data-toggle="tab"> PHOTOS </a>
+                                    <li class="nav-item"><a class="nav-link" href="#tab_5" data-toggle="tab"> TRAVEL PHOTOS </a>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_7" data-toggle="tab"> DATES </a>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_8" data-toggle="tab"> FAQ's </a>
                                     </li>
-                                    <!--<li class="nav-item"><a class="nav-link" href="#tab_6" data-toggle="tab"> BANNER </a></li>   -->
                                 </ul>
                             </div><!-- /.card-header -->
                             <div class="card-body">

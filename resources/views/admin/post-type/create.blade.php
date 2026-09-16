@@ -35,7 +35,8 @@
                         <label for="inputStandard" class="col-lg-3 control-label"> Associated Title</label>
                         <div class="col-lg-8">
                             <div class="bs-component">
-                                <input type="text" id="uri" name="associated_title" class="form-control" placeholder="" />
+                                <input type="text" id="uri" name="associated_title" class="form-control"
+                                    placeholder="" />
                             </div>
                         </div>
                     </div>
@@ -80,24 +81,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="">Meta Keywords </label>
-                        <div class="col-lg-8">
-                            <div class="bs-component">
-                                <input class="form-control " name="meta_keyword"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="">Meta Description </label>
-                        <div class="col-lg-8">
-                            <div class="bs-component">
-                                <textarea class="form-control" name="meta_description" rows="3"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
+            </div>
+
+            <div class="panel">
+                @include('admin.seo.seo-form', [
+                    'seo' => $data->seo ?? null
+                ])
             </div>
         </div>
 
@@ -125,8 +115,8 @@
                 <div class="sid_bvijay mb10">
                     <label class="field select">
                         <select id="template" name="template">
-                            @foreach($templates as $key => $template)
-                                <option value="{{$key}}">{{ ucfirst($template) }}</option>
+                            @foreach ($templates as $key => $template)
+                                <option value="{{ $key }}">{{ ucfirst($template) }}</option>
                             @endforeach
                         </select>
                         <i class="arrow"></i>
@@ -148,9 +138,9 @@
 @endsection
 @section('scripts')
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
             var post_type;
-            $('#post_type').on('keyup', function () {
+            $('#post_type').on('keyup', function() {
                 post_type = $('#post_type').val();
                 post_type = post_type.replace(/[^a-zA-Z0-9 ]+/g, "");
                 post_type = post_type.replace(/\s+/g, "-");

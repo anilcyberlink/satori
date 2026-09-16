@@ -92,31 +92,11 @@
             <!--    </div>-->
             <!--</div>-->
 
+
             <div class="panel">
-                <div class="panel-heading">
-                    <span class="panel-title"> Map and Meta data </span>
-                </div>
-                <div class="panel-body">
-
-                    <div class="form-group">
-                        <label for="inputStandard" class="col-lg-2 control-label">Meta Key</label>
-                        <div class="col-lg-9">
-                            <div class="bs-component">
-                                <input type="text" id="" name="meta_keyword" class="form-control"
-                                    placeholder="" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-lg-2 control-label" for="textArea3"> Meta Description </label>
-                        <div class="col-lg-9">
-                            <div class="bs-component">
-                                <textarea class="form-control" id="textArea3" name="meta_description" rows="3"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @include('admin.seo.seo-form', [
+                    'seo' => $data->seo ?? null
+                ])
             </div>
         </div>
 
@@ -170,10 +150,10 @@
                 </div>
 
                 <div class="sid_bvijay mb10">
-                  <div class="hd_show_con">
-                   Show in Home
-                    <input type="checkbox" name="status" value="1" />
-                  </div>
+                    <div class="hd_show_con">
+                        Show in Home
+                        <input type="checkbox" name="status" value="1" />
+                    </div>
                 </div>
 
                 <div class="sid_bvijay mb10">

@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Travels\PackageDetail;
 use App\Models\Travels\PackageService;
 use App\Models\Travels\PastTripModel;
-use App\Models\SeoMeta;
+use App\Models\Traits\HasSeo;
 
 class TripModel extends Model
 {
+    use HasSeo;
     protected $table = 'cl_trip_details';
     protected $fillable = [
         'trip_title',
@@ -141,8 +142,4 @@ class TripModel extends Model
         return $this->hasMany(PastTripModel::class, 'trip_id', 'id');
     }
 
-    public function seo()
-    {
-        return $this->morphOne(SeoMeta::class,'seoable');
-    }
 }

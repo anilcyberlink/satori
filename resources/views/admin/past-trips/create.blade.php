@@ -43,6 +43,12 @@
 
                 </div>
             </div>
+
+            <div class="panel">
+                @include('admin.seo.seo-form', [
+                    'seo' => $data->seo ?? null
+                ])
+            </div>
         </div>
 
         <div class="col-md-3">

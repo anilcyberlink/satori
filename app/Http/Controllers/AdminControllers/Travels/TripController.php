@@ -30,7 +30,6 @@ use App\Services\SeoService;
 
 class TripController extends Controller
 {
-
     protected $seoService;
     public function __construct(SeoService $seoService)
     {
@@ -216,20 +215,12 @@ class TripController extends Controller
             /*****************************/
 
             /******Upload Trip Altitude Chart******/
-            $chart_file = $request->file('trip_chart');
             $chart_file_name = '';
-            if ($request->hasfile('trip_chart')) {
-                $chart_thumbnail = $request->file('trip_chart')->getClientOriginalName();
-                $chart_extension = $request->file('trip_chart')->getClientOriginalExtension();
-                $chart_thumbnail = explode('.', $chart_thumbnail);
-                $chart_file_name = time() . '_' . Str::slug($chart_thumbnail[0]) . '-' . Str::random(5) . '.' . $chart_extension;
-
-                $chart_destinationPath = public_path('uploads/original');
-
-                $chart_thumbnail_picture = Image::make($chart_file->getRealPath());
-                $chart_width = Image::make($chart_file->getRealPath())->width();
-                $chart_height = Image::make($chart_file->getRealPath())->height();
-                $chart_thumbnail_picture->save($chart_destinationPath . '/' . $chart_file_name);
+            if ($request->hasFile('trip_chart')) {
+                $chart_file = $request->file('trip_chart');
+                $chart_name = pathinfo($chart_file->getClientOriginalName(), PATHINFO_FILENAME);
+                $chart_file_name = time() . '_' . Str::slug($chart_name) . '-' . Str::random(5) . '.webp';
+                Image::make($chart_file->getRealPath())->encode('webp', 85)->save(public_path('uploads/original/' . $chart_file_name));
             }
             /*****************************/
 
@@ -355,22 +346,26 @@ class TripController extends Controller
                 $sn_banner_count = count($request->banner_ordering);
 
                 foreach ($banner_keys as $key => $value) {
-                    if ($key + 1 >= $sn_banner_count) {
-                        continue;
-                    }
+                    if ($key + 1 >= $sn_banner_count) continue;
+
                     $bannerData = new TripBanner();
                     $bannerData->trip_detail_id = $last_id;
                     $banner_file = $request->file('banner_banner');
-                    // dd($banner_file);
+
                     if (isset($banner_file[$value])) {
-                        $banner = time() . '-' . Str::random(5) . $banner_file[$value]->getClientOriginalName();
-                        $destinationPath = public_path('uploads/original');
-                        $banner_file[$value]->move($destinationPath, $banner);
+                        $image = $banner_file[$value];
+                        $banner_name = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                        $banner = time() . '-' . Str::slug($banner_name) . '-' . Str::random(5) . '.webp';
+
+                        Image::make($image->getRealPath())->encode('webp', 85)->save(public_path('uploads/original/' . $banner));
+
                         $bannerData->banner = $banner;
                     }
+
                     $bannerData->ordering = $request->banner_ordering[$key];
                     $bannerData->title = $request->banner_title[$key];
                     $bannerData->save();
+
                     $sn_banner++;
                 }
             }
@@ -844,26 +839,21 @@ class TripController extends Controller
                 $data->save();
             }
             /************Trip Chart*************/
-            if ($request->hasfile('trip_chart')) {
+            if ($request->hasFile('trip_chart')) {
                 $data = TripModel::find($id);
-                if ($data->trip_chart) {
-                    if (file_exists(env('PUBLIC_PATH') . 'uploads/original/' . $data->trip_chart)) {
-                        unlink(env('PUBLIC_PATH') . 'uploads/original/' . $data->trip_chart);
-                    }
-                }
-                $trip_chart = $request->file('trip_chart')->getClientOriginalName();
-                $extension = $request->file('trip_chart')->getClientOriginalExtension();
-                $trip_chart = explode('.', $trip_chart);
-                $trip_chart_name = Str::slug($trip_chart[0]) . '-' . Str::random(5) . '.' . $extension;
-                $destinationPath = public_path('uploads/original');
-                $trip_chart_picture = Image::make($tripchart_file->getRealPath());
-                $width = Image::make($tripchart_file->getRealPath())->width();
-                $height = Image::make($tripchart_file->getRealPath())->height();
 
-                $trip_chart_picture->save($destinationPath . '/' . $trip_chart_name);
+                if ($data->trip_chart && file_exists(public_path('uploads/original/' . $data->trip_chart))) unlink(public_path('uploads/original/' . $data->trip_chart));
+
+                $image = $request->file('trip_chart');
+                $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $trip_chart_name = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
+
+                Image::make($image->getRealPath())->encode('webp', 85)->save(public_path('uploads/original/' . $trip_chart_name));
+
                 $data->trip_chart = $trip_chart_name;
                 $data->save();
             }
+
             $data->trip_title = $request->trip_title;
             $data->sub_title = $request->sub_title;
             $data->duration = $request->duration;
@@ -1066,59 +1056,60 @@ class TripController extends Controller
                 }
             }
 
-
             if (isset($request->banner_id)) {
                 $banner_keys = array_keys($request->banner_id);
                 $sn_banner = 1;
                 $sn_banner_count = count($request->banner_id);
 
                 foreach ($banner_keys as $key => $value) {
-                    if ($key + 1 >= $sn_banner_count) {
-                        continue;
-                    }
-                    if ($request->banner_id[$value] == "") {
+                    if ($key + 1 >= $sn_banner_count) continue;
 
+                    $banner_file = $request->file('banner_banner');
+
+                    if ($request->banner_id[$value] == "") {
                         $bannerData = new TripBanner();
                         $bannerData->trip_detail_id = $data->id;
-                        $banner_file = $request->file('banner_banner');
+
                         if (isset($banner_file[$value])) {
-                            $banner = time() . '-' . Str::random(5) . $banner_file[$value]->getClientOriginalName();
-                            $destinationPath = public_path('uploads/original');
-                            $banner_file[$value]->move($destinationPath, $banner);
+                            $image = $banner_file[$value];
+                            $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                            $banner = time() . '-' . Str::slug($originalName) . '-' . Str::random(5) . '.webp';
+
+                            Image::make($image->getRealPath())->encode('webp', 85)->save(public_path('uploads/original/' . $banner));
+
                             $bannerData->banner = $banner;
                         }
-                        // dd($banner);
+
                         $bannerData->ordering = $request->banner_ordering[$key];
                         $bannerData->title = $request->banner_title[$key];
-
                         $bannerData->save();
-                    } else if ($request->banner_id[$value] !== null && $request->banner_id[$value] !== "") {
+
+                    } elseif ($request->banner_id[$value] !== null && $request->banner_id[$value] !== "") {
                         $banner_id = $request->banner_id[$value];
                         $bannerData = TripBanner::find($banner_id);
 
-                        $banner_file = $request->file('banner_banner');
                         if (isset($banner_file[$key])) {
+                            if ($bannerData->banner && file_exists(public_path('uploads/original/' . $bannerData->banner))) unlink(public_path('uploads/original/' . $bannerData->banner));
 
-                            if ($bannerData->banner) {
-                                if (file_exists(env('PUBLIC_PATH') . 'uploads/original/' . $bannerData->banner)) {
-                                    unlink(env('PUBLIC_PATH') . 'uploads/original/' . $bannerData->banner);
-                                }
-                            }
-                            $banner = time() . '-' . Str::random(5) . $banner_file[$key]->getClientOriginalName();
-                            $destinationPath = public_path('uploads/original');
-                            $banner_file[$key]->move($destinationPath, $banner);
+                            $image = $banner_file[$key];
+                            $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                            $banner = time() . '-' . Str::slug($originalName) . '-' . Str::random(5) . '.webp';
+
+                            Image::make($image->getRealPath())->encode('webp', 85)->save(public_path('uploads/original/' . $banner));
+
                             $bannerData->banner = $banner;
                         }
+
                         $bannerData->trip_detail_id = $data->id;
                         $bannerData->ordering = $request->banner_ordering[$key];
                         $bannerData->title = $request->banner_title[$key];
-
                         $bannerData->save();
                     }
 
                     $sn_banner++;
                 }
             }
+
             // Update cost includes
             if (isset($request->testimonial_ordering)) {
                 $costincludes_keys = array_keys($request->testimonial_ordering);
@@ -1176,14 +1167,6 @@ class TripController extends Controller
                 }
             }
 
-            // For Package Options
-
-            /*
-            |--------------------------------------------------------------------------
-            | UPDATE PACKAGE SERVICES
-            |--------------------------------------------------------------------------
-            */
-
             if (
                 $request->has('package_service') &&
                 is_array($request->package_service)
@@ -1209,23 +1192,7 @@ class TripController extends Controller
                 }
             }
 
-
-
-            /*
-                |--------------------------------------------------------------------------
-                | UPDATE PACKAGE DETAILS
-                |--------------------------------------------------------------------------
-                |
-                | Price Includes / Price Excludes
-                |
-                | Delete all existing package details for this trip and recreate
-                | them from the submitted form.
-                |
-            */
-
             PackageDetail::where('trip_detail_id', $data->id)->delete();
-
-
             if (
                 $request->has('package_details') &&
                 is_array($request->package_details)
@@ -1337,7 +1304,6 @@ class TripController extends Controller
                     }
                 }
             }
-
 
 
             // For Multi Itinerary

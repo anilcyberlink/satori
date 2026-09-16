@@ -5,8 +5,7 @@
 @endsection
 @section('content')
 
-    <form class="form-horizontal" role="form" action="{{ url('admin/' . Request::segment(2) . '/' . $data->id) }}"
-        method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" role="form" action="{{ url('admin/' . Request::segment(2) . '/' . $data->id) }}" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
         <input type="hidden" name="_method" value="PUT" />
         <input type="hidden" name="post_type" value="{{ Request::segment(2) }}" />
@@ -24,13 +23,14 @@
                             <div class="bs-component">
                                 <input type="text" id="post_title" name="post_title" class="form-control"
                                     value="{{ $data->post_title }}" />
-                                <input type="hidden" id="uri" name="uri" class="form-control" value="{{ $data->uri }}" />
+                                <input type="hidden" id="uri" name="uri" class="form-control"
+                                    value="{{ $data->uri }}" />
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        @if(Request::segment(2) == 'blogs')
+                        @if (Request::segment(2) == 'blogs')
                             <label for="inputStandard" class="col-lg-2 control-label">Date</label>
                         @else
                             <label for="inputStandard" class="col-lg-2 control-label">Sub Title</label>
@@ -42,9 +42,9 @@
                             </div>
                         </div>
                     </div>
-                    @if(Request::segment(2) == 'blogs')
+                    @if (Request::segment(2) == 'blogs')
                         <div class="form-group">
-                                <label for="inputStandard" class="col-lg-2 control-label">Author </label>
+                            <label for="inputStandard" class="col-lg-2 control-label">Author </label>
                             <div class="col-lg-9">
                                 <div class="bs-component">
                                     <input type="text" id="inputStandard" name="author" class="form-control"
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                     @endif
-                    @if($category->count() > 0)
+                    @if ($category->count() > 0)
                         <div class="form-group">
                             <label for="inputSelect" class="col-lg-2 control-label"> Category </label>
                             <div class="col-lg-9">
@@ -63,7 +63,8 @@
                                         <option value="0"> Select Category </option>
                                         @if ($category)
                                             @foreach ($category as $row)
-                                                <option value="{{ $row->id }}" {{ $row->id == $data->post_category ? 'selected' : '' }}>
+                                                <option value="{{ $row->id }}"
+                                                    {{ $row->id == $data->post_category ? 'selected' : '' }}>
                                                     {{ $row->category }}</option>
                                             @endforeach
                                         @endif
@@ -82,12 +83,13 @@
                             <div class="bs-component">
                                 <select name="post_parent" class="form-control">
                                     <option value="0"> Choose Parent</option>
-                                    @foreach($parent_post as $row)
-                                        @if($row->id == $data->id)
+                                    @foreach ($parent_post as $row)
+                                        @if ($row->id == $data->id)
                                             @continue
                                         @endif
-                                        <option value="{{$row->id}}" {{ ($row->id == $data->post_parent) ? 'selected' : '' }}>
-                                            {{$row->post_title}}</option>
+                                        <option value="{{ $row->id }}"
+                                            {{ $row->id == $data->post_parent ? 'selected' : '' }}>
+                                            {{ $row->post_title }}</option>
                                     @endforeach
                                 </select>
                                 <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;
@@ -100,8 +102,7 @@
                         <label class="col-lg-2 control-label" for="textArea3"> Brief </label>
                         <div class="col-lg-9">
                             <div class="bs-component">
-                                <textarea class="form-control" id="textArea3" name="post_excerpt"
-                                    rows="5"> {{ $data->post_excerpt }}</textarea>
+                                <textarea class="form-control" id="textArea3" name="post_excerpt" rows="5"> {{ $data->post_excerpt }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -110,8 +111,7 @@
                         <label class="col-lg-2 control-label" for="textArea2">Content</label>
                         <div class="col-lg-10">
                             <div class="bs-component">
-                                <textarea class="form-control my-editor" id="editor2" name="post_content"
-                                    rows="12"> {{ $data->post_content }}</textarea>
+                                <textarea class="form-control my-editor" id="editor2" name="post_content" rows="12"> {{ $data->post_content }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -130,12 +130,17 @@
                         <label class="col-lg-2 control-label" for="textArea3"> Meta Description </label>
                         <div class="col-lg-9">
                             <div class="bs-component">
-                                <textarea class="form-control" id="textArea3" name="meta_description"
-                                    rows="3">{{ $data->meta_description }}</textarea>
+                                <textarea class="form-control" id="textArea3" name="meta_description" rows="3">{{ $data->meta_description }}</textarea>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="panel">
+                @include('admin.seo.seo-form', [
+                    'seo' => $data->seo ?? null,
+                ])
             </div>
         </div>
 
@@ -144,7 +149,8 @@
                 <div class="sid_bvijay mb10">
                     <div class="hd_show_con">
                         <div class="publice_edi">
-                            Status: <a href="avoid:javascript;" data-toggle="collapse" data-target="#publish_1">Active</a>
+                            Status: <a href="avoid:javascript;" data-toggle="collapse"
+                                data-target="#publish_1">Active</a>
                         </div>
                     </div>
                     <footer>
@@ -245,7 +251,7 @@
 
 @section('libraries')
     <script type="text/javascript">
-        $('.imagedelete').on('click', function (e) {
+        $('.imagedelete').on('click', function(e) {
             e.preventDefault();
             if (!confirm('Are you sure to delete?')) return false;
             var csrf = $('meta[name="csrf-token"]').attr('content');
@@ -254,17 +260,19 @@
             $.ajax({
                 type: 'delete',
                 url: "{{ url('delete_post_thumb') . '/' }}" + id,
-                data: { _token: csrf },
-                success: function (data) {
+                data: {
+                    _token: csrf
+                },
+                success: function(data) {
                     $('span.id' + id).remove();
                 },
-                error: function (data) {
+                error: function(data) {
                     alert(data + 'Error!');
                 }
             });
         });
 
-        $('.bannerdelete').on('click', function (e) {
+        $('.bannerdelete').on('click', function(e) {
             e.preventDefault();
             if (!confirm('Are you sure to delete?')) return false;
             var csrf = $('meta[name="csrf-token"]').attr('content');
@@ -273,18 +281,20 @@
             $.ajax({
                 type: 'delete',
                 url: "{{ url('delete_post_banner') . '/' }}" + id,
-                data: { _token: csrf },
-                success: function (data) {
+                data: {
+                    _token: csrf
+                },
+                success: function(data) {
                     $('span.banner' + id).remove();
                 },
-                error: function (data) {
+                error: function(data) {
                     alert(data + 'Error!');
                 }
             });
         });
 
-        $(document).ready(function () {
-            $('#post_title').on('keyup', function () {
+        $(document).ready(function() {
+            $('#post_title').on('keyup', function() {
                 var post_title;
                 post_title = $('#post_title').val();
                 post_title = post_title.replace(/[^a-zA-Z0-9 ]+/g, "");
@@ -294,10 +304,9 @@
         });
 
         // Go back link
-        $('.backlink').click(function () {
+        $('.backlink').click(function() {
             var url = '<?= url()->previous() ?>';
             window.location = url;
         });
-
     </script>
 @endsection

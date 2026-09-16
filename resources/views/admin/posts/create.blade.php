@@ -26,14 +26,15 @@
                         <label for="inputStandard" class="col-lg-2 control-label">Title</label>
                         <div class="col-lg-9">
                             <div class="bs-component">
-                                <input type="text" id="post_title" name="post_title" class="form-control" placeholder="" />
+                                <input type="text" id="post_title" name="post_title" class="form-control"
+                                    placeholder="" />
                                 <input type="hidden" id="uri" name="uri" class="form-control" placeholder="" />
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        @if(Request::segment(2) == 'blogs')
+                        @if (Request::segment(2) == 'blogs')
                             <label for="inputStandard" class="col-lg-2 control-label">Date</label>
                         @else
                             <label for="inputStandard" class="col-lg-2 control-label">Sub Title</label>
@@ -44,17 +45,18 @@
                             </div>
                         </div>
                     </div>
-                    @if(Request::segment(2) == 'blogs')
+                    @if (Request::segment(2) == 'blogs')
                         <div class="form-group">
-                                <label for="inputStandard" class="col-lg-2 control-label">Author</label>
+                            <label for="inputStandard" class="col-lg-2 control-label">Author</label>
                             <div class="col-lg-9">
                                 <div class="bs-component">
-                                    <input type="text" id="" name="author" class="form-control" placeholder="" />
+                                    <input type="text" id="" name="author" class="form-control"
+                                        placeholder="" />
                                 </div>
                             </div>
                         </div>
                     @endif
-                    @if($category->count() > 0)
+                    @if ($category->count() > 0)
                         <div class="form-group">
                             <label for="inputSelect" class="col-lg-2 control-label"> Category </label>
                             <div class="col-lg-9">
@@ -72,16 +74,16 @@
                         </div>
                     @endif
 
-                    @if(Request::segment(2) != 'blogs')
+                    @if (Request::segment(2) != 'blogs')
                         <div class="form-group">
                             <label for="inputSelect" class="col-lg-2 control-label">Select Parent</label>
                             <div class="col-lg-9">
                                 <div class="bs-component">
                                     <select name="post_parent" class="form-control">
                                         <option value="0"> Choose Parent </option>
-                                        @if($parent_post)
-                                            @foreach($parent_post as $row)
-                                                <option value="{{$row->id}}">{{$row->post_title}}</option>
+                                        @if ($parent_post)
+                                            @foreach ($parent_post as $row)
+                                                <option value="{{ $row->id }}">{{ $row->post_title }}</option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -114,7 +116,8 @@
                         <label for="inputStandard" class="col-lg-2 control-label">Meta Key</label>
                         <div class="col-lg-9">
                             <div class="bs-component">
-                                <input type="text" id="" name="meta_keyword" class="form-control" placeholder="" />
+                                <input type="text" id="" name="meta_keyword" class="form-control"
+                                    placeholder="" />
                             </div>
                         </div>
                     </div>
@@ -130,6 +133,12 @@
 
                 </div>
             </div>
+
+            <div class="panel">
+                @include('admin.seo.seo-form', [
+                    'seo' => $data->seo ?? null
+                ])
+            </div>
         </div>
 
         <div class="col-md-3">
@@ -137,7 +146,8 @@
                 <div class="sid_bvijay mb10">
                     <div class="hd_show_con">
                         <div class="publice_edi">
-                            Status: <a href="avoid:javascript;" data-toggle="collapse" data-target="#publish_1">Active</a>
+                            Status: <a href="avoid:javascript;" data-toggle="collapse"
+                                data-target="#publish_1">Active</a>
                         </div>
                     </div>
                     <footer>
@@ -173,8 +183,8 @@
 
                 <div class="sid_bvijay mb10">
                     <label class="field text">
-                        <input type="number" id="" name="post_order" class="form-control" placeholder="Post Order"
-                            value="{{ $post_order }}" />
+                        <input type="number" id="" name="post_order" class="form-control"
+                            placeholder="Post Order" value="{{ $post_order }}" />
                     </label>
                 </div>
 
@@ -221,8 +231,8 @@
 @endsection
 @section('scripts')
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('#post_title').on('keyup', function () {
+        $(document).ready(function() {
+            $('#post_title').on('keyup', function() {
                 var post_title;
                 post_title = $('#post_title').val();
                 post_title = post_title.replace(/[^a-zA-Z0-9 ]+/g, "");
@@ -232,10 +242,9 @@
         });
 
         // Go back link
-        $('.backlink').click(function () {
+        $('.backlink').click(function() {
             var url = '<?= url()->previous() ?>';
             window.location = url;
         });
-
     </script>
 @endsection

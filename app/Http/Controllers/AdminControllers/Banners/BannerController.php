@@ -1,16 +1,16 @@
 <?php
+
 namespace App\Http\Controllers\AdminControllers\Banners;
 
 use App\Http\Controllers\Controller;
 use App\Models\Banners\BannerModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-// use Illuminate\Support\Facades\File;
 use Image;
 
 class BannerController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -50,13 +50,10 @@ class BannerController extends Controller
 
         if ($request->hasFile('picture')) {
             $banner = $request->file('picture')->getClientOriginalName();
-            $extension = $request->file('picture')->getClientOriginalExtension();
             $banner = explode('.', $banner);
             $banner_name = Str::slug($banner[0]) . '-' . Str::random(5) . '.webp';
-            // $banner_name = Str::slug($banner[0]) . '-' . Str::random(5) . '.' . $extension;
             $destinationPath = public_path('uploads/banners');
             $banner_picture = Image::make($file->getRealPath());
-            // $banner_picture->save($destinationPath . '/' . $banner_name);
             $banner_picture->encode('webp', 85)->save($destinationPath . '/' . $banner_name);
             $req['picture'] = $banner_name;
         }
@@ -66,9 +63,9 @@ class BannerController extends Controller
             $destinationPath = public_path('uploads/banners');
             $user_img_name->move($destinationPath, $user_name);
             $req['video'] = $user_name;
-
         }
         $data = BannerModel::create($req);
+
         if ($data) {
             return redirect()->back()->with('success', 'Successfully added.');
         } else {
@@ -126,13 +123,10 @@ class BannerController extends Controller
 
             // Upload new file
             $banner = $request->file('picture')->getClientOriginalName();
-            $extension = $request->file('picture')->getClientOriginalExtension();
             $banner = explode('.', $banner);
-            // $banner_name = Str::slug($banner[0]) . '-' . Str::random(5) . '.' . $extension;
             $banner_name = Str::slug($banner[0]) . '-' . Str::random(5) . '.webp';
             $destinationPath = public_path('uploads/banners');
             $banner_picture = Image::make($file->getRealPath());
-            // $banner_picture->save($destinationPath . '/' . $banner_name);
             $banner_picture->encode('webp', 85)->save($destinationPath . '/' . $banner_name);
             $data->picture = $banner_name;
         }
@@ -146,9 +140,7 @@ class BannerController extends Controller
             $destinationPath = public_path('uploads/banners');
             $user_img_name->move($destinationPath, $user_name);
 
-
             $data->video = $user_name;
-
         }
         $data->title = $request->title;
         $data->picture_alt = $request->picture_alt;
@@ -156,9 +148,8 @@ class BannerController extends Controller
         $data->link = $request->link;
         $data->youtube_link = $request->youtube_link;
         $data->save();
-        if ($data->save()) {
-            return redirect()->back()->with('success', 'Update Successful.');
-        }
+
+        return redirect()->back()->with('success', 'Update Successful.');
     }
 
     /**
@@ -169,8 +160,6 @@ class BannerController extends Controller
      */
     public function destroy(BannerModel $bannerModel, $id)
     {
-
-
         $data = BannerModel::find($id);
         if ($data->picture) {
             if (file_exists(env('PUBLIC_PATH') . 'uploads/banners/' . $data->picture)) {
@@ -184,8 +173,6 @@ class BannerController extends Controller
         }
 
         $data->delete();
-
-
     }
     public function isdefault(Request $request)
     {
