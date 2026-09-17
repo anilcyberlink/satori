@@ -122,20 +122,14 @@ class PostController extends Controller
         $request->validate([
             'post_title' => 'required',
             'uri' => 'required|unique:cl_posts',
-            // 'uri' => 'required',
         ]);
-
-        $banner_width = env('BANNER_WIDTH');
-        $banner_height = env('BANNER_HEIGHT');
 
         $medium_width = env('MEDIUM_WIDTH');
         $medium_height = env('MEDIUM_HEIGHT');
 
         $data = $request->all();
         $file = $request->file('page_thumbnail');
-        $banner_file = $request->file('page_banner');
         $page_thumbnail = "";
-        $page_banner = "";
 
 
         if ($request->hasFile('page_banner')) {
@@ -328,7 +322,7 @@ class PostController extends Controller
         $isChecked = $request->has('show_in_home');
         $data->show_in_home = ($isChecked) ? '1' : '0';
         $data['uri'] = Str::slug($request->uri);
-        
+
         if ($data->save()) {
             // SEO
             $this->seoService->save($data,$request);

@@ -85,6 +85,17 @@ class TeamCategoryController extends Controller
         //
     }
 
+    public function updateStatus(Request $request)
+    {
+        $data = TeamCategory::findOrFail($request->id);
+        $data->status = $request->status;
+        $data->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status changed successfully.'
+        ]);
+    }
     /**
      * Show the form for editing the specified resource.
      *

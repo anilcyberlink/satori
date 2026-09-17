@@ -310,14 +310,6 @@ function tripcount($activity_id)
     return $data;
 }
 
-function season($id)
-{
-    $data = SeasonModel::where('id', $id)->first();
-    if ($data) {
-        return $data->season;
-    }
-    return false;
-}
 
 
 function dateformat($date)
@@ -501,7 +493,7 @@ function post_parent_by_postId($id)
     return false;
 }
 function is_empty_teamcategory($id){
-    $data = TeamModel::where(['category'=>$id])->count();
+    $data = TeamModel::where(['team_category'=>$id])->count();
     if( $data > 0){
       return true;
     }
