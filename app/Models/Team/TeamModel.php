@@ -11,23 +11,19 @@ class TeamModel extends Model
     protected $table = 'cl_team';
     protected $fillable = [
         'name',
+        'uri',
         'position',
-        'category',
-        'fb_url',
-        'instagram_url',
-        'twitter_url',
-        'linkedin_url',
+        'team_category',
         'phone',
         'email',
-        'content',
+        'description',
         'brief',
         'status',
         'ordering',
-        'banner',
         'thumbnail',
-        'uri',
-        'team_key',
-        'show_in_home'
+        'show_in_home',
+        'instagram_url',
+        'twitter_url'
     ];
 
     public function certificates()

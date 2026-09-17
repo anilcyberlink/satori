@@ -8,10 +8,17 @@ use Illuminate\Http\Request;
 use App\Models\Team\TeamCategory;
 use App\Models\Team\TeamModel;
 use App\Models\Team\Certificates;
-use Image;
+use Intervention\Image\Facades\Image;
+use App\Services\SeoService;
 
 class TeamController extends Controller
 {
+    protected $seoService;
+    public function __construct(SeoService $seoService)
+    {
+        $this->seoService = $seoService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,11 +26,10 @@ class TeamController extends Controller
      */
     public function index()
     {
-        $bod = TeamModel::where('category', '1')->orderBy('id', 'desc')->get();
-        $int = TeamModel::where('category', '2')->orderBy('id', 'desc')->get();
-        $office = TeamModel::where('category', '3')->orderBy('id', 'desc')->get();
-        $field = TeamModel::where('category', '4')->orderBy('id', 'desc')->get();
-        return view('admin.team.index', compact('bod', 'int', 'office', 'field'));
+        $categories = TeamCategory::where('status','1')->orderBy('ordering')->get();
+        $teams = TeamModel::orderBy('ordering')->orderBy('id', 'desc')->get()->groupBy('category');
+
+        return view('admin.team.index', compact('categories', 'teams'));
     }
 
     /**
@@ -33,11 +39,11 @@ class TeamController extends Controller
      */
     public function create()
     {
-        $certificates = Certificates::all();
-        $category = TeamCategory::where('team_parent', '0')->get();
-        $ordering = TeamModel::max('ordering');
-        $ordering = $ordering + 1;
-        return view('admin.team.create', compact('category', 'ordering', 'certificates'));
+        $category = TeamCategory::get();
+        $order = TeamModel::max('ordering');
+        $ordering = $order + 1;
+
+        return view('admin.team.create', compact('category', 'ordering'));
     }
 
     /**
@@ -46,9 +52,74 @@ class TeamController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
+        if (!$request->ajax()) {
+            abort(404);
+        }
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'uri' => 'required',
+            'position' => 'nullable|string|max:255',
+            'category' => 'required|exists:cl_team_categories,id',
+            'phone' => 'nullable|string|max:50',
+            'email' => 'nullable|email|max:255',
+            'twitter_url' => 'nullable|url|max:500',
+            'instagram_url' => 'nullable|url|max:500',
+            'content' => 'nullable|string',
+            'ordering' => 'nullable|integer|min:1',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:10000',
+        ]);
+        $data = $request->all();
 
+        $baseUri = $request->uri;
+        $uri = $baseUri;
+        $counter = 1;
+        while (TeamModel::where('uri', $uri)->exists()) {
+            $uri = $baseUri . $counter;
+            $counter++;
+        }
+        $data['uri'] = $uri;
+
+        $thumbnail_name = '';
+        if ($request->hasFile('thumbnail')) {
+            $thumb_file = $request->file('thumbnail');
+            $originalName = pathinfo($thumb_file->getClientOriginalName(), PATHINFO_FILENAME);
+            $thumbnail_name = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
+            $destinationPath = public_path('uploads/team');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            $thumbnail_picture = Image::make($thumb_file->getRealPath());
+            $thumbnail_picture->encode('webp', 85);
+            $thumbnail_picture->save($destinationPath . '/' . $thumbnail_name);
+        }
+
+        $data['thumbnail'] = $thumbnail_name;
+        $data['ordering'] = $request->ordering ?: 1;
+        $data['status'] = 1;
+        $data['show_in_home'] = $request->has('show_in_home') ? 1 : 0;
+
+        $result = TeamModel::create($data);
+
+        // SEO
+        $this->seoService->save($result,$request);
+
+        if ($result) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Team member added successfully.'
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'Unable to add team member.'
+        ], 500);
+    }
+
+    public function store_old(Request $request)
+    {
         if ($request->ajax()) {
             // dd($request->all());
             $request->validate([
@@ -57,9 +128,6 @@ class TeamController extends Controller
 
             $banner_width = env('BANNER_WIDTH');
             $banner_height = env('BANNER_HEIGHT');
-
-            // $thumbnail_width = env('BANNER_WIDTH');
-            // $thumbnail_height = env('BANNER_HEIGHT');
 
             $data = $request->all();
 
@@ -70,13 +138,11 @@ class TeamController extends Controller
                 $banner = $request->file('banner')->getClientOriginalName();
                 $extension = $request->file('banner')->getClientOriginalExtension();
                 $banner = explode('.', $banner);
-                $banner_name = Str::slug($banner[0]) . '-' . Str::random(40) . '.' . $extension;
+                $banner_name = Str::slug($banner[0]) . '-' . Str::random(5) . '.' . $extension;
 
                 $destinationPath = public_path('uploads/team');
 
                 $banner_picture = Image::make($file->getRealPath());
-                //$width = Image::make($file->getRealPath())->width();
-                //$height = Image::make($file->getRealPath())->height();
                 $banner_picture->resize($banner_width, $banner_height, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save($destinationPath . '/' . $banner_name);
@@ -89,7 +155,7 @@ class TeamController extends Controller
                 $thumbnail = $request->file('thumbnail')->getClientOriginalName();
                 $extension = $request->file('thumbnail')->getClientOriginalExtension();
                 $thumbnail = explode('.', $thumbnail);
-                $thumbnail_name = Str::slug($thumbnail[0]) . '-' . Str::random(40) . '.' . $extension;
+                $thumbnail_name = Str::slug($thumbnail[0]) . '-' . Str::random(5) . '.' . $extension;
 
                 $destinationPath = public_path('uploads/team');
 
@@ -118,10 +184,11 @@ class TeamController extends Controller
             $data['published'] = ($isChecked) ? '1' : '0';
             $data['is_draft'] = $is_draft;
             $result = TeamModel::create($data);
+
+            // SEO
+            $this->seoService->save($result, $request);
+
             $last_id = $result->id;
-
-
-
 
             // Insert into Certificates
             if (isset($request->certificates_ordering)) {
@@ -174,7 +241,7 @@ class TeamController extends Controller
      */
     public function edit($id)
     {
-        $data = TeamModel::find($id);
+        $data = TeamModel::with('seo')->find($id);
         $certificates = $data->certificates()->get();
         $category = TeamCategory::where('team_parent', '0')->get();
         return view('admin.team.edit', compact('data', 'certificates', 'category'));
@@ -275,9 +342,6 @@ class TeamController extends Controller
             $data->is_draft = $is_draft;
             $_data = TeamModel::find($id);
 
-
-
-
             // Update Certificates
 
             if (isset($request->certificates_id)) {
@@ -333,6 +397,9 @@ class TeamController extends Controller
             }
 
             $data->save();
+            // SEO
+            $this->seoService->save($data, $request);
+
             return response()->json(['status' => 'success', 'message' => 'Member Updated Successful!']);
         }
         return false;
