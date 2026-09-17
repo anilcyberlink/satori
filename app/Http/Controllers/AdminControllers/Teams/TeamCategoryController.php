@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Team\TeamCategory;
-use App\Models\Team\TeamModel;
-use Image;
+use Intervention\Image\Facades\Image;
 
 class TeamCategoryController extends Controller
 {
@@ -18,9 +17,9 @@ class TeamCategoryController extends Controller
      */
     public function index()
     {
-        
-         $data = TeamCategory::orderBy('id','desc')->get();    
-        return view('admin.team-category.index', compact('data')); 
+        $data = TeamCategory::orderBy('id', 'desc')->get();
+
+        return view('admin.team-category.index', compact('data'));
     }
 
     /**
@@ -32,8 +31,9 @@ class TeamCategoryController extends Controller
     {
         $ordering = TeamCategory::max('ordering');
         $ordering = $ordering + 1;
-        $category = TeamCategory::where('team_parent',0)->get();
-        return view('admin.team-category.create', compact('ordering','category'));
+        $category = TeamCategory::where('team_parent', 0)->get();
+
+        return view('admin.team-category.create', compact('ordering', 'category'));
     }
 
     /**
@@ -42,38 +42,35 @@ class TeamCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-  public function store(Request $request)
+
+    public function store(Request $request)
     {
         $request->validate([
-            'category'=>'required',
-            'uri'=>'required'
-        ]); 
+            'category' => 'required',
+            'uri' => 'required|unique:cl_team_categories,uri',
+            'picture' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:10000',
+        ]);
         $data = $request->all();
-        $file =  $request->file('picture');
-        $file_name = "";
-        if($request->hasfile('picture')){
-
-            $category_file = $request->file('picture')->getClientOriginalName();
-            $extension = $request->file('picture')->getClientOriginalExtension();
-            $category_file = explode('.', $category_file);
-            $file_name = Str::slug( 'icon-'.$category_file[0]) . '-' . Str::random(40) . '.' . $extension;
-
-            $destinationOriginal = public_path('uploads/team');
-            $pic = Image::make($file->getRealPath());
-            $width = Image::make($file->getRealPath())->width();
-            $height = Image::make($file->getRealPath())->height(); 
-
-            $pic->save($destinationOriginal .'/'. $file_name );
+        $file_name = null;
+        if ($request->hasFile('picture')) {
+            $file = $request->file('picture');
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $file_name = Str::slug('icon-' . $originalName) . '-' . Str::random(5) . '.webp';
+            $destination = public_path('uploads/team');
+            if (!file_exists($destination)) {
+                mkdir($destination, 0755, true);
+            }
+            $image = Image::make($file->getRealPath());
+            $image->encode('webp', 85);
+            $image->save($destination . '/' . $file_name);
         }
-
-        $data['uri'] = Str::slug($request->uri); 
         $data['picture'] = $file_name;
         $result = TeamCategory::create($data);
-        if($result){
-            return redirect()->back()->with('message','Successfully added.');
-        }else{
-            return "Error";
+
+        if ($result) {
+            return redirect()->route('teamcategory.index')->with('success', 'Team Category added successfully.');
         }
+        return redirect()->back()->withInput()->with('error', 'Something went wrong. Try Again.');
     }
 
 
@@ -96,13 +93,11 @@ class TeamCategoryController extends Controller
      */
     public function edit($id)
     {
-      $data = TeamCategory::find($id);
-    //   $teamparent = $data
-        $category1= TeamCategory::where('team_parent', $id)->get();   
-                $category = TeamCategory::where('team_parent',0)->get();
+        $data = TeamCategory::find($id);
+        $category = TeamCategory::where('team_parent', 0)->get();
 
         //    dd($category);
-       return view('admin.team-category.edit', compact('data','category')); 
+        return view('admin.team-category.edit', compact('data', 'category'));
     }
 
     /**
@@ -114,50 +109,41 @@ class TeamCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-       $request->validate([
-            'category'=>'required',
-            'uri'=>'required'
+        $request->validate([
+            'category' => 'required',
+            'uri' => 'required|unique:cl_team_categories,uri,' . $id,
+            'picture' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:10000',
         ]);
-        
-        $data = TeamCategory::find($id);
-        $file =  $request->file('picture');
-        $file_name = '';
-        if($request->hasfile('picture')){
-            $data = TeamCategory::find($id);  
-            if($data->picture){               
-                if(file_exists(public_path('uploads/team/' .  $data->picture))){
-                    unlink('uploads/team/' . $data->picture);
-                }                  
+        $data = TeamCategory::findOrFail($id);
+
+        if ($request->hasFile('picture')) {
+            if ($data->picture) {
+                $oldFile = public_path('uploads/team/' . $data->picture);
+                if (file_exists($oldFile)) {
+                    unlink($oldFile);
+                }
             }
-            $category_file = $request->file('picture')->getClientOriginalName();
-            $extension = $request->file('picture')->getClientOriginalExtension();
-            $category_file = explode('.', $category_file);
-            $file_name = Str::slug($category_file[0]) . '-' . Str::random(40) . '.' . $extension;
-            
-            $destinationOriginal = public_path('uploads/team');
-            
-
-        $product_picture = Image::make($file->getRealPath());
-        $width = Image::make($file->getRealPath())->width();
-        $height = Image::make($file->getRealPath())->height();        
-      
-        /****Upload Original Image****/
-        $product_picture->resize($width, $height, function($constraint){
-            $constraint->aspectRatio();
-             })->save($destinationOriginal .'/'. $file_name ); 
-
-        $data->picture = $file_name;
-        }   
-
+            $file = $request->file('picture');
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $file_name = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
+            $destination = public_path('uploads/team');
+            if (!file_exists($destination)) {
+                mkdir($destination, 0755, true);
+            }
+            $image = Image::make($file->getRealPath());
+            $image->encode('webp', 85);
+            $image->save($destination . '/' . $file_name);
+            $data->picture = $file_name;
+        }
         $data->team_parent = $request->team_parent;
         $data->category = $request->category;
-        $data->uri = Str::slug($request->uri);  
-        $data->ordering = $request->ordering;  
+        $data->uri = $request->uri;
+        $data->ordering = $request->ordering;
         $data->caption = $request->caption;
-        $data->content = $request->content;  
-        $data->status = $request->status; 
+        $data->content = $request->content;
         $data->save();
-        return redirect()->back()->with('message','Update Successful.');
+
+        return redirect()->back()->with('success', 'Team Category Updated Successfully.');
     }
 
     /**
@@ -168,9 +154,9 @@ class TeamCategoryController extends Controller
      */
     public function destroy($id)
     {
-         $data = TeamCategory::find($id);
-         if($data->picture  != NULL){
-            unlink('uploads/team/' . $data->picture );
+        $data = TeamCategory::find($id);
+        if ($data->picture  != NULL) {
+            unlink('uploads/team/' . $data->picture);
         }
         $data->delete();
         return 'Are you sure to delete?';
@@ -178,14 +164,16 @@ class TeamCategoryController extends Controller
 
     public function delete_teamcategory_thumb($id)
     {
-        $data = TeamCategory::find($id);
-     if($data->picture){      
-      if(file_exists(env('PUBLIC_PATH').'uploads/team/' . $data->picture)){
-        unlink(env('PUBLIC_PATH').'uploads/team/' . $data->picture);
-      }
-    }
-    $data->picture = NULL;
-    $data->save();
-    return response('Delete Successful.');
+        $data = TeamCategory::findOrFail($id);
+        if ($data->picture) {
+            $file = public_path('uploads/team/' . $data->picture);
+            if (file_exists($file)) {
+                unlink($file);
+            }
+        }
+        $data->picture = null;
+        $data->save();
+
+        return response('Image removed successfully.');
     }
 }
