@@ -124,6 +124,7 @@ Route::middleware(['auth'])->group(function () {
         'admin.faq' => 'AdminControllers\Faqs\FaqController',
 
     ]);
+    Route::delete('delete_teamcategory_thumb/{id}', 'AdminControllers\Teams\TeamCategoryController@delete_teamcategory_thumb');
     // For all trips Only for Developer
     Route::get('admin/alltrips','AdminControllers\Travels\TripController@alltrips')->name('admin.trip.all');
     // Upto here
