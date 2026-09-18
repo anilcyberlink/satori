@@ -16,6 +16,32 @@ class SeoService
             return null;
         }
         $seoData = $request->seo ?? [];
+        $actualSeoFields = [
+            'meta_title',
+            'meta_description',
+            'og_title',
+            'og_description',
+            'og_image_alt',
+            'canonical_url',
+            'schema_type',
+            'schema_data',
+            'focus_keyword',
+            'change_frequency'
+        ];
+        $hasSeoData = false;
+        foreach ($actualSeoFields as $field) {
+            if (isset($seoData[$field]) && trim((string) $seoData[$field]) !== '') {
+                $hasSeoData = true;
+                break;
+            }
+        }
+        if ($request->hasFile('seo_og_image')) {
+            $hasSeoData = true;
+        }
+        if (!$hasSeoData) {
+            $model->seo()->delete();
+            return null;
+        }
         $index = isset($seoData['index']) && $seoData['index'] == 1;
         $follow = isset($seoData['follow']) && $seoData['follow'] == 1;
         $seoData['robots'] = ($index ? 'index' : 'noindex') . ',' . ($follow ? 'follow' : 'nofollow');
@@ -48,7 +74,7 @@ class SeoService
         }
         return $model->seo()->updateOrCreate([], $seoData);
     }
-    
+
     private function cleanSchemaJson($schemaData)
     {
         if (empty($schemaData)) {
