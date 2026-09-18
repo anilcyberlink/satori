@@ -34,6 +34,11 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
+                                        <a class="nav-link" href="#tab_3" data-toggle="tab">
+                                            <i class="fa fa-info"></i> EXTRA INFO
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a class="nav-link" href="#tab_2" data-toggle="tab">
                                             <i class="fa fa-globe"></i> SEO
                                         </a>
@@ -49,6 +54,9 @@
                                         @include('admin.seo.seo-form', [
                                             'seo' => $data->seo ?? null,
                                         ])
+                                    </div>
+                                    <div class="tab-pane" id="tab_3">
+                                        @include('admin.team.create.create-info')
                                     </div>
                                     <div class="tab-pane" id="tab_4">
                                         @include('admin.team.create.create-certificates')
@@ -92,6 +100,27 @@
             return false;
         });
         /******** End For certificates ********/
+
+        /******** Start For Extra info ********/
+        jQuery(document).delegate('a.add-info', 'click', function(e) {
+            e.preventDefault();
+            var content = jQuery('#row_info_additional .info-item').first().clone();
+            var size = jQuery('#info-container .info-item').length + 1;
+            content.attr('id', 'info-rec-' + size);
+            content.find('input').prop('disabled', false);
+            content.find('input[name="info_ordering[]"]').val(size);
+            content.find('input[name="info_title[]"]').val('');
+            content.find('input[name="info_description[]"]').val('');
+            content.find('.delete-info').attr('info-data-id', size);
+            content.appendTo('#info-container');
+        });
+        jQuery(document).delegate('button.delete-info', 'click', function(e) {
+            e.preventDefault();
+            var id = jQuery(this).attr('info-data-id');
+            $('#info-rec-' + id).remove();
+        });
+        /******** End For extra info ********/
+
         $(function() {
             $.ajaxSetup({
                 headers: {

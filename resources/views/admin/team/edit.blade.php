@@ -35,6 +35,11 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
+                                        <a class="nav-link" href="#tab_3" data-toggle="tab">
+                                            <i class="fa fa-info"></i> EXTRA INFO
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a class="nav-link" href="#tab_2" data-toggle="tab">
                                             <i class="fa fa-globe"></i> SEO
                                         </a>
@@ -51,6 +56,9 @@
                                             'seo' => $data->seo ?? null,
                                         ])
                                     </div>
+                                    <div class="tab-pane" id="tab_3">
+                                        @include('admin.team.edit.edit-info')
+                                    </div>
                                     <div class="tab-pane" id="tab_4">
                                         @include('admin.team.edit.edit-certificates')
                                     </div>
@@ -65,6 +73,7 @@
 @endsection
 @section('scripts')
     <script type="text/javascript">
+        // FOR CERTIFICATE
         jQuery(document).delegate('a.add-certificates', 'click', function(e) {
             e.preventDefault();
             var content = jQuery('#row_certificates_additional .certificate-item').first().clone();
@@ -112,6 +121,56 @@
                 return true;
             }
             return false;
+        });
+
+        // FOR EXTRA INFO
+        jQuery(document).delegate('a.add-info', 'click', function(e) {
+            e.preventDefault();
+            var content = jQuery('#row_info_additional .info-item').first().clone();
+            var size = jQuery('#info-container .info-item').length + 1;
+            content.attr('id', 'info-rec-' + size);
+            content.find('input').prop('disabled', false);
+            content.find('input[name="info_id[]"]').val('');
+            content.find('input[name="info_ordering[]"]').val(size);
+            content.find('input[name="info_title[]"]').val('');
+            content.find('input[name="info_description[]"]').val('');
+            content.find('.delete-info')
+                .attr('info-data-id', size)
+                .removeAttr('info-rowid');
+            content.appendTo('#info-container');
+        });
+
+        jQuery(document).delegate('button.delete-info', 'click', function(e) {
+            e.preventDefault();
+            var makeConfirm = confirm("Are you sure you want to delete?");
+            if (!makeConfirm) {
+                return false;
+            }
+            var id = jQuery(this).attr('info-data-id');
+            var rowid = jQuery(this).attr('info-rowid');
+            if (rowid) {
+                var csrf = $('meta[name="csrf-token"]').attr('content');
+                var team_id = '{{ $data->id }}';
+                var url = '{{ route('extrainfos.destroy', ['id' => ':id', 'info_id' => ':info_id']) }}';
+                url = url.replace(':id', team_id);
+                url = url.replace(':info_id', rowid);
+                $.ajax({
+                    type: 'DELETE',
+                    url: url,
+                    data: {
+                        _token: csrf
+                    },
+                    success: function(data) {
+                        $('#info-rec-' + rowid).remove();
+                    },
+                    error: function(data) {
+                        alert('Error occurred!');
+                    }
+                });
+            } else {
+                $('#info-rec-' + id).remove();
+            }
+            return true;
         });
 
         // Submit Team data

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Team\TeamCategory;
 use App\Models\Team\TeamModel;
 use App\Models\Team\Certificates;
+use App\Models\Team\ExtraInfo;
 use Intervention\Image\Facades\Image;
 use App\Services\SeoService;
 
@@ -136,6 +137,21 @@ class TeamController extends Controller
             }
         }
 
+        // Insert into Extra Info
+        if ($request->has('info_ordering')) {
+            foreach ($request->info_ordering as $index => $ordering) {
+                if (empty($ordering) && empty($request->info_title[$index] ?? null) && empty($request->info_description[$index] ?? null)) {
+                    continue;
+                }
+                $extraInfo = new ExtraInfo();
+                $extraInfo->team_id = $result->id;
+                $extraInfo->ordering = $ordering ?: 1;
+                $extraInfo->title = $request->info_title[$index] ?? null;
+                $extraInfo->description = $request->info_description[$index] ?? null;
+                $extraInfo->save();
+            }
+        }
+
         if ($result) {
             return response()->json([
                 'success' => true,
@@ -186,9 +202,10 @@ class TeamController extends Controller
             return redirect('admin/teams');
         }
         $certificates = $data->certificates()->get();
+        $infos = $data->extrainfos()->get();
         $category = TeamCategory::get();
 
-        return view('admin.team.edit', compact('data', 'certificates', 'category'));
+        return view('admin.team.edit', compact('data', 'certificates', 'category','infos'));
     }
 
     /**
@@ -292,6 +309,29 @@ class TeamController extends Controller
                 $certificateData->save();
             }
         }
+        // Update Extra Info
+        if ($request->has('info_id')) {
+            foreach ($request->info_id as $index => $infoId) {
+                $ordering = $request->info_ordering[$index] ?? 1;
+                $title = $request->info_title[$index] ?? null;
+                $description = $request->info_description[$index] ?? null;
+                if (empty($infoId)) {
+                    $infoData = new ExtraInfo();
+                    $infoData->team_id = $result->id;
+                } else {
+                    $infoData = ExtraInfo::where('id', $infoId)
+                        ->where('team_id', $result->id)
+                        ->first();
+                    if (!$infoData) {
+                        continue;
+                    }
+                }
+                $infoData->ordering = $ordering;
+                $infoData->title = $title;
+                $infoData->description = $description;
+                $infoData->save();
+            }
+        }
 
         return response()->json([
             'success' => true,
@@ -335,6 +375,17 @@ class TeamController extends Controller
         $data->delete();
 
         return 'Are you sure to delete?';
+    }
+    public function extrainfosdestroy($team_id, $id)
+    {
+        $data = ExtraInfo::where('id', $id)
+            ->where('team_id', $team_id)
+            ->first();
+        if (!$data) {
+            return response('Extra info not found.', 404);
+        }
+        $data->delete();
+        return response('Delete Successful.');
     }
 
     public function thumbdelete($id)
