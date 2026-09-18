@@ -30,4 +30,8 @@ class TeamModel extends Model
     {
         return $this->hasMany('App\Models\Team\Certificates', 'team_id');
     }
+    public function extrainfos()
+    {
+        return $this->hasMany('App\Models\Team\ExtraInfo', 'team_id');
+    }
 }

@@ -127,8 +127,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('delete_teamcategory_thumb/{id}', 'AdminControllers\Teams\TeamCategoryController@delete_teamcategory_thumb');
     Route::post('admin/teamcategory/status', 'AdminControllers\Teams\TeamCategoryController@updateStatus');
     Route::post('admin/teams/{id}/toggle-status', 'AdminControllers\Teams\TeamController@toggleStatus')->name('teams.toggleStatus');
+    Route::delete('admin/certificates/{id}/{info_id}','AdminControllers\Teams\TeamController@certificatesdestroy')->name('certificates.destroy');
+    Route::delete('admin/teams/{id}/extrainfos/{info_id}', 'AdminControllers\Teams\TeamController@extrainfosdestroy')->name('extrainfos.destroy');
 
-    
+
     // For all trips Only for Developer
     Route::get('admin/alltrips','AdminControllers\Travels\TripController@alltrips')->name('admin.trip.all');
     // Upto here
@@ -301,7 +303,6 @@ Route::middleware(['auth'])->group(function () {
         $view->with('posttype', $posttype);
     });
 
-    Route::delete('admin/certificates/{id}/{info_id}','AdminControllers\Teams\TeamController@certificatesdestroy')->name('certificates.destroy');
 
 
     /************** Sangam Starts ****************/
