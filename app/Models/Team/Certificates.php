@@ -6,8 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Certificates extends Model
 {
-    protected $table = 'certificates';
+    protected $table = 'cl_team_certificates';
     protected $fillable = [
-        'team_id','title','ordering','image'
+        'team_id',
+        'title',
+        'ordering',
+        'image',
+        'type'
     ];
 }

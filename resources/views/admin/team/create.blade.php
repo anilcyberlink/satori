@@ -35,7 +35,7 @@
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="#tab_2" data-toggle="tab">
-                                            <i class="fa fa-certificate"></i> SEO
+                                            <i class="fa fa-globe"></i> SEO
                                         </a>
                                     </li>
                                 </ul>
@@ -47,7 +47,7 @@
                                     </div>
                                     <div class="tab-pane" id="tab_2">
                                         @include('admin.seo.seo-form', [
-                                            'seo' => $data->seo ?? null
+                                            'seo' => $data->seo ?? null,
                                         ])
                                     </div>
                                     <div class="tab-pane" id="tab_4">
@@ -67,26 +67,29 @@
         /******** For certificates ********/
         jQuery(document).delegate('a.add-certificates', 'click', function(e) {
             e.preventDefault();
-            var content = jQuery('#row_certificates_additional .row'),
-                size = jQuery('#row_certificates_body >.row').length + 1,
-                element = null,
-                element = content.clone();
-            element.attr('id', 'certificates-rec-' + size);
-            element.find('.delete-certificates').attr('certificates-data-id', size);
-            element.appendTo('#row_certificates_body');
-            element.find('.sn').html(size);
+            var content = jQuery('#row_certificates_additional .certificate-item').first().clone();
+            var size = jQuery('#certificates-container .certificate-item').length + 1;
+            content.attr('id', 'certificates-rec-' + size);
+            content.find('.delete-certificates')
+                .attr('certificates-data-id', size);
+            // Automatically set ordering
+            content.find('input[name="certificates_ordering[]"]').val(size);
+            // Clear other fields
+            content.find('input[name="certificates_title[]"]').val('');
+            content.find('input[name="type[]"]').val('');
+            content.find('input[type="file"]').val('');
+            content.appendTo('#certificates-container');
         });
+
         jQuery(document).delegate('button.delete-certificates', 'click', function(e) {
             e.preventDefault();
-            var makeConfirm = confirm("Are you sure You want to delete");
-            if (makeConfirm == true) {
+            var makeConfirm = confirm("Are you sure you want to delete?");
+            if (makeConfirm) {
                 var id = jQuery(this).attr('certificates-data-id');
-                var targetDiv = jQuery(this).attr('targetDiv');
                 jQuery('#certificates-rec-' + id).remove();
                 return true;
-            } else {
-                return false;
             }
+            return false;
         });
         /******** End For certificates ********/
         $(function() {

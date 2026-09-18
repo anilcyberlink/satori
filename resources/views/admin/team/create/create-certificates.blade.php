@@ -1,44 +1,53 @@
 <div class="panel">
     <div class="panel-heading">
         <span class="panel-title">Certificates</span>
-        <a class="btn btn-primary pull-right add-certificates" data-added="0">
+        <a href="javascript:void(0);" class="btn btn-primary pull-right add-certificates" data-added="0">
             <i class="glyphicon glyphicon-plus"></i> Add Row
         </a>
     </div>
+
     <div class="panel-body" id="row_certificates_body">
-        <div class="row" style="margin-bottom:10px;">
-            <div class="col-md-1">
-                <label>Ordering</label>
-            </div>
-            <div class="col-md-7">
-                <label>Title</label>
-            </div>
-            <div class="col-md-3">
-                <label>Image</label>
-            </div>
-            <div class="col-md-1">
-                <label>Action</label>
-            </div>
-        </div>
-        <div class="row" id="certificates-rec-1"></div>
+        <div id="certificates-container"></div>
     </div>
+
     <div style="display:none;">
         <div id="row_certificates_additional">
-            <div class="row" style="margin-bottom:10px;">
-                <div class="col-md-1">
-                    <input type="number" name="certificates_ordering[]" class="form-control" placeholder="SN" />
+            <div class="certificate-item">
+                <div class="row" style="margin-bottom:5px;">
+                    <div class="col-md-2">
+                        <label>Ordering</label>
+                        <input type="number" min="1" name="certificates_ordering[]" class="form-control" placeholder="SN">
+                    </div>
+
+                    <div class="col-md-7">
+                        <label>Title</label>
+                        <input type="text" name="certificates_title[]" class="form-control" placeholder="Title">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Action</label>
+                        <button type="button" class="btn btn-danger delete-certificates" certificates-data-id="0">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="col-md-7">
-                    <input type="text" name="certificates_title[]" class="form-control" placeholder="Title" />
+
+                <div class="row" style="margin-bottom:15px;">
+                    <div class="col-md-4">
+                        <label>Image</label>
+                        <input type="file" name="image[]" class="form-control">
+                    </div>
+
+                    <div class="col-md-5">
+                        <label>Type</label>
+                        <select name="type[]" class="form-control">
+                            <option value="certificate" selected>Certificate</option>
+                            <option value="photos">Photos</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <input type="file" name="image[]" class="form-control" />
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-danger delete-certificates" certificates-data-id="0">
-                        <i class="glyphicon glyphicon-trash"></i>
-                    </button>
-                </div>
+
+                <hr>
             </div>
         </div>
     </div>

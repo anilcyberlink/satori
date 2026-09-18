@@ -1,108 +1,104 @@
 @extends('admin.master')
 @section('title', Request::segment(2))
-
 @section('breadcrumb')
-    <button type="button" class="btn btn-default btn-sm backlink"><i class="fa fa-angle-double-left" aria-hidden="true"></i>
-        Back </button>
-    <a href="{{ url('admin/teams') }}" class="btn btn-default btn-sm backlink"><i class="fa fa-list" aria-hidden="true"></i>
-        Show List </a>
+    <a href="{{ url('admin/teams') }}" class="btn btn-default btn-sm backlink">
+        <i class="fa fa-list" aria-hidden="true"></i> Show List
+    </a>
 @endsection
-
 @section('content')
     <form class="form-horizontal" role="form" id="teamData" method="post" enctype="multipart/form-data">
         @csrf
-        <input type="hidden" name="_method" value="PUT" />
+        <input type="hidden" name="_method" value="PUT">
         <section class="content">
             <div class="container-fluid">
-
                 <footer>
                     <div id="publishing-action">
-                        <button type="submit" name="submit" class="btn btn-success" value="publish"> Publish</button>
+                        <button type="submit" name="submit" class="btn btn-success" value="publish">
+                            <i class="fa fa-check"></i> Update
+                        </button>
                     </div>
                     <div class="clearfix"></div>
                 </footer>
-
                 <div class="row">
                     <div class="col-12">
-                        <!-- Custom Tabs -->
-                        <div class="card">
-                            <div class="card-header d-flex p-0">
-                                <!-- <h3 class="card-title p-3">Manage Trips</h3> -->
-                                <ul class="nav nav-pills ml-auto p-2">
-                                    <li class="nav-item active"><a class="nav-link active" href="#tab_1" data-toggle="tab">
-                                            GENERAL</a></li>
-
-                                    <li class="nav-item"><a class="nav-link" href="#tab_4" data-toggle="tab"> Certificates
-                                        </a></li>
-
+                        <div class="card" style="box-shadow:0 2px 8px rgba(0,0,0,0.08); border:1px solid #e5e5e5;">
+                            <div class="card-header d-flex p-0" style="background:#fff; border-bottom:1px solid #e5e5e5;">
+                                <ul class="nav nav-pills ml-auto p-2" style="margin-bottom:0;">
+                                    <li class="nav-item active">
+                                        <a class="nav-link active" href="#tab_1" data-toggle="tab">
+                                            <i class="fa fa-user"></i> GENERAL
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#tab_4" data-toggle="tab">
+                                            <i class="fa fa-certificate"></i> CERTIFICATES
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#tab_2" data-toggle="tab">
+                                            <i class="fa fa-globe"></i> SEO
+                                        </a>
+                                    </li>
                                 </ul>
-                            </div><!-- /.card-header -->
-                            <div class="card-body">
+                            </div>
+                            <div class="card-body" style="padding:25px 20px;">
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="tab_1">
-                                        <!--General tab starts -->
                                         @include('admin.team.edit.edit-general')
-                                        <!--//-->
                                     </div>
-
-                                    <!-- /.tab-pane -->
+                                    <div class="tab-pane" id="tab_2">
+                                        @include('admin.seo.seo-form', [
+                                            'seo' => $data->seo ?? null,
+                                        ])
+                                    </div>
                                     <div class="tab-pane" id="tab_4">
                                         @include('admin.team.edit.edit-certificates')
                                     </div>
-
                                 </div>
-                                <!-- /.tab-pane -->
                             </div>
-                            <!-- /.tab-content -->
-                        </div><!-- /.card-body -->
+                        </div>
                     </div>
-                    <!-- ./card -->
                 </div>
-                <!-- /.col -->
-            </div>
             </div>
         </section>
-
     </form>
-
-
 @endsection
 @section('scripts')
     <script type="text/javascript">
-        /******** For certificates *******/
         jQuery(document).delegate('a.add-certificates', 'click', function(e) {
             e.preventDefault();
-            var content = jQuery('#row_certificates_additional .row'),
-                size = jQuery('#row_certificates_body >.row').length + 1,
-                element = null,
-                element = content.clone();
-            element.attr('id', 'certificates-rec-' + size);
-            element.find('.delete-certificates').attr('certificates-data-id', size);
-            element.appendTo('#row_certificates_body');
-            element.find('.sn').html(size);
+            var content = jQuery('#row_certificates_additional .certificate-item').first().clone();
+            var size = jQuery('#certificates-container .certificate-item').length + 1;
+            content.attr('id', 'certificates-rec-' + size);
+            content.find('input, select').prop('disabled', false);
+            content.find('input[name="certificates_id[]"]').val('');
+            content.find('input[name="certificates_ordering[]"]').val(size);
+            content.find('input[name="certificates_title[]"]').val('');
+            content.find('input[name="image[]"]').val('');
+            content.find('select[name="type[]"]').val('certificate');
+            content.find('.delete-certificates')
+                .attr('certificates-data-id', size)
+                .removeAttr('certificates-rowid');
+            content.appendTo('#certificates-container');
         });
-
         jQuery(document).delegate('button.delete-certificates', 'click', function(e) {
             e.preventDefault();
-            var makeConfirm = confirm("Are you sure You want to delete");
-            if (makeConfirm == true) {
+            var makeConfirm = confirm("Are you sure you want to delete?");
+            if (makeConfirm) {
                 var id = jQuery(this).attr('certificates-data-id');
-                var targetDiv = jQuery(this).attr('targetDiv');
-                // For delete certificates individually.
-                var csrf = $('meta[name="csrf-token"]').attr('content');
                 var certificates_rowid = jQuery(this).attr('certificates-rowid');
-                var team_id = '{{ $data->id }}';
-                var url = '{{ route('certificates.destroy', ['id' => ':id', 'info_id' => ':info_id']) }}';
-                url = url.replace(':id', team_id);
-                url = url.replace(':info_id', certificates_rowid);
                 if (certificates_rowid) {
+                    var csrf = $('meta[name="csrf-token"]').attr('content');
+                    var team_id = '{{ $data->id }}';
+                    var url = '{{ route('certificates.destroy', ['id' => ':id', 'info_id' => ':info_id']) }}';
+                    url = url.replace(':id', team_id);
+                    url = url.replace(':info_id', certificates_rowid);
                     $.ajax({
                         type: 'DELETE',
                         url: url,
                         data: {
                             _token: csrf
                         },
-
                         success: function(data) {
                             $('#certificates-rec-' + certificates_rowid).remove();
                         },
@@ -110,25 +106,21 @@
                             alert('Error occurred!');
                         }
                     });
+                } else {
+                    $('#certificates-rec-' + id).remove();
                 }
-                //End for delete
-                jQuery('#certificates-rec-' + id).remove();
                 return true;
-            } else {
-                return false;
             }
+            return false;
         });
-        /******** End For certificates *******/
 
-
-
+        // Submit Team data
         $(function() {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
             $("#teamData").on('submit', function(e) {
                 e.preventDefault();
                 let team = '{{ $data->id }}';
@@ -136,7 +128,6 @@
                 url = url.replace(':team', team);
                 let teamData = document.getElementById('teamData');
                 let data = new FormData(teamData);
-
                 $.ajax({
                     url: url,
                     type: 'POST',
@@ -154,15 +145,14 @@
                             position: 'top-end',
                             showConfirmButton: false,
                             timer: 3000,
-                            timerProgressBar: true,
-                        })
+                            timerProgressBar: true
+                        });
                         Toast.fire({
                             icon: 'success',
                             title: data.message
-                        })
+                        });
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        // console.log(jqXHR, textStatus, errorThrown);
                         console.log('Error');
                         console.log(textStatus);
                         const Toast = Swal.mixin({
@@ -170,84 +160,43 @@
                             position: 'top-end',
                             showConfirmButton: false,
                             timer: 3000,
-                            timerProgressBar: true,
-                        })
+                            timerProgressBar: true
+                        });
                         Toast.fire({
                             icon: 'warning',
                             title: textStatus
-                        })
-
+                        });
                     }
                 });
             });
         });
 
-
-        // Delete Thumb
         $('.thumbdelete').on('click', function(e) {
             e.preventDefault();
             if (!confirm('Are you sure to delete?')) return false;
             var csrf = $('meta[name="csrf-token"]').attr('content');
-            var str = $(this).attr('href');
-            var id = str.slice(1);
+            var id = $(this).attr('href').slice(1);
             $.ajax({
                 type: 'DELETE',
-                url: "{{ url('thumbdelete') . '/' }}" + id,
+                url: "{{ url('thumbdelete') }}/" + id,
                 data: {
                     _token: csrf
                 },
                 success: function(data) {
-                    $('span.thumb_id' + id).remove();
+                    $('.thumb_id' + id).remove();
                 },
-                error: function(data) {
-                    alert(data + 'Error!');
-                }
-            });
-        });
-
-
-        // Delete Banner
-        $('.bannerdelete').on('click', function(e) {
-            e.preventDefault();
-            if (!confirm('Are you sure to delete?')) return false;
-            var csrf = $('meta[name="csrf-token"]').attr('content');
-            var str = $(this).attr('href');
-            var id = str.slice(1);
-            $.ajax({
-                type: 'DELETE',
-                url: "{{ url('bannerdelete') . '/' }}" + id,
-                data: {
-                    _token: csrf
-                },
-                success: function(data) {
-                    $('span.bannerid' + id).remove();
-                },
-                error: function(data) {
-                    alert(data + 'Error!');
+                error: function(xhr) {
+                    alert('Error occurred while deleting image.');
                 }
             });
         });
 
         $(document).ready(function() {
             $('#name').on('keyup', function() {
-                var trip_title;
-                trip_title = $('#name').val();
-                trip_title = trip_title.replace(/[^a-zA-Z0-9 ]+/g, "");
-                trip_title = trip_title.replace(/\s+/g, "-");
-                $('#uri').val(trip_title);
-            });
-        });
-
-        // ## //
-        // Go back link
-        $('.backlink').click(function() {
-            var url = '<?= url()->previous() ?>';
-            window.location = url;
-        });
-        $(function() {
-            $('.team-select').change(function() {
-                $('.team-category').hide();
-                $('.' + $(this).val()).show();
+                var team_name = $('#name').val();
+                team_name = team_name.replace(/[^a-zA-Z0-9 ]+/g, "");
+                team_name = team_name.replace(/\s+/g, "-");
+                $('#uri').val(team_name);
             });
         });
     </script>

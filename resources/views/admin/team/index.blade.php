@@ -16,48 +16,60 @@
                         <div class="panel">
                             <div class="panel-heading">
                                 <ul class="nav panel-tabs-border panel-tabs panel-tabs-left">
-                                    @foreach($categories as $key => $category)
-                                        <li class="{{ $key == 0 ? 'active' : '' }}">
-                                            <a href="#tab_{{ $category->id }}" data-toggle="tab">
-                                                {{ $category->category }}
+                                    @if ($categories->count() > 0)
+                                        @foreach ($categories as $key => $category)
+                                            <li class="{{ $key == 0 ? 'active' : '' }}">
+                                                <a href="#tab_{{ $category->id }}" data-toggle="tab">
+                                                    {{ $category->category }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    @else
+                                        <li class="">
+                                            <a>
+                                                Please first create team categories
                                             </a>
                                         </li>
-                                    @endforeach
+                                    @endif
                                 </ul>
                             </div>
                             <div class="panel-body">
                                 <div class="tab-content pn br-n">
-                                    @foreach($categories as $key => $category)
+                                    @foreach ($categories as $key => $category)
                                         <div id="tab_{{ $category->id }}" class="tab-pane {{ $key == 0 ? 'active' : '' }}">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="table-responsive mhn20 mvn15">
-                                                        <table class="table admin-form theme-warning fs13 datatable" id="datatable{{ $category->id }}">
+                                                        <table class="table admin-form theme-warning fs13 datatable"
+                                                            id="datatable{{ $category->id }}">
                                                             <thead>
                                                                 <tr class="bg-light">
                                                                     <th>SN</th>
                                                                     <th>Name</th>
-                                                                    <th>Status</th>
+                                                                    <th class="text-center">Status</th>
                                                                     <th>Ordering</th>
                                                                     <th class="text-left">Action</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                @foreach($teams->get($category->id, collect()) as $row)
+                                                                @foreach ($teams->get($category->id, collect()) as $row)
                                                                     <tr class="id{{ $row->id }}">
                                                                         <td>{{ $loop->iteration }}</td>
                                                                         <td>{{ ucfirst($row->name) }}</td>
                                                                         <td class="text-center">
-                                                                            <input class="CheckStatus" type="checkbox" name="status"
+                                                                            <input class="CheckStatus" type="checkbox"
+                                                                                name="status"
                                                                                 data-rowid="{{ $row->id }}"
                                                                                 {{ $row->status == 1 ? 'checked' : '' }} />
                                                                         </td>
                                                                         <td>{{ $row->ordering }}</td>
                                                                         <td class="text-left">
-                                                                            <a href="{{ url('admin/teams/'.$row->id.'/edit') }}">Edit</a>
+                                                                            <a
+                                                                                href="{{ url('admin/teams/' . $row->id . '/edit') }}">Edit</a>
                                                                             |
                                                                             <span class="trash">
-                                                                                <a href="#{{ $row->id }}" class="btn-delete">Delete</a>
+                                                                                <a href="#{{ $row->id }}"
+                                                                                    class="btn-delete">Delete</a>
                                                                             </span>
                                                                         </td>
                                                                     </tr>
@@ -129,6 +141,44 @@
                         "sSwfPath": "{{ asset('vendor/plugins/datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf') }}"
                     }
                 });
+            });
+        });
+
+        $(document).on('change', '.CheckStatus', function() {
+            var checkbox = $(this);
+            var id = checkbox.data('rowid');
+            var status = checkbox.is(':checked') ? 1 : 0;
+            $.ajax({
+                url: "{{ route('teams.toggleStatus', ':id') }}".replace(':id', id),
+                type: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    status: status
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $('#status-message-text').text(response.message);
+                        $('#status-message').stop(true, true).fadeIn();
+                        setTimeout(function() {
+                            $('#status-message').fadeOut();
+                        }, 3000);
+                    } else {
+                        checkbox.prop('checked', !checkbox.is(':checked'));
+                    }
+                },
+                error: function(xhr) {
+                    checkbox.prop('checked', !checkbox.is(':checked'));
+                    $('#status-message')
+                        .removeClass('alert-success')
+                        .addClass('alert-danger');
+                    $('#status-message-text').text('Error occurred while updating status.');
+                    $('#status-message').stop(true, true).fadeIn();
+                    setTimeout(function() {
+                        $('#status-message').removeClass('alert-danger').addClass(
+                            'alert-success');
+                        $('#status-message').fadeOut();
+                    }, 3000);
+                }
             });
         });
     </script>
