@@ -8,13 +8,6 @@
         <div class="panel-body" id="row_body">
             <div class="row">
                 <div class="col-lg-12">
-                    <!-- <div class="col-md-1"> <label>Ordering </label></div>
-                    <div class="col-md-1"> <label>Days</label></div>
-                    <div class="col-md-5"> <label>Title</label></div>
-                    <div class="col-md-2"> <label>Accomodation</label></div>
-                    <div class="col-md-2"> <label>Distance</label></div>
-                    <div class="col-md-2"> <label>Breakfast</label></div>
-                    <div class="col-md-1"> </div> -->
                 </div>
             </div>
             <div class="row" id="rec-1">
@@ -33,30 +26,15 @@
 
                         <div class="col-md-1"><button class="btn btn-danger delete-itinerary" itinerary-data-id="0"><i class="glyphicon glyphicon-trash"></i></button></div>
                     </div>
-                    {{-- <div class="col-lg-12">
-
-                        <div class="col-md-3">
-                            <label>Max Altitude </label>
-                            <input type="text" name="itinerary_max_altitude[]" class="form-control" placeholder="Max Altitude" />
-                        </div>
-                        <div class="col-md-4">
-                            <label>Accomodation </label>
-                            <input type="text" name="itinerary_distance[]" class="form-control" placeholder="accomodation" />
-                        </div>
-                        <div class="col-md-3">
-                            <label>Meals </label>
-                            <input type="text" name="itinerary_duration[]" class="form-control" placeholder="meals" />
-                        </div>
-                    </div> --}}
                     <div class="col-lg-12">
                         <div class="col-md-12"><label>Description </label><textarea name="itinerary_content[]" class="form-control" placeholder="Content Goes Here"></textarea></div>
                     </div>
-                    <div class="clearfix"></div>
-                    <hr>
+
+                    <div class="col-lg-12">
+                        <hr style="border: 0; border-top: 2px solid #000; margin: 20px 0;">
+                    </div>
                 </div>
             </div>
         </div>
-
-
     </div>
 </div>

@@ -34,6 +34,10 @@
 
                     <div class="col-md-1"><button class="btn btn-danger delete-testimonial" testimonial-data-id="0"><i
                                 class="glyphicon glyphicon-trash"></i></button></div>
+
+                    <div class="col-lg-12">
+                        <hr style="border: 0; border-top: 2px solid #000; margin: 20px 0;">
+                    </div>
                 </div>
             </div>
         </div>
