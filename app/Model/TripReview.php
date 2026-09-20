@@ -3,14 +3,18 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Travels\TripModel;
 
 class TripReview extends Model
 {
-    protected $fillable=['trip_id','trip_title','full_name','title','country','email','rating','image','message','status','contact'];
+    protected $table = 'trip_reviews';
+    protected $fillable = ['trip_id', 'trip_title', 'full_name', 'title', 'country', 'email', 'rating', 'image', 'message', 'status', 'contact','consent','usefulness'];
 
     public function trips()
     {
-        return $this->belongsTo('App\Models\Travels\TripModel','trip_id');
+        return $this->belongsTo('App\Models\Travels\TripModel', 'trip_id');
+    }
+    public function images()
+    {
+        return $this->hasMany(TripReviewImage::class,'review_id');
     }
 }
