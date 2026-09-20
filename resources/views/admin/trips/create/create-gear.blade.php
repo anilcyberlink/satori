@@ -14,15 +14,10 @@
                 </div>
                 <div class="col-md-4">
                     <label>Title/Alt Text</label>
-
                 </div>
-                <!-- <div class="col-md-3">
-                    <label>Video</label>
 
-                </div> -->
                 <div class="col-md-4">
                     <label>Thumbnail</label>
-
                 </div>
                 <div class="col-md-1"></div>
             </div>
@@ -40,13 +35,14 @@
                     <div class="col-md-4"><input type="text" name="gear_title[]" class="form-control"
                             placeholder="" />
                     </div>
-                    <!-- <div class="col-md-3"><input type="text" name="gear_video[]" class="form-control" placeholder="" />
-                    </div> -->
                     <div class="col-md-4"><input type="file" name="gear_thumbnail[]" class="form-control" />
                         <small> (Width: 1600px Height: 1200px) </small>
                     </div>
-                    <div class="col-md-1"><button class="btn btn-danger delete-gear" schedule-data-id="0"><i
+                    <div class="col-md-1"><button class="btn btn-danger delete-gear" gear-data-id="0"><i
                                 class="glyphicon glyphicon-trash"></i></button></div>
+                    <div class="col-lg-12">
+                        <hr style="border: 0; border-top: 2px solid #000; margin: 20px 0;">
+                    </div>
                 </div>
             </div>
         </div>

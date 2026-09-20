@@ -8,13 +8,6 @@
 
         <div class="panel-body" id="row_faq_body">
 
-            <!-- <div class="row">
-                <div class="col-md-2"><label>Ordering</label></div>
-                <div class="col-md-8"><label>Title</label> </div>
-                <div class="col-md-7"><label></label></div>
-                <div class="col-md-1"></div>
-            </div> -->
-
             @if ($faqs->count() > 0)
                 @foreach ($faqs as $row)
                     <div class="row" id="faq-rec-{{ $loop->iteration }}">
@@ -44,7 +37,10 @@
                         <div class="col-md-1"><button class="btn btn-danger delete-faq" faq-rowid="{{ $row->id }}"
                                 faq-data-id="{{ $loop->iteration }}"><i class="glyphicon glyphicon-trash"></i></button>
                         </div>
-                        <br>
+
+                    <div class="col-lg-12">
+                        <hr style="border: 0; border-top: 2px solid #000; margin: 20px 0;">
+                    </div>
                     </div>
                 @endforeach
             @endif
@@ -73,6 +69,9 @@
                     </div>
                     <div class="col-md-1"><button class="btn btn-danger delete-faq" faq-data-id="0"><i
                                 class="glyphicon glyphicon-trash"></i></button></div>
+                    <div class="col-lg-12">
+                        <hr style="border: 0; border-top: 2px solid #000; margin: 20px 0;">
+                    </div>
                 </div>
                 <br>
             </div>

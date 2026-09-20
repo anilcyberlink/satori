@@ -527,7 +527,9 @@
                     // have had a chance to be moved and organized.
                     // It's less taxing to organize empty panels
                     demoHighCharts.init();
-                    runVectorMaps(); // function below
+                    if (typeof runVectorMaps === 'function') {
+                        runVectorMaps();
+                    }
                 },
                 onSave: function() {
                     $(window).trigger('resize');

@@ -9,7 +9,6 @@
             <div class="row">
                 <div class="col-md-2"><label>Ordering</label></div>
                 <div class="col-md-4"><label>Title/Alt text</label></div>
-                <!-- <div class="col-md-4"><label>Video</label></div> -->
                 <div class="col-md-4"><label>Thumbnail</label></div>
                 <div class="col-md-1"></div>
             </div>
@@ -25,10 +24,7 @@
                             <input type="text" name="gear_title[]" value="{{ $row->title }}" class="form-control"
                                 placeholder="" />
                         </div>
-                        <!-- <div class="col-md-4">
-                            <input type="text" name="gear_video[]" value="{{ $row->video }}" class="form-control"
-                                placeholder="" />
-                        </div> -->
+
                         <div class="col-md-4">
                             <input type="file" name="gear_thumbnail[]" class="form-control gearthumb"
                                 file-rowid="{{ $row->id }}" />
@@ -42,6 +38,9 @@
                         <div class="col-md-1"><button class="btn btn-danger delete-gear"
                                 gear-rowid="{{ $row->id }}" gear-data-id="{{ $loop->iteration }}"><i
                                     class="glyphicon glyphicon-trash"></i></button></div>
+                    <div class="col-lg-12">
+                        <hr style="border: 0; border-top: 2px solid #000; margin: 20px 0;">
+                    </div>
                     </div>
                 @endforeach
             @endif
@@ -55,16 +54,15 @@
                             class="form-control" placeholder="" /></div>
                     <div class="col-md-4"><input type="text" name="gear_title[]" class="form-control" placeholder="" />
                     </div>
-                    {{-- <div class="col-md-2"><input type="text" name="gear_content[]" class="form-control"
-                            placeholder="" /></div> --}}
 
-                    <!-- <div class="col-md-4"><input type="text" name="gear_video[]" class="form-control" placeholder="" />
-                    </div> -->
                     <div class="col-md-4"><input type="file" name="gear_thumbnail[]" class="form-control gearthumb" />
                      <small> (Width: 1600px Height: 1200px) </small>
                     </div>
                     <div class="col-md-1"><button class="btn btn-danger delete-gear" gear-data-id="0"><i
                                 class="glyphicon glyphicon-trash"></i></button></div>
+                    <div class="col-lg-12">
+                        <hr style="border: 0; border-top: 2px solid #000; margin: 20px 0;">
+                    </div>
                 </div>
             </div>
         </div>

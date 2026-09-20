@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class TripScheduleModel extends Model
 {
     protected $table = 'cl_trip_schedule';
-    protected $fillable = ['trip_detail_id','start_date','end_date','group_size','price','remarks','availability','ordering'];
+    protected $fillable = ['trip_detail_id', 'start_date', 'end_date', 'group_size', 'price', 'discount_price', 'seats','reserved_seats','remarks', 'availability', 'ordering'];
 }

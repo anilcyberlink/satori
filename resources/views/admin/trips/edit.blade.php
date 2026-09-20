@@ -58,9 +58,9 @@
                                     <div class="tab-pane" id="tab_3">
                                         @include('admin.trips.edit.edit-cost-includes')
                                     </div>
-                                    <div class="tab-pane" id="tab_4">
+                                    {{-- <div class="tab-pane" id="tab_4">
                                         @include('admin.trips.edit.edit-cost-excludes')
-                                    </div>
+                                    </div> --}}
                                     <div class="tab-pane" id="tab_5">
                                         @include('admin.trips.edit.edit-gear')
                                     </div>
@@ -162,6 +162,7 @@
                 element = null,
                 element = content.clone();
             element.attr('id', 'schedule-rec-' + size);
+            element.find('input[name="schedule_ordering[]"]').val(size-1);
             element.find('.delete-schedule').attr('schedule-data-id', size);
             element.appendTo('#row_schedule_body');
             element.find('.sn').html(size);

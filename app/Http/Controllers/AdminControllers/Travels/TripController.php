@@ -66,7 +66,6 @@ class TripController extends Controller
      */
     public function create($training = null)
     {
-        // dd('test-',$training);
         $destinations = DestinationModel::all();
         $regions = RegionModel::all();
         $activities = ActivityModel::all();
@@ -82,9 +81,7 @@ class TripController extends Controller
         $expeditions = ActivityModel::where('activity_parent', 'expedition')->get();
         $activity = ActivityModel::where('activity_parent', 'activity')->get();
         $packages = ActivityModel::where('activity_parent', 'package')->get();
-        if ($training) {
-            return view('admin.training-package.create', compact('trek', 'all_trips', 'trip_type', 'grades', 'ordering', 'destinations', 'regions', 'activities', 'trip_groups', 'expeditions', 'trekking', 'availability', 'activity', 'packages'));
-        }
+
         // dd($expeditions);
         return view('admin.trips.create', compact(
             'trek',
@@ -113,6 +110,7 @@ class TripController extends Controller
     public function store(Request $request)
     {
         if ($request->ajax()) {
+            // dd($request->all());
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -262,10 +260,10 @@ class TripController extends Controller
                     $tripSchedule->trip_detail_id = $last_id;
                     $tripSchedule->start_date = $request->schedule_start_date[$key];
                     $tripSchedule->end_date = $request->schedule_end_date[$key];
-                    // $tripSchedule->group_size = $request->schedule_group_size[$key];
                     $tripSchedule->availability = $request->schedule_availability[$key];
                     $tripSchedule->price = $request->schedule_price[$key];
-                    // $tripSchedule->remarks = $request->schedule_remarks[$key];
+                    $tripSchedule->discount_price = $request->schedule_disprice[$key];
+                    $tripSchedule->seats = $request->schedule_seats[$key];
                     $tripSchedule->ordering = $request->schedule_ordering[$key];
                     $tripSchedule->save();
                     $sn_schedule++;
@@ -915,10 +913,10 @@ class TripController extends Controller
                         $scheduleData->ordering = $request->schedule_ordering[$key];
                         $scheduleData->start_date = $request->schedule_start_date[$key];
                         $scheduleData->end_date = $request->schedule_end_date[$key];
-                        // $scheduleData->group_size = $request->schedule_group_size[$key];
                         $scheduleData->availability = $request->schedule_availability[$key];
                         $scheduleData->price = $request->schedule_price[$key];
-                        // $scheduleData->remarks = $request->schedule_remarks[$key];
+                        $scheduleData->discount_price = $request->schedule_disprice[$key];
+                        $scheduleData->seats = $request->schedule_seats[$key];
                         $scheduleData->save();
                     } else if ($request->schedule_id[$value] !== null && $request->schedule_id[$value] !== "") {
                         $schedule_id = $request->schedule_id[$value];
@@ -927,10 +925,10 @@ class TripController extends Controller
                         $scheduleData->ordering = $request->schedule_ordering[$key];
                         $scheduleData->start_date = $request->schedule_start_date[$key];
                         $scheduleData->end_date = $request->schedule_end_date[$key];
-                        // $scheduleData->group_size = $request->schedule_group_size[$key];
                         $scheduleData->availability = $request->schedule_availability[$key];
                         $scheduleData->price = $request->schedule_price[$key];
-                        // $scheduleData->remarks = $request->schedule_remarks[$key];
+                        $scheduleData->discount_price = $request->schedule_disprice[$key];
+                        $scheduleData->seats = $request->schedule_seats[$key];
                         $scheduleData->save();
                     }
                     $sn_schedule++;
@@ -981,11 +979,7 @@ class TripController extends Controller
                         $itineraryData = new TripItineraryModel();
                         $itineraryData->trip_detail_id = $data->id;
                         $itineraryData->ordering = $request->itinerary_ordering[$key];
-                        // $itineraryData->days = $request->itinerary_days[$key];
                         $itineraryData->title = $request->itinerary_title[$key];
-                        // $itineraryData->max_altitude = $request->itinerary_max_altitude[$key];
-                        // $itineraryData->distance = $request->itinerary_distance[$key];
-                        // $itineraryData->duration = $request->itinerary_duration[$key];
                         $itineraryData->content = $request->itinerary_content[$key];
                         $itineraryData->save();
                     } else if ($request->itinerary_id[$value] !== null && $request->itinerary_id[$value] !== "") {
@@ -993,11 +987,7 @@ class TripController extends Controller
                         $itineraryData = TripItineraryModel::find($itinerary_id);
                         $itineraryData->trip_detail_id = $data->id;
                         $itineraryData->ordering = $request->itinerary_ordering[$key];
-                        // $itineraryData->days = $request->itinerary_days[$key];
                         $itineraryData->title = $request->itinerary_title[$key];
-                        // $itineraryData->max_altitude = $request->itinerary_max_altitude[$key];
-                        // $itineraryData->distance = $request->itinerary_distance[$key];
-                        // $itineraryData->duration = $request->itinerary_duration[$key];
                         $itineraryData->content = $request->itinerary_content[$key];
                         $itineraryData->save();
                     }
