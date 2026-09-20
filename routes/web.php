@@ -254,13 +254,17 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('admin/banner/{id}/{banner_id}', 'AdminControllers\Travels\TripBannerController@destory')->name('trip_banner_destory');
     Route::delete('delete_banner_thumb/{id}', 'AdminControllers\Travels\TripBannerController@delete_banner_thumb')->name('delete_banner_thumb');
     Route::post('admin/gear_thumb_update/{id}', 'AdminControllers\Travels\TripGearController@gear_thumb_update')->name('gear_thumb_update');
-    //Trip Review (Bibek)
+
+
+    //Trip Review
     Route::get('admin-trip-review', 'AdminControllers\Review\TripReviewController@trip_review')->name('trip-review');
     Route::any('admin-trip-review/create-review', 'AdminControllers\Review\TripReviewController@post_trip_review')->name('post-trip-review');
     Route::post('admin-review-status', 'AdminControllers\Review\TripReviewController@review_status')->name('review-status');
+    Route::get('admin-trip-view-review/{id}/view', 'AdminControllers\Review\TripReviewController@view_trip_review')->name('view-trip-review');
     Route::get('admin-trip-edit-review/{id?}/edit', 'AdminControllers\Review\TripReviewController@edit_trip_review');
     Route::post('admin-trip-edit-review/{id?}', 'AdminControllers\Review\TripReviewController@edit_trip_review')->name('edit-trip-review');
     Route::get('admin-trip-delete-review/{id?}', 'AdminControllers\Review\TripReviewController@delete_trip_review')->name('delete-trip-review');
+    Route::post('admin-trip-review-image-delete/{id}', 'AdminControllers\Review\TripReviewController@delete_trip_review_image')->name('delete-trip-review-image');
 
     //Trip Booking (Bibek)
     Route::get('admin-trip-booking', 'AdminControllers\Inquiry\TripBookingController@trip_booking')->name('trip-booking');

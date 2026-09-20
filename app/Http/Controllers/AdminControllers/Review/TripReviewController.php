@@ -4,9 +4,11 @@ namespace App\Http\Controllers\AdminControllers\Review;
 
 use App\Http\Controllers\Controller;
 use App\Model\TripReview;
+use App\Model\TripReviewImage;
 use App\Models\Travels\TripModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class TripReviewController extends Controller
 {
@@ -14,130 +16,219 @@ class TripReviewController extends Controller
     {
         $review = TripReview::orderby('id', 'desc')->get();
         $trip = TripModel::all();
+
         return view('admin.trip-reviews.index', compact('review', 'trip'));
     }
 
     public function post_trip_review(Request $request)
     {
-        //   dd($request->all());
         if ($request->isMethod('get')) {
             $trip = TripModel::all();
             return view('admin.trip-reviews.create', compact('trip'));
         }
         if ($request->isMethod('post')) {
             $request->validate([
-                'full_name' => 'required',
-                'country' => 'required',
-                //   'email' => 'required',
-                //    'contact' => 'required',
-                'message' => 'required',
-                'photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+                'trip_id'       => 'required|integer|exists:cl_trip_details,id',
+                'full_name'     => 'required|string|max:255',
+                'country'       => 'required|string|max:100',
+                'email'         => 'nullable|email|max:255',
+                'contact'       => 'nullable|string|max:50',
+                'title'         => 'required|string|max:255',
+                'rating'        => 'required|integer|min:1|max:5',
+                'message'       => 'required|string',
+                'photo'         => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
+                'trip_photos'   => 'nullable|array|max:5',
+                'trip_photos.*' => 'image|mimes:jpg,jpeg,png,gif,webp|max:2048',
             ]);
 
-            $data = $request->except('photo');
-            $data['trip_id'] = $request->trip_id ?? NULL;
+            $trip = TripModel::find($request->trip_id);
 
-            $trip = TripModel::where('id', $request->trip_id)->first();
-            If($trip){
-                $data['trip_title'] = $trip->trip_title;
+            $review = new TripReview();
+            $review->trip_id   = $request->trip_id;
+            $review->full_name = $request->full_name;
+            $review->country   = $request->country;
+            $review->email     = $request->email;
+            $review->contact   = $request->contact;
+            $review->title     = $request->title;
+            $review->rating    = $request->rating;
+            $review->message   = $request->message;
+            $review->status    = 0;
+            $review->consent   = 1;
+            $review->usefulness   = 1;
+            $review->trip_title = $trip ? $trip->trip_title : null;
+
+
+            $destinationPath = public_path('uploads/reviews');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
             }
 
+            // Profile image (same table)
             if ($request->hasFile('photo')) {
-                $image = $request->file('photo');
-                $name = time() . '.' . $image->getClientOriginalExtension();
-                $destinationPath = public_path('/uploads/reviews/');
-                $image->move($destinationPath, $name);
-                $data['image'] = $name;
+                $file = $request->file('photo');
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $filename = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
+                Image::make($file)->encode('webp', 80)->save($destinationPath . '/' . $filename);
+                $review->image = $filename;
             }
-            TripReview::create($data);
 
-            return redirect()->back()->with('success', 'Review posted successfully');
+            $review->save();
+
+            // Trip photos
+            if ($request->hasFile('trip_photos')) {
+                foreach ($request->file('trip_photos') as $photo) {
+                    $originalName = pathinfo(
+                        $photo->getClientOriginalName(),
+                        PATHINFO_FILENAME
+                    );
+                    $filename = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
+                    Image::make($photo)->encode('webp', 80)->save($destinationPath . '/' . $filename);
+
+                    $review->images()->create([
+                        'image' => $filename
+                    ]);
+                }
+            }
+
+            return redirect()->back()->with('success', 'Review Created Successfully');
         }
     }
-
-    public function delete_file($id)
+    public function view_trip_review($id)
     {
-        $findData = TripReview::findorfail($id);
-        $fileName = $findData->image;
-        $deletePath = public_path('uploads/reviews/' . $fileName);
-        if (file_exists($deletePath) && is_file($deletePath)) {
-            unlink($deletePath);
+        $data = TripReview::with('images')->findOrFail($id);
+
+        return view('admin.trip-reviews.show', compact('data'));
+    }
+    public function review_status(Request $request)
+    {
+        $review = TripReview::findOrFail($request->status);
+        $review->status = $request->status_value;
+        $review->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'Status updated successfully.',
+        ]);
+    }
+
+    public function delete_trip_review_image($id)
+    {
+        $img = TripReviewImage::findOrFail($id);
+        $path = public_path('uploads/reviews/' . $img->image);
+        if (file_exists($path)) {
+            unlink($path);
         }
-        return true;
+        $img->delete();
+
+        return response()->json(['success' => true]);
     }
 
     public function edit_trip_review(Request $request, $id)
     {
         if ($request->isMethod('get')) {
-
             $trip = TripModel::all();
-            $data = TripReview::findorfail($id);
+            $data = TripReview::with('images')->findOrFail($id);
+
             return view('admin.trip-reviews.edit', compact('trip', 'data'));
         }
 
         if ($request->isMethod('post')) {
-            $id = $request->id;
-            // $request->validate([
-            //     'full_name'=>'required',
-            //     'brief'=>'required',
-            // ]);
-            $data['trip_id'] = $request->trip_id;
-            $data['full_name'] = $request->full_name;
-            $data['title'] = $request->title;
-            $data['country'] = $request->country;
-            $data['email'] = $request->email;
-            $data['contact'] = $request->contact;
-            $data['message'] = $request->message;
-            $trip = TripModel::where('id', $request->trip_id)->first();
-            $data['trip_title'] = $trip->trip_title;
+            $review = TripReview::with('images')->findOrFail($id);
 
+            $request->validate([
+                'trip_id'       => 'required|integer|exists:cl_trip_details,id',
+                'full_name'     => 'required|string|max:255',
+                'country'       => 'required|string|max:100',
+                'email'         => 'nullable|email|max:255',
+                'contact'       => 'nullable|string|max:50',
+                'title'         => 'required|string|max:255',
+                'rating'        => 'required|integer|min:1|max:5',
+                'message'       => 'required|string',
+                'photo'         => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
+                'trip_photos'   => 'nullable|array',
+                'trip_photos.*' => 'image|mimes:jpg,jpeg,png,gif,webp|max:2048',
+            ]);
 
+            // Max 5 trip photos in total (saved ones + new ones)
+            $newCount = count($request->file('trip_photos', []));
+
+            if ($review->images->count() + $newCount > 5) {
+                return back()
+                    ->withErrors(['trip_photos' => 'Maximum 5 images allowed in total.'])
+                    ->withInput();
+            }
+
+            $trip = TripModel::find($request->trip_id);
+
+            $review->trip_id    = $request->trip_id;
+            $review->full_name  = $request->full_name;
+            $review->country    = $request->country;
+            $review->email      = $request->email;
+            $review->contact    = $request->contact;
+            $review->title      = $request->title;
+            $review->rating     = $request->rating;
+            $review->usefulness = $request->usefulness;
+            $review->message    = $request->message;
+            $review->trip_title = $trip ? $trip->trip_title : null;
+
+            $destinationPath = public_path('uploads/reviews');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Profile image (same table) - replace only if a new one is uploaded
             if ($request->hasFile('photo')) {
-                if ($request->image) {
-                    if (file_exists(env('PUBLIC_PATH') . 'uploads/reviews/' . $request->image)) {
-                        unlink(env('PUBLIC_PATH') . 'uploads/reviews/' . $request->image);
-                    }
+                if ($review->image && file_exists($destinationPath . '/' . $review->image)) {
+                    unlink($destinationPath . '/' . $review->image);
                 }
-                $this->delete_file($id);
-                $image = $request->file('photo');
-                $name = time() . '.' . $image->getClientOriginalExtension();
-                $destinationPath = public_path('/uploads/reviews/');
-                $image->move($destinationPath, $name);
-                $data['image'] = $name;
+
+                $file = $request->file('photo');
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $filename = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
+                Image::make($file)->encode('webp', 80)->save($destinationPath . '/' . $filename);
+                $review->image = $filename;
             }
-            $edit = TripReview::findorfail($id);
-            if ($edit->update($data)) {
-                return redirect()->back()->with('success', 'Trip review updated successfully');
+
+            $review->save();
+
+            // Add newly uploaded trip photos
+            if ($request->hasFile('trip_photos')) {
+                foreach ($request->file('trip_photos') as $photo) {
+                    $originalName = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                    $filename = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
+                    Image::make($photo)->encode('webp', 80)->save($destinationPath . '/' . $filename);
+
+                    $review->images()->create([
+                        'image' => $filename
+                    ]);
+                }
             }
+
+            return redirect()->back()->with('success', 'Review Updated Successfully');
         }
     }
 
     public function delete_trip_review(Request $request)
     {
         $id = $request->id;
-        $del = TripReview::findorfail($id);
-        if ($this->delete_file($id) && $del->delete()) {
-            return redirect()->back()->with('success', 'Review deleted  successfully');
+        $review = TripReview::with('images')->findOrFail($id);
+
+        $destinationPath = public_path('uploads/reviews');
+
+        // Delete profile image file
+        if ($review->image && file_exists($destinationPath . '/' . $review->image)) {
+            unlink($destinationPath . '/' . $review->image);
         }
+
+        // Delete trip photo files and their rows
+        foreach ($review->images as $img) {
+            if (file_exists($destinationPath . '/' . $img->image)) {
+                unlink($destinationPath . '/' . $img->image);
+            }
+            $img->delete();
+        }
+
+        $review->delete();
+
+        return redirect()->back()->with('success', 'Review deleted successfully');
     }
-
-    public function review_status(Request $request)
-    {
-        $id = $request->status;
-
-        $deal = TripReview::findorfail($id);
-
-        if (isset($_POST['active'])) {
-            $deal->status = 0;
-        }
-        if (isset($_POST['inactive'])) {
-            $deal->status = 1;
-        }
-        $save = $deal->update();
-        if ($save) {
-            Session::flash('success', 'Status updated');
-            return redirect()->back();
-        }
-    }
-
 }

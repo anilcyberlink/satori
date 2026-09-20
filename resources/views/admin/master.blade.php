@@ -124,7 +124,7 @@
                     </li>
                     <li class="{{ Request::segment(2) == 'home' ? 'active' : '' }}">
                         <a href="{{ url('admin/home/brief') }}">
-                            <span class="fa fa-archive "></span>
+                            <span class="fa fa-th-large"></span>
                             <span class="sidebar-title"> Homepage Info </span>
                         </a>
                     </li>
@@ -190,7 +190,7 @@
                             @else
                                 <a class="accordion-toggle">
                         @endif
-                        <span class="fa fa-map-marker "></span>
+                        <span class="fa fa-plane "></span>
                         <span class="sidebar-title"> Manage Trips</span>
                         <span class="caret"></span>
                         </a>
@@ -230,7 +230,7 @@
                             @else
                                 <a class="accordion-toggle">
                         @endif
-                        <span class="fa fa-users text-info"></span>
+                        <span class="fa fa-users "></span>
                         <span class="sidebar-title"> Manage Team </span>
                         <span class="caret"></span>
                         </a>
@@ -295,8 +295,6 @@
                     <li class="">
                         @if (Request::segment(1) == 'contact-us' ||
                                 Request::segment(1) == 'admin-trip-booking' ||
-                                Request::segment(1) == 'admin-trip-review' ||
-                                Request::segment(1) == 'admin-trip-edit-review' ||
                                 Request::segment(1) == 'category-inquiry' ||
                                 Request::segment(1) == 'tailor-made' ||
                                 Request::segment(1) == 'trip-inquiry' ||
@@ -309,7 +307,7 @@
                             @else
                                 <a class="accordion-toggle">
                         @endif
-                        <span class="fa fa-map-marker "></span>
+                        <span class="fa fa-envelope "></span>
                         <span class="sidebar-title"> Booking & Inquiries</span>
                         <span class="caret"></span>
                         </a>
@@ -317,63 +315,56 @@
                             <li class="{{ Request::segment(1) == 'contact-us' ? 'active' : '' }}">
 
                                 <a href="{{ url('contact-us') }}">
-                                    <span class="fa fa-dot-circle-o "></span>
+                                    <span class="fa fa fa-arrows-h"></span>
                                     <span class="sidebar-title">Contact Us</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == 'admin-trip-booking' ? 'active' : '' }}">
                                 <a href="{{ route('trip-booking') }}">
-                                    <span class="fa fa-ticket "></span>
+                                    <span class="fa fa fa-arrows-h"></span>
                                     <span class="sidebar-title">Trip Booking</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == 'trip-inquiry' ? 'active' : '' }}">
                                 <a href="{{ url('trip-inquiry') }}">
-                                    <span class="fa fa-ticket "></span>
+                                    <span class="fa fa fa-arrows-h"></span>
                                     <span class="sidebar-title">Inquiries</span>
-                                </a>
-                            </li>
-
-                            <!-- <li class="{{ Request::segment(1) == 'training-enrollment' ? 'active' : '' }}">
-                                    <a href="{{ url('training-enrollment') }}">
-                                        <span class="fa fa-ticket "></span>
-                                        <span class="sidebar-title">Training Enrollment</span>
-                                    </a>
-                                </li> -->
-                            <li
-                                class="{{ Request::segment(1) == 'admin-trip-review' || Request::segment(1) == 'admin-trip-edit-review' ? 'active' : '' }}">
-
-                                <a href="{{ route('trip-review') }}">
-                                    <span class="fa fa-dot-circle-o "></span>
-                                    <span class="sidebar-title">Manage Review</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == 'trip-customize' ? 'active' : '' }}">
                                 <a href="{{ url('trip-customize') }}">
-                                    <span class="fa fa-ticket "></span>
+                                    <span class="fa fa fa-arrows-h"></span>
                                     <span class="sidebar-title">Trip Customize</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == 'trip-plan' ? 'active' : '' }}">
                                 <a href="{{ url('trip-plan') }}">
-                                    <span class="fa fa-ticket "></span>
+                                    <span class="fa fa fa-arrows-h"></span>
                                     <span class="sidebar-title">Trip Plan</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == 'trip-private' ? 'active' : '' }}">
                                 <a href="{{ url('trip-private') }}">
-                                    <span class="fa fa-ticket "></span>
+                                    <span class="fa fa fa-arrows-h"></span>
                                     <span class="sidebar-title">Trip Private</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == 'trip-suggestion' ? 'active' : '' }}">
                                 <a href="{{ url('trip-suggestion') }}">
-                                    <span class="fa fa-ticket "></span>
+                                    <span class="fa fa fa-arrows-h"></span>
                                     <span class="sidebar-title">Trip Suggestion</span>
                                 </a>
                             </li>
 
                         </ul>
+                    </li>
+
+                    <li
+                        class="{{ Request::segment(1) == 'admin-trip-review' || Request::segment(1) == 'admin-trip-view-review' || Request::segment(1) == 'admin-trip-edit-review' ? 'active' : '' }}">
+                        <a href="{{ route('trip-review') }}">
+                            <span class="fa fa-comments"></span>
+                            <span class="sidebar-title"> Trip Reviews </span>
+                        </a>
                     </li>
                     <!-- <li class="{{ Request::segment(2) == 'payment' ? 'active' : '' }}">
                         <a href="{{ url('payment/index') }}">
