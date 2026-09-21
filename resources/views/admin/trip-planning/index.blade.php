@@ -1,12 +1,12 @@
 @extends('admin.master')
-@section('title', 'Trip Booking')
+@section('title', 'Trip planning')
 @section('breadcrumb')
 @endsection
 @section('content')
     <div class="tray tray-center" style="height: 647px;">
         <div class="panel">
             <div class="panel-heading">
-                <span class="panel-title"> Trip Boookings</span>
+                <span class="panel-title"> Trip Planning</span>
             </div>
             <div class="panel-body ph20">
                 <div class="tab-content">
@@ -29,7 +29,7 @@
                                             <tr class="bg-light">
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>
-                                                    <a href="{{ route('view-trip-booking', $row->id) }}">
+                                                    <a href="{{ route('view-trip-planning', $row->id) }}">
                                                         {{ $row->full_name }}
                                                     </a>
                                                 </td>
@@ -55,12 +55,12 @@
                                                     {{ $row->type }}
                                                 </td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('view-trip-booking', $row->id) }}">
+                                                    <a href="{{ route('view-trip-planning', $row->id) }}">
                                                         View
                                                     </a>
                                                     |
                                                     <span class="trash">
-                                                        <a href="{{ route('delete-booking', $row->id) }}"
+                                                        <a href="{{ route('delete-planning', $row->id) }}"
                                                             onclick="return confirm('Confirm Delete?')" class="btn-btn-danger">
                                                             Delete
                                                         </a>

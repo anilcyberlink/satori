@@ -10,9 +10,11 @@
     <section id="" class="table-layout animated fadeIn">
         <!-- begin: .tray-center -->
         <div class="">
-            <h4> Trips </h4>
             <!-- recent orders table -->
             <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title"> Trips</span>
+                </div>
                 <div class="panel-body pn">
                     <div class="table-responsive">
                         <table class="table admin-form table-striped dataTable" id="datatable3">

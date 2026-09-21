@@ -8,11 +8,11 @@
 @section('content')
 
     <section id="" class="table-layout animated fadeIn">
-        <!-- begin: .tray-center -->
         <div class="">
-            <h4> Posts </h4>
-            <!-- recent orders table -->
             <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title"> Posts </span>
+                </div>
                 <div class="panel-body pn">
                     <div class="table-responsive">
                         <table class="table admin-form table-striped dataTable" id="datatable3">
@@ -35,7 +35,7 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="post_title title_hi_sh">
-                                            @if (check_child_post($row->id) || Request::segment(2)=='team-members')
+                                            @if (check_child_post($row->id) || Request::segment(2) == 'team-members')
                                                 <strong> {{ ucfirst($row->post_title) }} </strong>
                                                 <a href="{{ url('admin/' . Request::segment(2) . '/' . $row->id) }}">
                                                     <i class="fa fa-list" aria-hidden="true"></i> </a>
@@ -49,15 +49,17 @@
                                                         aria-label="">Edit</a>
                                                 </span>
                                                 @if (
-                                                    !check_child_post($row->id) > 0 &&
+                                                        !check_child_post($row->id) > 0 &&
                                                         !has_associatedpost($row->id) > 0 &&
                                                         $row->id != '118' &&
                                                         $row->id != '134' &&
                                                         $row->id != '124' &&
-                                                        $row->id != '157')
+                                                        $row->id != '157'
+                                                    )
 
                                                     @if (has_postimage($row->id) <= 0)
-                                                        | <span class="trash"><a href="#{{ $row->id }}" class="submitdelete1">Delete</a></span>
+                                                        | <span class="trash"><a href="#{{ $row->id }}"
+                                                                class="submitdelete1">Delete</a></span>
                                                     @endif
 
                                                 @endif
@@ -67,9 +69,10 @@
                                         <td></td>
                                         <td> {{ $row->post_order }}</td>
                                         <td>
-                                            {{-- @if ($row->id == '118' || $row->id == '121' || $row->id == '125' || $row->id == '130' || $row->id == '137') --}}
+                                            {{-- @if ($row->id == '118' || $row->id == '121' || $row->id == '125' || $row->id ==
+                                            '130' || $row->id == '137') --}}
                                             {{-- @if(has_associatedpost($row->id) > 0) --}}
-                                                <a href="{{ url('admin/associated/' . Request::segment(2) . '/' . $row->id) }}"><i
+                                            <a href="{{ url('admin/associated/' . Request::segment(2) . '/' . $row->id) }}"><i
                                                     class="fa fa-plus fa fa-2x"></i></a>
                                             {{-- @endif --}}
                                             {{-- @endif --}}
@@ -100,16 +103,16 @@
     <!-- Datatables Tabletools addon -->
     <script
         src="{{ asset(env('PUBLIC_PATH') . 'vendor/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js') }}">
-    </script>
+        </script>
     <!-- Datatables ColReorder addon -->
     <script
         src="{{ asset(env('PUBLIC_PATH') . 'vendor/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js') }}">
-    </script>
+        </script>
     <!-- Datatables Bootstrap Modifications  -->
     <script src="{{ asset(env('PUBLIC_PATH') . 'vendor/plugins/datatables/media/js/dataTables.bootstrap.js') }}"></script>
     <script type="text/javascript">
-        (function($) {
-            $('.submitdelete1').on('click', function(e) {
+        (function ($) {
+            $('.submitdelete1').on('click', function (e) {
                 e.preventDefault();
                 if (confirm('Are you sure to delete??')) {
                     var csrf = $('meta[name="csrf-token"]').attr('content');
@@ -121,10 +124,10 @@
                         data: {
                             _token: csrf
                         },
-                        success: function(data) {
+                        success: function (data) {
                             $('tbody tr.id' + id).remove();
                         },
-                        error: function(data) {
+                        error: function (data) {
                             alert('Error occurred!');
                         }
                     });
@@ -134,15 +137,15 @@
         }(jQuery));
 
         /********/
-        $('document').ready(function() {
-            $('#checkAll').on('click', function(e) {
+        $('document').ready(function () {
+            $('#checkAll').on('click', function (e) {
                 if ($(this).is(':checked', true)) {
                     $('.check_box').prop('checked', true);
                 } else {
                     $('.check_box').prop('checked', false);
                 }
             });
-            $('.deleteAll').on(function() {
+            $('.deleteAll').on(function () {
 
             });
         });

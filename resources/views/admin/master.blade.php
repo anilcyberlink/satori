@@ -22,9 +22,6 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!---------------- Fav icon starts --------------------->
-    <!--<link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">-->
-    <!--<link rel="apple-touch-icon-precomposed" href="{{ asset('images/favicon.png') }}">-->
-    <!-- Icon code update by sangam since the previous was not wroking properly. And OS specific favicon code are added ----->
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon/favicon.ico') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicon/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/favicon/favicon-16x16.png') }}">
@@ -293,7 +290,7 @@
                */
                     ?>
                     <li class="">
-                        @if (Request::segment(1) == 'contact-us' ||
+                        @if (Request::segment(1) == 'contact-inquiry' ||
                                 Request::segment(1) == 'admin-trip-booking' ||
                                 Request::segment(1) == 'category-inquiry' ||
                                 Request::segment(1) == 'tailor-made' ||
@@ -301,7 +298,8 @@
                                 Request::segment(1) == 'training-enrollment' ||
                                 Request::segment(1) == 'trip-customize' ||
                                 Request::segment(1) == 'trip-suggestion' ||
-                                Request::segment(1) == 'trip-plan' ||
+                                Request::segment(1) == 'admin-plan-trip' ||
+                                Request::segment(1) == 'admin-trip-planning' ||
                                 Request::segment(1) == 'trip-private')
                             <a class="accordion-toggle menu-open">
                             @else
@@ -312,11 +310,11 @@
                         <span class="caret"></span>
                         </a>
                         <ul class="nav sub-nav">
-                            <li class="{{ Request::segment(1) == 'contact-us' ? 'active' : '' }}">
+                            <li class="{{ Request::segment(1) == 'contact-inquiry' ? 'active' : '' }}">
 
-                                <a href="{{ url('contact-us') }}">
+                                <a href="{{ url('contact-inquiry') }}">
                                     <span class="fa fa fa-arrows-h"></span>
-                                    <span class="sidebar-title">Contact Us</span>
+                                    <span class="sidebar-title">Contact Inquiry</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == 'admin-trip-booking' ? 'active' : '' }}">
@@ -328,22 +326,22 @@
                             <li class="{{ Request::segment(1) == 'trip-inquiry' ? 'active' : '' }}">
                                 <a href="{{ url('trip-inquiry') }}">
                                     <span class="fa fa fa-arrows-h"></span>
-                                    <span class="sidebar-title">Inquiries</span>
+                                    <span class="sidebar-title">Trip Inquiries</span>
                                 </a>
                             </li>
-                            <li class="{{ Request::segment(1) == 'trip-customize' ? 'active' : '' }}">
+                            {{-- <li class="{{ Request::segment(1) == 'trip-customize' ? 'active' : '' }}">
                                 <a href="{{ url('trip-customize') }}">
                                     <span class="fa fa fa-arrows-h"></span>
                                     <span class="sidebar-title">Trip Customize</span>
                                 </a>
-                            </li>
-                            <li class="{{ Request::segment(1) == 'trip-plan' ? 'active' : '' }}">
-                                <a href="{{ url('trip-plan') }}">
+                            </li> --}}
+                            <li class="{{ Request::segment(1) == 'admin-plan-trip' || Request::segment(1) == 'admin-trip-planning' ? 'active' : '' }}">
+                                <a href="{{ url('admin-plan-trip') }}">
                                     <span class="fa fa fa-arrows-h"></span>
                                     <span class="sidebar-title">Trip Plan</span>
                                 </a>
                             </li>
-                            <li class="{{ Request::segment(1) == 'trip-private' ? 'active' : '' }}">
+                            {{-- <li class="{{ Request::segment(1) == 'trip-private' ? 'active' : '' }}">
                                 <a href="{{ url('trip-private') }}">
                                     <span class="fa fa fa-arrows-h"></span>
                                     <span class="sidebar-title">Trip Private</span>
@@ -354,7 +352,7 @@
                                     <span class="fa fa fa-arrows-h"></span>
                                     <span class="sidebar-title">Trip Suggestion</span>
                                 </a>
-                            </li>
+                            </li> --}}
 
                         </ul>
                     </li>

@@ -11,6 +11,9 @@
 
     <div class="tray tray-center" style="height: 647px;">
         <div class="panel">
+            <div class="panel-heading">
+                <span class="panel-title"> Team Categories</span>
+            </div>
             <div class="panel-body ph20">
                 <div class="tab-content">
                     <div id="users" class="tab-pane active">

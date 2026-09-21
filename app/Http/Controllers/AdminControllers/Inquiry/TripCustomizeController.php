@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 namespace App\Http\Controllers\AdminControllers\Inquiry;
 
 use Illuminate\Http\Request;
@@ -13,17 +14,17 @@ class TripCustomizeController extends Controller
     //
     public function index()
     {
-        $customize = CustomizeModel::orderby('id', 'desc')->where('type','customize')->get();
+        $customize = CustomizeModel::orderby('id', 'desc')->where('type', 'customize')->get();
         return view('admin.trip-customize.index', compact('customize'));
     }
     public function showplan()
     {
-        $customize = CustomizeModel::orderby('id', 'desc')->where('type','plan')->get();
+        $customize = CustomizeModel::orderby('id', 'desc')->where('type', 'plan')->get();
         return view('admin.trip-customize.index', compact('customize'));
     }
     public function showprivate()
     {
-        $customize = CustomizeModel::orderby('id', 'desc')->where('type','private')->get();
+        $customize = CustomizeModel::orderby('id', 'desc')->where('type', 'private')->get();
         return view('admin.trip-customize.index', compact('customize'));
     }
     public function showsuggestion()
