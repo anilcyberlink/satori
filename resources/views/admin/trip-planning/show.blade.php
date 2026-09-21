@@ -1,7 +1,7 @@
 @extends('admin.master')
-@section('title', 'Trip Booking')
+@section('title', 'Trip planning')
 @section('breadcrumb')
-    <a href="{{ route('trip-booking') }}" class="btn btn-primary btn-sm">
+    <a href="{{ route('trip-planning') }}" class="btn btn-primary btn-sm">
         Go Back
     </a>
 @endsection
@@ -134,7 +134,7 @@
                 <span class="panel-title">Booking Status</span>
             </div>
             <div class="panel-body">
-                <form action="{{ route('update-trip-booking-status', $book->id) }}" method="POST">
+                <form action="{{ route('update-trip-planning-status', $book->id) }}" method="POST">
                     @csrf
                     <div class="form-group">
                         <label for="status">Status</label>

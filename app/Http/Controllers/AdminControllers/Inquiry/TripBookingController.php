@@ -3,82 +3,105 @@
 namespace App\Http\Controllers\AdminControllers\Inquiry;
 
 use App\Model\Contact;
-use App\Model\VerifyContact;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Inquiry\BookingModel;
-use App\Models\Inquiry\Emergency;
-use App\Models\Inquiry\Insurance;
-use App\Models\Inquiry\FlightDetails;
 
 class TripBookingController extends Controller
 {
-
     public function index()
     {
         $data = Contact::orderBy('id', 'desc')->get();
         return view('admin.contact.index', compact('data'));
     }
-
-
+    public function show($id)
+    {
+        $data = Contact::findOrFail($id);
+        return view('admin.contact.show', compact('data'));
+    }
     public function destroy($id)
     {
-        $del = Contact::findorfail($id);
-
+        $del = Contact::findOrFail($id);
         $del->delete();
-        return redirect()->back()->with('success', 'Contact deleted  successfully');
-
+        return redirect()->back()->with('success', 'Contact deleted successfully');
     }
 
-    public function trip_booking(Request $request)
+    // Trip Planning
+    public function trip_planning(Request $request)
     {
         if ($request->isMethod('get')) {
-            $book = BookingModel::with('travelers')->orderby('id', 'desc')->get();
-            // dd($book);
+            $book = BookingModel::orderby('id', 'desc')->get();
 
-            return view('admin.trip-booking.index', compact('book'));
-
+            return view('admin.trip-planning.index', compact('book'));
         }
     }
-
-    public function view_trip_booking($id)
+    public function view_trip_planning($id)
     {
-        $book = BookingModel::with('travelers')->where('id', $id)->first();
+        $book = BookingModel::where('id', $id)->first();
         // dd($book);
-        return view('admin.trip-booking.show', compact('book'));
-
+        return view('admin.trip-planning.show', compact('book'));
     }
 
-    public function trip_booking_delete(Request $request)
+    public function update_planning_status(Request $request, $id)
+    {
+        $booking = BookingModel::findOrFail($id);
+        $request->validate([
+            'status' => 'required|in:pending,confirmed,cancelled,completed',
+        ]);
+        $booking->status = $request->status;
+        $booking->save();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Booking status updated successfully.');
+    }
+
+    public function trip_planning_delete(Request $request)
     {
         $del = BookingModel::findorfail($request->id);
-        $flight = FlightDetails::where('booking_id', $del->id)->first();
-        $insurance = Insurance::where('booking_id', $del->id)->first();
-        $emergency = Emergency::where('booking_id', $del->id)->first();
-        if ($flight) {
-            $flight->delete();
-        }
-        if ($insurance) {
-            $insurance->delete();
-        }
-        if ($emergency) {
-            $emergency->delete();
-        }
+
         if ($del->delete()) {
             return redirect()->back()->with('success', 'Booking deleted  successfully');
         }
     }
 
-    public function update_status(Request $request)
+    // Trip Booking
+    public function trip_booking(Request $request)
     {
-        $data = BookingModel::findorFail($request->id);
-        if ($data) {
-            $data->paid_status = 1;
-            $data->update();
-            return redirect()->back()->with('success', 'Mark as paid  successfully');
+        if ($request->isMethod('get')) {
+            $book = BookingModel::orderby('id', 'desc')->get();
+
+            return view('admin.trip-booking.index', compact('book'));
         }
-        return redirect()->back()->with('error', 'Booking not found');
     }
 
+    public function view_trip_booking($id)
+    {
+        $book = BookingModel::where('id', $id)->first();
+        // dd($book);
+        return view('admin.trip-booking.show', compact('book'));
+    }
 
+    public function update_status(Request $request, $id)
+    {
+        $booking = BookingModel::findOrFail($id);
+        $request->validate([
+            'status' => 'required|in:pending,confirmed,cancelled,completed',
+        ]);
+        $booking->status = $request->status;
+        $booking->save();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Booking status updated successfully.');
+    }
+
+    public function trip_booking_delete(Request $request)
+    {
+        $del = BookingModel::findorfail($request->id);
+
+        if ($del->delete()) {
+            return redirect()->back()->with('success', 'Booking deleted  successfully');
+        }
+    }
 }

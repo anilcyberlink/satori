@@ -8,15 +8,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/sitemap.xml', 'FrontendControllers\FrontpageController@sitemap');
 /************************** Sangam Routes Starts *********************************/
-Route::get('/himalayan/payment/verify/{data}',[HBLController::class,'payment_verify'])->name('himalayan.payment.verify');
-Route::any('/himalayan/success',[HBLController::class,'success'])->name('himalayan.success');
-Route::any('/himalayan/failed',[HBLController::class,'failure'])->name('himalayan.failure');
+Route::get('/himalayan/payment/verify/{data}', [HBLController::class, 'payment_verify'])->name('himalayan.payment.verify');
+Route::any('/himalayan/success', [HBLController::class, 'success'])->name('himalayan.success');
+Route::any('/himalayan/failed', [HBLController::class, 'failure'])->name('himalayan.failure');
 Route::get('/himalayan-bank/response/{id?}', [HBLController::class, 'response'])->name('himalayan.payment.response');
-Route::get('/payment-direct', [DirectPayController::class,'payment_direct'])->name('payment.direct');
-Route::post('/payment-store', [DirectPayController::class,'payment_store'])->name('payment.store');
-Route::get('/payment-verify/{id}', [DirectPayController::class,'payment_verify'])->name('payment.verify');
-Route::any('/payment/success', [DirectPayController::class,'success'])->name('payment.success');
-Route::any('/payment/failed', [DirectPayController::class,'failure'])->name('payment.failure');
+Route::get('/payment-direct', [DirectPayController::class, 'payment_direct'])->name('payment.direct');
+Route::post('/payment-store', [DirectPayController::class, 'payment_store'])->name('payment.store');
+Route::get('/payment-verify/{id}', [DirectPayController::class, 'payment_verify'])->name('payment.verify');
+Route::any('/payment/success', [DirectPayController::class, 'success'])->name('payment.success');
+Route::any('/payment/failed', [DirectPayController::class, 'failure'])->name('payment.failure');
 Route::get('/payment/response/{id?}', [DirectPayController::class, 'response'])->name('payment.response');
 /************************** Sangam Routes Ends ***********************************/
 
@@ -68,7 +68,7 @@ Route::any('book/{uri}.html', 'FrontendControllers\FrontpageController@showbooki
 Route::get('booking-success', 'FrontendControllers\FrontpageController@showbookingsuccess')->name('page.bookingsuccess');
 // Route::get('page/{uri}.html', 'FrontendControllers\FrontpageController@tripdetail')->name('page.tripdetail');
 Route::get('trip/{uri}', 'FrontendControllers\FrontpageController@tripdetail')->name('trip.tripdetail');
-Route::get('/download-trip/{uri}','FrontendControllers\FrontpageController@downloadPdf')->name('trip.download');
+Route::get('/download-trip/{uri}', 'FrontendControllers\FrontpageController@downloadPdf')->name('trip.download');
 
 Route::get('activity/{uri}.html', 'FrontendControllers\FrontpageController@travellist')->name('page.activitydetail');
 Route::get('region/{uri}.html', 'FrontendControllers\FrontpageController@regionlist')->name('page.regionlist');
@@ -113,55 +113,55 @@ Route::middleware(['auth'])->group(function () {
         'admin/tripgroup' => 'AdminControllers\Travels\TripGroupController',
         'admin/destination' => 'AdminControllers\Destinations\DestinationController',
         'admin/teams' => 'AdminControllers\Teams\TeamController',
-        'admin/teamcategory'=>'AdminControllers\Teams\TeamCategoryController',
+        'admin/teamcategory' => 'AdminControllers\Teams\TeamCategoryController',
         'admin.testimonials' => 'AdminControllers\Cost\CostIncludesController',
         'admin.trip-gear' => 'AdminControllers\Travels\TripGearController',
         'category-inquiry' => 'AdminControllers\Inquiry\TripFilmMakingController',
         'tailor-made' => 'AdminControllers\Inquiry\TripTailorMadeController',
         'trip-inquiry' => 'AdminControllers\Inquiry\TripInquiryController',
         'training-enrollment' => 'AdminControllers\Inquiry\EnrollmentController',
-        'contact-us' => 'AdminControllers\Inquiry\TripBookingController',
+        'contact-inquiry' => 'AdminControllers\Inquiry\TripBookingController',
         'admin.faq' => 'AdminControllers\Faqs\FaqController',
 
     ]);
     Route::delete('delete_teamcategory_thumb/{id}', 'AdminControllers\Teams\TeamCategoryController@delete_teamcategory_thumb');
     Route::post('admin/teamcategory/status', 'AdminControllers\Teams\TeamCategoryController@updateStatus');
     Route::post('admin/teams/{id}/toggle-status', 'AdminControllers\Teams\TeamController@toggleStatus')->name('teams.toggleStatus');
-    Route::delete('admin/certificates/{id}/{info_id}','AdminControllers\Teams\TeamController@certificatesdestroy')->name('certificates.destroy');
+    Route::delete('admin/certificates/{id}/{info_id}', 'AdminControllers\Teams\TeamController@certificatesdestroy')->name('certificates.destroy');
     Route::delete('admin/teams/{id}/extrainfos/{info_id}', 'AdminControllers\Teams\TeamController@extrainfosdestroy')->name('extrainfos.destroy');
 
 
     // For all trips Only for Developer
-    Route::get('admin/alltrips','AdminControllers\Travels\TripController@alltrips')->name('admin.trip.all');
+    Route::get('admin/alltrips', 'AdminControllers\Travels\TripController@alltrips')->name('admin.trip.all');
     // Upto here
 
     // Past Trips
-    Route::get('admin/past-trips/{id}','AdminControllers\Travels\PastTripController@index')->name('pasttrip.index');
-    Route::get('admin/past-trips/{id}/create','AdminControllers\Travels\PastTripController@create')->name('pasttrip.create');
-    Route::post('admin/past-trips/store','AdminControllers\Travels\PastTripController@store')->name('pasttrip.store');
-    Route::get('admin/past-trips/{id}/edit','AdminControllers\Travels\PastTripController@edit')->name('pasttrip.edit');
-    Route::put('admin/past-trips/{id}','AdminControllers\Travels\PastTripController@update')->name('pasttrip.update');
-    Route::put('admin/past-trips/{id}/status','AdminControllers\Travels\PastTripController@status')->name('pasttrip.status');
-    Route::delete('admin/past-trips/{id}','AdminControllers\Travels\PastTripController@destroy')->name('pasttrip.destroy');
+    Route::get('admin/past-trips/{id}', 'AdminControllers\Travels\PastTripController@index')->name('pasttrip.index');
+    Route::get('admin/past-trips/{id}/create', 'AdminControllers\Travels\PastTripController@create')->name('pasttrip.create');
+    Route::post('admin/past-trips/store', 'AdminControllers\Travels\PastTripController@store')->name('pasttrip.store');
+    Route::get('admin/past-trips/{id}/edit', 'AdminControllers\Travels\PastTripController@edit')->name('pasttrip.edit');
+    Route::put('admin/past-trips/{id}', 'AdminControllers\Travels\PastTripController@update')->name('pasttrip.update');
+    Route::put('admin/past-trips/{id}/status', 'AdminControllers\Travels\PastTripController@status')->name('pasttrip.status');
+    Route::delete('admin/past-trips/{id}', 'AdminControllers\Travels\PastTripController@destroy')->name('pasttrip.destroy');
 
     // Past Trip Images
-    Route::get('admin/past-images/{id}/create','AdminControllers\Travels\PastTripImageController@addImages')->name('pasttrip.image.create');
-    Route::post('admin/past-images/store','AdminControllers\Travels\PastTripImageController@store')->name('pasttrip.image.store');
-    Route::delete('admin/past-images/{id}','AdminControllers\Travels\PastTripImageController@destroy')->name('pasttrip.image.destroy');
-    Route::get('admin/past-images/{id}/edit','AdminControllers\Travels\PastTripImageController@edit')->name('pasttrip.image.edit');
-    Route::put('admin/past-images/{id}','AdminControllers\Travels\PastTripImageController@update')->name('pasttrip.image.update');
+    Route::get('admin/past-images/{id}/create', 'AdminControllers\Travels\PastTripImageController@addImages')->name('pasttrip.image.create');
+    Route::post('admin/past-images/store', 'AdminControllers\Travels\PastTripImageController@store')->name('pasttrip.image.store');
+    Route::delete('admin/past-images/{id}', 'AdminControllers\Travels\PastTripImageController@destroy')->name('pasttrip.image.destroy');
+    Route::get('admin/past-images/{id}/edit', 'AdminControllers\Travels\PastTripImageController@edit')->name('pasttrip.image.edit');
+    Route::put('admin/past-images/{id}', 'AdminControllers\Travels\PastTripImageController@update')->name('pasttrip.image.update');
 
 
-    Route::get('trip-customize','AdminControllers\Inquiry\TripCustomizeController@index')->name('admin.trip.customize');
-    Route::get('trip-plan','AdminControllers\Inquiry\TripCustomizeController@showplan')->name('admin.trip.plan');
-    Route::get('trip-private','AdminControllers\Inquiry\TripCustomizeController@showprivate')->name('admin.trip.private');
-    Route::get('trip-suggestion','AdminControllers\Inquiry\TripCustomizeController@showsuggestion')->name('admin.trip.suggestion');
-    Route::delete('trip-customize/{id}','AdminControllers\Inquiry\TripCustomizeController@destroy')->name('trip-customize.destroy');
-    Route::delete('trip-suggestion/{id}','AdminControllers\Inquiry\TripCustomizeController@destroySuggestion')->name('trip-suggestion.destroy');
+    Route::get('trip-customize', 'AdminControllers\Inquiry\TripCustomizeController@index')->name('admin.trip.customize');
+    Route::get('trip-plan', 'AdminControllers\Inquiry\TripCustomizeController@showplan')->name('admin.trip.plan');
+    Route::get('trip-private', 'AdminControllers\Inquiry\TripCustomizeController@showprivate')->name('admin.trip.private');
+    Route::get('trip-suggestion', 'AdminControllers\Inquiry\TripCustomizeController@showsuggestion')->name('admin.trip.suggestion');
+    Route::delete('trip-customize/{id}', 'AdminControllers\Inquiry\TripCustomizeController@destroy')->name('trip-customize.destroy');
+    Route::delete('trip-suggestion/{id}', 'AdminControllers\Inquiry\TripCustomizeController@destroySuggestion')->name('trip-suggestion.destroy');
 
 
 
-    Route::get('admin/training-list/{training}','AdminControllers\Travels\TripController@index')->name('training.list.index');
+    Route::get('admin/training-list/{training}', 'AdminControllers\Travels\TripController@index')->name('training.list.index');
     Route::get('admin/training-list/create/{training}', 'AdminControllers\Travels\TripController@create')->name('training.list.create');
     Route::get('admin/training-list/edit/{uri}/{training}', 'AdminControllers\Travels\TripController@edit')->name('training.list.edit');
     Route::post('banner-isdefault/{id?}', 'AdminControllers\Banners\BannerController@isdefault')->name('banner.isdefault');
@@ -266,11 +266,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('admin-trip-delete-review/{id?}', 'AdminControllers\Review\TripReviewController@delete_trip_review')->name('delete-trip-review');
     Route::post('admin-trip-review-image-delete/{id}', 'AdminControllers\Review\TripReviewController@delete_trip_review_image')->name('delete-trip-review-image');
 
-    //Trip Booking (Bibek)
+    //Trip Booking
     Route::get('admin-trip-booking', 'AdminControllers\Inquiry\TripBookingController@trip_booking')->name('trip-booking');
     Route::get('admin-trip-booking/{id}', 'AdminControllers\Inquiry\TripBookingController@view_trip_booking')->name('view-trip-booking');
     Route::get('admin-trip-booking-delete/{id?}', 'AdminControllers\Inquiry\TripBookingController@trip_booking_delete')->name('delete-booking');
-    Route::get('admin-trip-booking\update-status/{id?}', 'AdminControllers\Inquiry\TripBookingController@update_status')->name('booking.update.status');
+    Route::post('admin-trip-booking/{id}/status', 'AdminControllers\Inquiry\TripBookingController@update_status')->name('update-trip-booking-status');
+
+
+    // Trip Planning
+    Route::get('admin-plan-trip', 'AdminControllers\Inquiry\TripBookingController@trip_planning')->name('trip-planning');
+    Route::get('admin-trip-planning/{id}', 'AdminControllers\Inquiry\TripBookingController@view_trip_planning')->name('view-trip-planning');
+    Route::get('admin-trip-planning-delete/{id?}', 'AdminControllers\Inquiry\TripBookingController@trip_planning_delete')->name('delete-planning');
+    Route::post('admin-trip-planning/{id}/status', 'AdminControllers\Inquiry\TripBookingController@update_planning_status')->name('update-trip-planning-status');
 
     // newsletter routes
     Route::get('send-newsletter', 'SendMailController@index')->name('send.newsletter');
@@ -310,8 +317,8 @@ Route::middleware(['auth'])->group(function () {
 
 
     /************** Sangam Starts ****************/
-    Route::get('/payment/index',[DirectPayController::class,'index'])->name('payment.index');
-    Route::get('/payment/show/{id}',[DirectPayController::class,'show'])->name('payment.show');
-    Route::get('/payment/delete/{id}',[DirectPayController::class,'delete'])->name('payment.delete');
+    Route::get('/payment/index', [DirectPayController::class, 'index'])->name('payment.index');
+    Route::get('/payment/show/{id}', [DirectPayController::class, 'show'])->name('payment.show');
+    Route::get('/payment/delete/{id}', [DirectPayController::class, 'delete'])->name('payment.delete');
     /************** Sangam Ends ******************/
 });

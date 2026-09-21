@@ -6,6 +6,9 @@
 @section('content')
     <div class="tray tray-center" style="">
         <div class="panel">
+            <div class="panel-heading">
+                <span class="panel-title"> Posttypes</span>
+            </div>
             <div class="panel-body ph20">
                 <div class="tab-content">
                     <div id="users" class="tab-pane active">
@@ -56,8 +59,8 @@
 
 @section('scripts')
     <script type="text/javascript">
-        jQuery(document).ready(function() {
-            $('.btn-delete').on('click', function(e) {
+        jQuery(document).ready(function () {
+            $('.btn-delete').on('click', function (e) {
                 e.preventDefault();
                 if (!confirm('Are you sure to delete?')) return false;
                 var csrf = $('meta[name="csrf-token"]').attr('content');
@@ -69,10 +72,10 @@
                     data: {
                         _token: csrf
                     },
-                    success: function(data) {
+                    success: function (data) {
                         $('tbody tr.id' + id).remove();
                     },
-                    error: function(data) {
+                    error: function (data) {
                         alert('Error occurred!');
                     }
                 });
