@@ -279,20 +279,24 @@ Route::middleware(['auth'])->group(function () {
     Route::get('admin-trip-planning-delete/{id?}', 'AdminControllers\Inquiry\TripBookingController@trip_planning_delete')->name('delete-planning');
     Route::post('admin-trip-planning/{id}/status', 'AdminControllers\Inquiry\TripBookingController@update_planning_status')->name('update-trip-planning-status');
 
-    // newsletter routes
+    // Newsletter routes
     Route::get('send-newsletter', 'SendMailController@index')->name('send.newsletter');
     Route::post('users-send-email', 'SendMailController@sendEmail')->name('ajax.send.email');
     Route::get('newsletter-create', 'SendMailController@newsletter')->name('newsletter.create');
     Route::post('newsletters', 'SendMailController@newsletter')->name('newsletter.submit');
     Route::get('newsletter-index', 'SendMailController@newsindex')->name('newsletter.index');
-    Route::get('newsletter-edit/{id?}', 'SendMailController@newsedit')->name('newsletter.edit');
+    Route::get('newsletter/{id}/edit', 'SendMailController@newsedit')->name('newsletter.edit');
+    Route::post('newsletter/{id}', 'SendMailController@newsedit')->name('newsletter.update');
     Route::get('newsletter-delete/{id?}', 'SendMailController@newsdelete')->name('newsletter.delete');
+
+    // Subscribers
     Route::get('subscriber-create', 'SendMailController@usercreate')->name('subscriber.create');
     Route::post('subscriber-create', 'SendMailController@usercreate')->name('subscriber.submit');
     Route::get('subscriber-index', 'SendMailController@userindex')->name('subscriber.index');
     Route::get('subscriber-edit/{id?}', 'SendMailController@useredit')->name('subscriber.update');
     Route::post('subscriber-edit/{id?}', 'SendMailController@useredit')->name('subscriber.edit');
     Route::get('subscriber-delete/{id?}', 'SendMailController@userdelete')->name('user.delete');
+
 
     // Delete image
     Route::delete('delete_video/{id}', 'AdminControllers\Banners\BannerController@delete_video')->name('delete_video');
