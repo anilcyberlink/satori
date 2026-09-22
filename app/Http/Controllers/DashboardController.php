@@ -1,16 +1,12 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\Posts\PostModel;
 use App\Models\Travels\TripModel;
 use App\Model\Contact;
 use App\Models\Inquiry\BookingModel;
 use App\Model\TripReview;
-
 class DashboardController extends Controller
 {
     public function __construct()
@@ -31,22 +27,20 @@ class DashboardController extends Controller
         $total_reviews = TripReview::count();
         /*
         |--------------------------------------------------------------------------
-        | Booking Statistics
+        | Booking Status
         |--------------------------------------------------------------------------
-        | CHANGE status values according to your database.
         */
         $pending_bookings = BookingModel::where('status', 'pending')->count();
-        $confirmed_bookings = BookingModel::where('status', 'confirmed')->count();
+        $confirmed_bookings = BookingModel::where('status', 'Confirmed')->count();
+        $completed_bookings = BookingModel::where('status', 'Completed')->count();
         $cancelled_bookings = BookingModel::where('status', 'cancelled')->count();
         /*
         |--------------------------------------------------------------------------
-        | Inquiry Statistics
+        | Booking Type
         |--------------------------------------------------------------------------
-        | CHANGE status values according to your database.
         */
-        $new_inquires = Contact::where('number', 'new')->count();
-        $pending_inquires = Contact::where('number', 'pending')->count();
-        $converted_inquires = Contact::where('number', 'converted')->count();
+        $group_bookings = BookingModel::where('type', 'Group')->count();
+        $private_bookings = BookingModel::where('type', 'Private')->count();
         /*
         |--------------------------------------------------------------------------
         | Current Month Statistics
@@ -55,24 +49,30 @@ class DashboardController extends Controller
         $current_month_bookings = BookingModel::whereMonth(
             'created_at',
             now()->month
-        )->whereYear(
-            'created_at',
-            now()->year
-        )->count();
+        )
+            ->whereYear(
+                'created_at',
+                now()->year
+            )
+            ->count();
         $current_month_inquires = Contact::whereMonth(
             'created_at',
             now()->month
-        )->whereYear(
-            'created_at',
-            now()->year
-        )->count();
+        )
+            ->whereYear(
+                'created_at',
+                now()->year
+            )
+            ->count();
         $current_month_reviews = TripReview::whereMonth(
             'created_at',
             now()->month
-        )->whereYear(
-            'created_at',
-            now()->year
-        )->count();
+        )
+            ->whereYear(
+                'created_at',
+                now()->year
+            )
+            ->count();
         /*
         |--------------------------------------------------------------------------
         | Monthly Booking / Inquiry Chart
@@ -87,17 +87,21 @@ class DashboardController extends Controller
             $booking_chart[] = BookingModel::whereMonth(
                 'created_at',
                 $date->month
-            )->whereYear(
-                'created_at',
-                $date->year
-            )->count();
+            )
+                ->whereYear(
+                    'created_at',
+                    $date->year
+                )
+                ->count();
             $inquiry_chart[] = Contact::whereMonth(
                 'created_at',
                 $date->month
-            )->whereYear(
-                'created_at',
-                $date->year
-            )->count();
+            )
+                ->whereYear(
+                    'created_at',
+                    $date->year
+                )
+                ->count();
         }
         /*
         |--------------------------------------------------------------------------
@@ -127,11 +131,13 @@ class DashboardController extends Controller
         |--------------------------------------------------------------------------
         | Needs Attention
         |--------------------------------------------------------------------------
+        |
+        | Since Contact status field is not provided, we only use
+        | pending bookings here.
+        |
         */
         $needs_attention = [
-            'new_inquires' => $new_inquires,
             'pending_bookings' => $pending_bookings,
-            'pending_inquires' => $pending_inquires,
         ];
         return view('admin.dashboard', compact(
             'total_posts',
@@ -141,10 +147,10 @@ class DashboardController extends Controller
             'total_reviews',
             'pending_bookings',
             'confirmed_bookings',
+            'completed_bookings',
             'cancelled_bookings',
-            'new_inquires',
-            'pending_inquires',
-            'converted_inquires',
+            'group_bookings',
+            'private_bookings',
             'current_month_bookings',
             'current_month_inquires',
             'current_month_reviews',
