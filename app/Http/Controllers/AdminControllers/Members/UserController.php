@@ -28,7 +28,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {     
+    {
         return view('admin.users.create');
     }
 
@@ -47,11 +47,11 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-      //  $data[] = $request->name;
+        //  $data[] = $request->name;
 
-      /*  if(Users::create($request)){
-            redirect()->back()->with('message','Success.');
-        }*/
+        /*  if(Users::create($request)){
+              redirect()->back()->with('message','Success.');
+          }*/
 
         /* try{
           // $user = App\Models\::create($validatedData);
@@ -61,10 +61,10 @@ class UserController extends Controller
         } */
 
         \DB::table('users')->insert([
-            [ 'name'=>$request->name, 'email'=>$request->email, 'password'=>Hash::make($request->password), 'user_type'=>$request->user_type ]
+            ['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password), 'user_type' => $request->user_type]
         ]);
-        \Session::flash('message','Successfully added.');
-        return redirect()->back()->with('message','New user create');
+        \Session::flash('message', 'Successfully added.');
+        return redirect()->back()->with('message', 'New user create');
 
     }
 
@@ -117,22 +117,26 @@ class UserController extends Controller
         return 'destroy';
     }
 
-    public function admin_user(){
-        
+    public function admin_user()
+    {
+
         return "Admin user";
     }
 
-    public function agent_user(){
+    public function agent_user()
+    {
         //
         return "Agent user";
     }
-    
-    public function userprofile(){
+
+    public function userprofile()
+    {
         $data = Auth::user();
-        return view('admin.users.userprofile',compact('data'));
+        return view('admin.users.userprofile', compact('data'));
     }
 
-    public function update_password(Request $request){
+    public function update_password(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             'old_password' => 'required|min:5|max:15',
@@ -144,25 +148,26 @@ class UserController extends Controller
             return redirect()->back();
         }
 
-        $user = User::find(Auth::user()->id);  
-        if($user){           
-           if(Hash::check($request['old_password'],$user->password)){
-            $user->password = bcrypt($request['password']);
-            $user->save();
-            return redirect()->back()->with('message','Your password has been updated.');
-           }else{
-            return redirect()->back()->with('message','The entered does not match your current password!');
-           }           
+        $user = User::find(Auth::user()->id);
+        if ($user) {
+            if (Hash::check($request['old_password'], $user->password)) {
+                $user->password = bcrypt($request['password']);
+                $user->save();
+                return redirect()->back()->with('message', 'Your password has been updated.');
+            } else {
+                return redirect()->back()->with('message', 'The entered does not match your current password!');
+            }
         }
 
-       // return view('admin.users.passwordEdit');
+        // return view('admin.users.passwordEdit');
     }
 
-    public function changepassword(){
-        if(Auth::user()){
+    public function changepassword()
+    {
+        if (Auth::user()) {
             return view('admin.users.changepassword');
-        }else{
+        } else {
             return redirect()->back();
-        }        
+        }
     }
 }

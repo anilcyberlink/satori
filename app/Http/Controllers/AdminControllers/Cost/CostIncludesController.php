@@ -12,7 +12,8 @@ class CostIncludesController extends Controller
     private $trip_id;
     private $ordering;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->trip_id = request()->segment(2);
         $ordering = CostIncludesModel::max('ordering');
         $this->ordering = $ordering + 1;
@@ -22,12 +23,12 @@ class CostIncludesController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-    */
+     */
     public function index()
     {
         $trip_id = $this->trip_id;
-        $data = CostIncludesModel::where('trip_id',$trip_id)->get();
-        return view('admin.cost-includes.index',compact('data','trip_id'));
+        $data = CostIncludesModel::where('trip_id', $trip_id)->get();
+        return view('admin.cost-includes.index', compact('data', 'trip_id'));
     }
 
     /**
@@ -39,7 +40,7 @@ class CostIncludesController extends Controller
     {
         $trip_id = $this->trip_id;
         $ordering = $this->ordering;
-        return view('admin.cost-includes.create',compact('trip_id','ordering'));
+        return view('admin.cost-includes.create', compact('trip_id', 'ordering'));
     }
 
     /**
@@ -51,15 +52,15 @@ class CostIncludesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title'=>'required',
-            'content'=>'required'
+            'title' => 'required',
+            'content' => 'required'
         ]);
         $data = $request->all();
 
-        if(CostIncludesModel::create($data)){
-            return redirect()->back()->with('message','Added Successfully.');
+        if (CostIncludesModel::create($data)) {
+            return redirect()->back()->with('message', 'Added Successfully.');
         }
-        return redirect()->back()->with('message','Try Again!');
+        return redirect()->back()->with('message', 'Try Again!');
     }
 
     /**
@@ -84,7 +85,7 @@ class CostIncludesController extends Controller
         $data = CostIncludesModel::find($id);
         $trip_id = $this->trip_id;
         $ordering = $data->ordering;
-        return view('admin.cost-includes.edit',compact('data','trip_id','ordering'));
+        return view('admin.cost-includes.edit', compact('data', 'trip_id', 'ordering'));
     }
 
     /**
@@ -102,10 +103,10 @@ class CostIncludesController extends Controller
         $data->content = $request->content;
         $data->ordering = $request->ordering;
 
-        if($data->save()){
-            return redirect()->back()->with('message','Update Successful.');
+        if ($data->save()) {
+            return redirect()->back()->with('message', 'Update Successful.');
         }
-        return redirect()->back()->with('message','Try Again!');
+        return redirect()->back()->with('message', 'Try Again!');
     }
 
     /**

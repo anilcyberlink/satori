@@ -18,7 +18,7 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $data = MemberModel::orderBy('id','desc')->get();
+        $data = MemberModel::orderBy('id', 'desc')->get();
         return view('admin.members.index', compact('data'));
     }
 
@@ -42,21 +42,21 @@ class MemberController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'first_name'=>'required',
-            'last_name'=>'required',
-            'email'=>'required',
-            'password'=>'required',
-            'role'=>'required',
-            'phone'=>'required',
-            'designation'=>'required',
-            'department'=>'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'role' => 'required',
+            'phone' => 'required',
+            'designation' => 'required',
+            'department' => 'required',
         ]);
         $data = $request->all();
-        $data['password'] = sha1($request->password); 
+        $data['password'] = sha1($request->password);
         $result = MemberModel::create($data);
-        if($result){
-            return redirect()->back()->with('message','Successfully added.'); 
-        }else{
+        if ($result) {
+            return redirect()->back()->with('message', 'Successfully added.');
+        } else {
             return "Error";
         }
     }
@@ -82,7 +82,7 @@ class MemberController extends Controller
     {
         $data = MemberModel::find($id);
         $department = DepartmentModel::all();
-        return view('admin.members.edit', compact('data','department'));
+        return view('admin.members.edit', compact('data', 'department'));
     }
 
     /**
@@ -93,16 +93,16 @@ class MemberController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, MemberModel $memberModel, $id)
-    {    
-         $request->validate([
-            'first_name'=>'required',
-            'last_name'=>'required',
-            'email'=>'required',
-            'phone'=>'required',
-            'designation'=>'required',
-            'department'=>'required',
+    {
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'designation' => 'required',
+            'department' => 'required',
         ]);
-        
+
         $data = MemberModel::find($id);
         $data->first_name = $request->first_name;
         $data->last_name = $request->last_name;
@@ -112,7 +112,7 @@ class MemberController extends Controller
         $data->designation = $request->designation;
         $data->department = $request->department;
         $data->save();
-         return redirect()->back()->with('message','Update Successful.'); 
+        return redirect()->back()->with('message', 'Update Successful.');
     }
 
     /**
