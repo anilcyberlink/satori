@@ -212,7 +212,7 @@ class DestinationController extends Controller
         $data->ordering = $request->ordering;
         $data->video = $request->video;
         $data->status = $request->status;
-        
+
         if ($data->save()) {
             // SEO
             $this->seoService->save($data, $request);

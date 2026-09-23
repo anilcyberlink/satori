@@ -103,6 +103,6 @@ class CostExcludesController extends Controller
     public function destroy($trip_id, $id)
     {
         $data = CostExcludesModel::find($id);
-        $data->delete();      
+        $data->delete();
     }
 }
