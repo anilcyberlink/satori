@@ -27,7 +27,7 @@ Route::get('adminisclient', 'Auth\LoginController@showLoginForm')->name('login')
 Route::post('adminisclient', 'Auth\LoginController@login');
 Route::any('logout', 'Auth\LoginController@logout')->name('logout');
 Route::redirect('/dashboard', '/admin/dashboard', 301);
-//for captcha refresh
+
 
 //================== Frontend Routes=================//
 Route::post('subscribe', 'FrontendControllers\FrontpageController@subscribe')->name('subscribe');
@@ -51,8 +51,6 @@ Route::post('reviews', 'FrontendControllers\FrontpageController@review_post')->n
 // Route::get('page/package/{uri}.html', 'FrontendControllers\FrontpageController@package')->name('package-list');
 // Route::get('package/{uri}', 'FrontendControllers\FrontpageController@packageDetail')->name('packageDetail');
 
-// for captcha
-Route::get('captcha', 'CaptchaController@refreshCaptcha');
 
 // Trip Pages
 Route::get('plan-trip', 'FrontendControllers\FrontpageController@plan_trip')->name('plan-trip');

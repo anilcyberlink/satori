@@ -1,10 +1,10 @@
-# Summit Trek
-<a href="">Summit trek</a>
+# Satori
+<a href="">Satori</a>
 
 ## Code Details
-Laravel version : ^10,
+Laravel version : ^12,
 
-Php  version : ^8.1,
+Php  version : ^8.3.36,
 
 ## Backup Latest Details
 Last Code Backup : 10/17/2024,

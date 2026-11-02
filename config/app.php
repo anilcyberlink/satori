@@ -138,7 +138,7 @@ return [
 
         /*
          * Laravel Framework Service Providers...
-         */        
+         */
 
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
@@ -166,7 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
-       
+
 
         /*
          * Application Service Providers...
@@ -182,15 +182,14 @@ return [
         App\Providers\HeaderComposerProvider::class,
         App\Providers\HeaderInnerComposerProvider::class,
         App\Providers\FooterComposerProvider::class,
-        App\Providers\FrontpageComposerProvider::class, 
-        Mews\Captcha\CaptchaServiceProvider::class,
+        App\Providers\FrontpageComposerProvider::class,
 
 
         UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Scyllaly\HCaptcha\HCaptchaServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-        
+
     ],
 
     /*
@@ -242,9 +241,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'Captcha' => Mews\Captcha\Facades\Captcha::class,
         'HCaptcha' => Scyllaly\HCaptcha\Facades\HCaptcha::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class, 
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

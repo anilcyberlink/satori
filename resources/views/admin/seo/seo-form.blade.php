@@ -140,10 +140,11 @@
                 {{-- Textarea --}}
                 <textarea name="seo[schema_data]" class="form-control" rows="6"
                     placeholder='{
-                    "@context": "https://schema.org",
+                    "@@context": "https://schema.org",
                     "@type": "Article",
                     "headline": "Your title here"
-                    }'>{{ old('seo.schema_data', isset($seo->schema_data) ? json_encode($seo->schema_data, JSON_PRETTY_PRINT) : '') }}</textarea>
+                    }'>{{ old('seo.schema_data', isset($seo->schema_data) ? json_encode($seo->schema_data, JSON_PRETTY_PRINT) : '') }}
+                </textarea>
 
                 {{-- Helper text --}}
                 <small class="text-muted">
@@ -152,16 +153,16 @@
 
                 {{-- Example --}}
                 <pre class="mt-2" style="background:#f8f9fa; padding:10px; border-radius:5px;">
-                {
-                    "@context": "https://schema.org",
-                    "@type": "Article",
-                    "headline": "Your title here",
-                    "author": {
-                        "@type": "Person",
-                        "name": "Admin"
-                    },
-                    "...": "...."
-                }
+                    {
+                        "@@context": "https://schema.org",
+                        "@type": "Article",
+                        "headline": "Your title here",
+                        "author": {
+                            "@type": "Person",
+                            "name": "Admin"
+                        },
+                        "...": "...."
+                    }
                 </pre>
 
             </div>
