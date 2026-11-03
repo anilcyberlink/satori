@@ -25,21 +25,12 @@ use App\Models\Posts\PostImageModel;
 // Check whether this post type has post or not.
 function is_empty_posttype($id)
 {
-    $data = PostModel::where(['post_type' => $id])->count();
-    if ($data > 0) {
-        return true;
-    }
-    return false;
+    return PostModel::where('post_type', $id)->exists();
 }
 
-// Check whether this category has post or not.
 function is_empty_category($id)
 {
-    $data = PostModel::where(['post_category' => $id])->count();
-    if ($data > 0) {
-        return true;
-    }
-    return false;
+    return PostModel::where('post_category', $id)->exists();
 }
 
 function show_category($category_id)
@@ -94,18 +85,6 @@ function check_uri($uri)
     return false;
 }
 
-function geturl($uri = NULL, $page_key = NULL)
-{
-    $count = PostModel::where(['uri' => $uri])->count();
-    $data = PostModel::where(['uri' => $uri])->firstOrFail();
-    if ($count > 1 || $uri === NULL || $uri === "") {
-        $count = PostModel::where(['page_key' => $page_key])->count();
-        $data = PostModel::where(['page_key' => $page_key])->firstOrFail();
-        return $data->page_key . '.html';
-    }
-    return $data->uri . '.html';
-}
-
 function posttype_geturl($uri)
 {
     $data = PostTypeModel::where('uri', $uri)->first();
@@ -116,42 +95,13 @@ function posttype_geturl($uri)
 }
 
 // Check and List Child Post
-function has_child_post($id)
-{
-    $check_child = PostModel::where('post_parent', $id)->count();
-    if ($check_child) {
-        $data = PostModel::where(['post_parent' => $id])->orderBy('post_order', 'asc')->get();
-        return $data;
-    }
-    return false;
-}
-function has_child_post_with_paginate($id)
-{
-    $check_child = PostModel::where('post_parent', $id)->count();
-    if ($check_child) {
-        $data = PostModel::where(['post_parent' => $id])->orderBy('post_order', 'asc')->paginate(8);
-        return $data;
-    }
-    return false;
-}
+
 
 function check_child_post($id)
 {
-    $data = PostModel::where('post_parent', $id)->count();
-    if ($data) {
-        return $data;
-    }
-    return false;
+    return PostModel::where('post_parent', $id)->count();
 }
 
-function check_child($id)
-{
-    $data = PostModel::where('post_parent', $id)->count();
-    if ($data > 0) {
-        return true;
-    }
-    return false;
-}
 
 // Get parent post
 function post_parent_fun($uri)
@@ -238,12 +188,9 @@ function activity_byregions($region_id)
 
 function tripurl($uri)
 {
-    $count = TripModel::where(['uri' => $uri])->count();
-    $data = TripModel::where(['uri' => $uri])->first();
-    if ($count > 1) {
-        return $data->uri . '.html';
-    }
-    return $data->uri . '.html';
+    $trip = TripModel::where('uri', $uri)->first();
+
+    return $trip ? $trip->uri . '.html' : false;
 }
 function trip_destination_title($tripId)
 {
@@ -265,45 +212,6 @@ function trip_byactivities($activity_id)
 }
 
 
-function activityurl($uri)
-{
-    $count = ActivityModel::where(['uri' => $uri])->count();
-    $data = ActivityModel::where(['uri' => $uri])->first();
-    if ($count > 1) {
-        return false;
-    }
-    return 'activity/' . $data->uri . '.html';
-}
-
-function regionurl($uri)
-{
-    $count = RegionModel::where(['uri' => $uri])->count();
-    $data = RegionModel::where(['uri' => $uri])->first();
-    if ($count > 1) {
-        return false;
-    }
-    return 'region/' . $data->uri . '.html';
-}
-
-function expeditionurl($uri)
-{
-    $count = DestinationModel::where(['uri' => $uri])->count();
-    $data = DestinationModel::where(['uri' => $uri])->first();
-    if ($count > 1) {
-        return false;
-    }
-    return 'expedition/' . $data->uri . '.html';
-}
-
-function categoryurl($uri)
-{
-    $data = PostCategoryModel::where(['uri' => $uri])->first();
-    if ($data) {
-        return 'category/' . $data->uri . '.html';
-    }
-    return false;
-}
-
 function tripcount($activity_id)
 {
     $data = ActivityModel::find($activity_id)->trips()->count();
@@ -319,14 +227,6 @@ function dateformat($date)
 }
 
 
-function trip_type($id)
-{
-    $data = TripTypeModel::where('id', $id)->first();
-    if ($data) {
-        return $data->trip_type;
-    }
-    return false;
-}
 
 function grade_message_trek($id)
 {
@@ -337,42 +237,13 @@ function grade_message_trek($id)
     return false;
 }
 
-
-function posttype_url($uri)
-{
-    $count = PostTypeModel::where(['uri' => $uri])->count();
-    $data = PostTypeModel::where(['uri' => $uri])->first();
-    if ($count > 1) {
-        return $data->page_key . '.html';
-    }
-    return $data->uri . '.html';
-}
-
-
-function getposts($id)
-{
-    $data = PostModel::where(['post_type' => $id, 'post_parent' => '0', 'status' => '1'])->orderBy('post_order', 'asc')->get();
-    if ($data) {
-        return $data;
-    }
-    return false;
-}
-
 function tripdetail($id)
 {
-    $data = TripModel::where('id', $id)->first();
-    if ($data) {
-        return $data;
-    }
-    return false;
+    return TripModel::find($id) ?: false;
 }
 function tripname($id)
 {
-    $data = TripModel::where('id', $id)->first();
-    if ($data) {
-        return $data->trip_title;
-    }
-    return false;
+    return TripModel::whereKey($id)->value('trip_title') ?: false;
 }
 
 function getactivityname($id)
@@ -384,17 +255,6 @@ function getactivityname($id)
     return false;
 }
 
-function team_url($uri = NULL, $team_key = NULL)
-{
-    $count = TeamModel::where(['uri' => $uri])->count();
-    $data = TeamModel::where(['uri' => $uri])->firstOrFail();
-    if ($count > 1 || $uri === NULL || $uri === "") {
-        $count = TeamModel::where(['team_key' => $team_key])->count();
-        $data = TeamModel::where(['team_key' => $team_key])->firstOrFail();
-        return $data->team_key;
-    }
-    return $data->uri;
-}
 function selected($activity_id, $destination_id)
 {
     $data = DestinationActivityrelModel::where(['activity_id' => $activity_id, 'destination_id' => $destination_id])->first();
@@ -460,16 +320,6 @@ function generate_unique_uri($model, $data)
     return $data;
 }
 
-function get_trip_type($id){
-    $data = DB::table('cl_trip_type')->where('id',$id)->first();
-    $trip_type = null;
-    if($data)
-    {
-        $trip_type = $data->trip_type;
-    }
-    // dd($data, $trip_type);
-    return $trip_type;
-}
 
 //By Sangam Starts
 
