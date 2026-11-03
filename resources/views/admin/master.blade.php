@@ -10,6 +10,7 @@
     <meta name="author" content="Cyberlink">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <base href="<?= url('/') ?>" />
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600'>
     @yield('additional-css')
@@ -29,21 +30,99 @@
     <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('assets/favicon/android-chrome-512x512.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('assets/favicon/apple-touch-icon.png') }}">
     <link rel="manifest" href="{{ asset('assets/favicon/site.webmanifest') }}">
-    <!--<link rel="shortcut icon" href="{{ asset('theme-assets/images/favicon.png') }}">-->
     <!---------------- Fav icon stops ----------------------->
-    <link rel="stylesheet" type="text/css"
-        href="{{ asset('assets/skin/default_skin/css/bootstrap3-wysihtml5.min.css') }}">
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/skin/default_skin/css/bootstrap3-wysihtml5.min.css') }}">
+
+    <script src="{{ asset('vendor/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('tinymce/init-tinymce.js') }}"></script>
     <style>
         span.panel-controls {
             display: none;
         }
-    </style>
-    <script src="{{ asset('js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
-    <script src="{{ asset('tinymce/init-tinymce.js') }}"></script>
-    <style>
         .tox-editor-container .tox-promotion {
             visibility: hidden !important;
         }
+
+        /* Mobile sidebar only */
+        @media (max-width: 767px) {
+
+            :root {
+                --admin-header-height: 60px;
+            }
+
+            /* Sidebar hidden by default */
+            #sidebar_left {
+                position: fixed !important;
+                top: var(--admin-header-height) !important;
+                left: 0 !important;
+                bottom: 0 !important;
+                width: min(280px, 85vw) !important;
+                height: auto !important;
+                z-index: 1040 !important;
+
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                visibility: hidden;
+            }
+
+            /* Sidebar open */
+            body.mobile-sidebar-open #sidebar_left {
+                transform: translateX(0);
+                visibility: visible;
+            }
+
+            /* Sidebar scroll */
+            #sidebar_left .sidebar-left-content {
+                height: 100%;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Dark background overlay */
+            #sidebar_mobile_overlay {
+                display: none;
+                position: fixed;
+                top: var(--admin-header-height);
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1030;
+            }
+
+            body.mobile-sidebar-open #sidebar_mobile_overlay {
+                display: block;
+            }
+
+            /* Keep header above sidebar */
+            header.navbar {
+                z-index: 1050 !important;
+            }
+
+            /* Main content uses full width */
+            #content_wrapper {
+                margin-left: 0 !important;
+                left: 0 !important;
+                width: 100% !important;
+            }
+
+            /* Hamburger touch area */
+            #toggle_sidemenu_l {
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 44px;
+                min-height: 44px;
+                touch-action: manipulation;
+            }
+
+            body.mobile-sidebar-open {
+                overflow: hidden;
+            }
+        }
+
     </style>
 </head>
 
@@ -58,7 +137,8 @@
                     <img src="{{ asset('uploads/original/' . $setting->logo) }}" alt="{{ config('app.name') }}"
                         width="100" />
                     @else --}}
-                    <img src="{{ asset('theme-assets/cbrlink.png') }}" alt="{{ config('app.name') }}" width="100" />
+                    <img src="{{ asset('theme-assets/cbrlink.png') }}" alt="{{ config('app.name') }}"
+                        width="100" />
                     {{-- @endif --}}
                 </a>
                 <span id="toggle_sidemenu_l" class="ad ad-lines"></span>
@@ -81,7 +161,8 @@
                                 <a class="animated animated-short fadeInUp" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();document.getElementById('logout-form').submit();"><span
                                         class="fa fa-power-off pr5"></span>{{ __('Logout') }}</a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
                                     {{ csrf_field() }}
                                 </form>
                             </li>
@@ -122,57 +203,54 @@
                         </a>
                     </li>
                     <li class="">
-                        @if (
-                                Request::segment(2) == 'posttype' ||
+                        @if (Request::segment(2) == 'posttype' ||
                                 Request::segment(2) == 'postcategory' ||
                                 Request::segment(2) == 'contact-us' ||
                                 Request::segment(2) == 'legal-documents' ||
                                 Request::segment(2) == 'blogs' ||
                                 Request::segment(2) == 'our-team' ||
-                                Request::segment(2) == 'who-we-are'
-                            )
+                                Request::segment(2) == 'who-we-are')
                             <a class="accordion-toggle menu-open">
-                        @else
+                            @else
                                 <a class="accordion-toggle">
-                            @endif
-                                <span class="fa fa-archive "></span>
-                                <span class="sidebar-title"> Manage Posts </span>
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="nav sub-nav">
-                                <li class="{{ Request::segment(2) == 'posttype' ? 'active' : '' }}">
-                                    <a href="{{ url('type/posttype') }}">
-                                        <span class="fa fa-arrows"></span>
-                                        Post Types
-                                    </a>
-                                </li>
-                                {{-- <li>
+                        @endif
+                        <span class="fa fa-archive "></span>
+                        <span class="sidebar-title"> Manage Posts </span>
+                        <span class="caret"></span>
+                        </a>
+                        <ul class="nav sub-nav">
+                            <li class="{{ Request::segment(2) == 'posttype' ? 'active' : '' }}">
+                                <a href="{{ url('type/posttype') }}">
+                                    <span class="fa fa-arrows"></span>
+                                    Post Types
+                                </a>
+                            </li>
+                            {{-- <li>
                                     <a href="{{ url('admin/postcategory') }}">
                                         <span class="fa fa-arrows"></span>
                                         Post Categories
                                     </a>
                                 </li> --}}
-                                <!-- Post Type List -->
-                                @if ($posttype)
-                                    @foreach ($posttype as $row)
-                                        <li class="{{ Request::segment(2) == $row->uri ? 'active' : '' }}">
-                                            @if (has_posts($row->id))
-                                                <a href="{{ url('admin/' . $row->uri) }}">
+                            <!-- Post Type List -->
+                            @if ($posttype)
+                                @foreach ($posttype as $row)
+                                    <li class="{{ Request::segment(2) == $row->uri ? 'active' : '' }}">
+                                        @if (has_posts($row->id))
+                                            <a href="{{ url('admin/' . $row->uri) }}">
                                             @else
-                                                    <a href="{{ url('type/posttype/' . $row->id . '/edit') }}">
-                                                @endif
-                                                    <span class="fa fa fa-arrows-h"></span>
-                                                    {{ $row->post_type }}
-                                                </a>
-                                        </li>
-                                    @endforeach
-                                @endif
-                            </ul>
+                                                <a href="{{ url('type/posttype/' . $row->id . '/edit') }}">
+                                        @endif
+                                        <span class="fa fa fa-arrows-h"></span>
+                                        {{ $row->post_type }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            @endif
+                        </ul>
                     </li>
 
                     <li class="">
-                        @if (
-                                Request::segment(2) == 'destination' ||
+                        @if (Request::segment(2) == 'destination' ||
                                 Request::segment(2) == 'tour-trip' ||
                                 Request::segment(2) == 'region' ||
                                 Request::segment(2) == 'trip-region' ||
@@ -181,55 +259,54 @@
                                 Request::segment(2) == 'training-list' ||
                                 Request::segment(2) == 'past-trips' ||
                                 Request::segment(2) == 'past-images' ||
-                                Request::segment(2) == 'tripgroup'
-                            )
+                                Request::segment(2) == 'tripgroup')
                             <a class="accordion-toggle menu-open">
-                        @else
+                            @else
                                 <a class="accordion-toggle">
-                            @endif
-                                <span class="fa fa-plane "></span>
-                                <span class="sidebar-title"> Manage Trips</span>
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="nav sub-nav">
-                                <li
-                                    class="{{ Request::segment(2) == 'destination' || Request::segment(2) == 'tour-trip' ? 'active' : '' }}">
-                                    <a href="{{ route('destination.index') }}">
-                                        <span class="fa fa fa-arrows-h"></span>
-                                        Destinations
-                                    </a>
-                                </li>
-                                <li class="{{ Request::segment(2) == 'activity' ? 'active' : '' }}">
-                                    <a href="{{ url('admin/activity') }}">
-                                        <span class="fa fa fa-arrows-h"></span>
-                                        <span class="sidebar-title"> Trip Categories </span>
-                                    </a>
-                                </li>
-                                <li
-                                    class="{{ Request::segment(2) == 'trip' || Request::segment(2) == 'past-trips' || Request::segment(2) == 'past-images' ? 'active' : '' }}">
-                                    <a href="{{ url('admin/trip') }}">
-                                        <span class="fa fa fa-arrows-h"></span>
-                                        <span class="sidebar-title"> Trip List </span>
-                                    </a>
-                                </li>
-                                {{-- <li class="{{ Request::segment(2) == 'training-list' ? 'active' : '' }}">
+                        @endif
+                        <span class="fa fa-plane "></span>
+                        <span class="sidebar-title"> Manage Trips</span>
+                        <span class="caret"></span>
+                        </a>
+                        <ul class="nav sub-nav">
+                            <li
+                                class="{{ Request::segment(2) == 'destination' || Request::segment(2) == 'tour-trip' ? 'active' : '' }}">
+                                <a href="{{ route('destination.index') }}">
+                                    <span class="fa fa fa-arrows-h"></span>
+                                    Destinations
+                                </a>
+                            </li>
+                            <li class="{{ Request::segment(2) == 'activity' ? 'active' : '' }}">
+                                <a href="{{ url('admin/activity') }}">
+                                    <span class="fa fa fa-arrows-h"></span>
+                                    <span class="sidebar-title"> Trip Categories </span>
+                                </a>
+                            </li>
+                            <li
+                                class="{{ Request::segment(2) == 'trip' || Request::segment(2) == 'past-trips' || Request::segment(2) == 'past-images' ? 'active' : '' }}">
+                                <a href="{{ url('admin/trip') }}">
+                                    <span class="fa fa fa-arrows-h"></span>
+                                    <span class="sidebar-title"> Trip List </span>
+                                </a>
+                            </li>
+                            {{-- <li class="{{ Request::segment(2) == 'training-list' ? 'active' : '' }}">
                                     <a href="{{ route('training.list.index','training') }}">
                                         <span class="fa fa fa-arrows-h"></span>
                                         <span class="sidebar-title"> Training list </span>
                                     </a>
                                 </li> --}}
-                            </ul>
+                        </ul>
                     </li>
 
                     <li class="">
                         @if (Request::segment(2) == 'teamcategory' || Request::segment(2) == 'teams')
                             <a class="accordion-toggle menu-open">
-                        @else
-                            <a class="accordion-toggle">
+                            @else
+                                <a class="accordion-toggle">
                         @endif
-                            <span class="fa fa-users "></span>
-                            <span class="sidebar-title"> Manage Team </span>
-                            <span class="caret"></span>
+                        <span class="fa fa-users "></span>
+                        <span class="sidebar-title"> Manage Team </span>
+                        <span class="caret"></span>
                         </a>
                         <ul class="nav sub-nav">
                             <li class="{{ Request::segment(2) == 'teamcategory' ? 'active' : '' }}">
@@ -248,31 +325,37 @@
                     </li>
 
                     <li class="">
-                        @if(Request::segment(1) == 'newsletter-create' || Request::segment(1) == 'subscriber-create' || Request::segment(1) == 'send-newsletter' || Request::segment(1) == 'subscriber-index' || Request::segment(1) == 'subscriber-edit' || Request::segment(1) == 'newsletter-index' || Request::segment(1) == 'newsletter')
+                        @if (Request::segment(1) == 'newsletter-create' ||
+                                Request::segment(1) == 'subscriber-create' ||
+                                Request::segment(1) == 'send-newsletter' ||
+                                Request::segment(1) == 'subscriber-index' ||
+                                Request::segment(1) == 'subscriber-edit' ||
+                                Request::segment(1) == 'newsletter-index' ||
+                                Request::segment(1) == 'newsletter')
                             <a class="accordion-toggle menu-open">
-                        @else
-                            <a class="accordion-toggle">
+                            @else
+                                <a class="accordion-toggle">
                         @endif
-                            <span class="glyphicon glyphicon-user"></span>
-                            <span class="sidebar-title"> Manage Newsletter </span>
-                            <span class="caret"></span>
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span class="sidebar-title"> Manage Newsletter </span>
+                        <span class="caret"></span>
                         </a>
                         <ul class="nav sub-nav">
                             <li
-                                class="{{ (Request::segment(1) == 'newsletter-create' || Request::segment(1) == 'newsletter-index' || Request::segment(1) == 'newsletter') ? 'active' : '' }}">
+                                class="{{ Request::segment(1) == 'newsletter-create' || Request::segment(1) == 'newsletter-index' || Request::segment(1) == 'newsletter' ? 'active' : '' }}">
                                 <a href="{{ route('newsletter.index') }}">
                                     <span class="fa fa fa-arrows-h"></span>
                                     Newsletters
                                 </a>
                             </li>
                             <li
-                                class="{{ (Request::segment(1) == 'subscriber-create' || Request::segment(1) == 'subscriber-index' || Request::segment(1) == 'subscriber-edit') ? 'active' : '' }}">
+                                class="{{ Request::segment(1) == 'subscriber-create' || Request::segment(1) == 'subscriber-index' || Request::segment(1) == 'subscriber-edit' ? 'active' : '' }}">
                                 <a href="{{ route('subscriber.index') }}">
                                     <span class="fa fa fa-arrows-h"></span>
                                     Subscribers
                                 </a>
                             </li>
-                            <li class="{{ (Request::segment(1) == 'send-newsletter') ? 'active' : '' }}">
+                            <li class="{{ Request::segment(1) == 'send-newsletter' ? 'active' : '' }}">
                                 <a href="{{ route('send.newsletter') }}">
                                     <span class="fa fa fa-arrows-h"></span>
                                     Send Newsletter
@@ -282,8 +365,7 @@
                     </li>
 
                     <li class="">
-                        @if (
-                                Request::segment(1) == 'contact-inquiry' ||
+                        @if (Request::segment(1) == 'contact-inquiry' ||
                                 Request::segment(1) == 'admin-trip-booking' ||
                                 Request::segment(1) == 'category-inquiry' ||
                                 Request::segment(1) == 'tailor-made' ||
@@ -293,50 +375,49 @@
                                 Request::segment(1) == 'trip-suggestion' ||
                                 Request::segment(1) == 'admin-plan-trip' ||
                                 Request::segment(1) == 'admin-trip-planning' ||
-                                Request::segment(1) == 'trip-private'
-                            )
+                                Request::segment(1) == 'trip-private')
                             <a class="accordion-toggle menu-open">
-                        @else
+                            @else
                                 <a class="accordion-toggle">
-                            @endif
-                                <span class="fa fa-envelope "></span>
-                                <span class="sidebar-title"> Booking & Inquiries</span>
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="nav sub-nav">
-                                <li class="{{ Request::segment(1) == 'contact-inquiry' ? 'active' : '' }}">
+                        @endif
+                        <span class="fa fa-envelope "></span>
+                        <span class="sidebar-title"> Booking & Inquiries</span>
+                        <span class="caret"></span>
+                        </a>
+                        <ul class="nav sub-nav">
+                            <li class="{{ Request::segment(1) == 'contact-inquiry' ? 'active' : '' }}">
 
-                                    <a href="{{ url('contact-inquiry') }}">
-                                        <span class="fa fa fa-arrows-h"></span>
-                                        <span class="sidebar-title">Contact Inquiry</span>
-                                    </a>
-                                </li>
-                                <li class="{{ Request::segment(1) == 'admin-trip-booking' ? 'active' : '' }}">
-                                    <a href="{{ route('trip-booking') }}">
-                                        <span class="fa fa fa-arrows-h"></span>
-                                        <span class="sidebar-title">Trip Booking</span>
-                                    </a>
-                                </li>
-                                <li class="{{ Request::segment(1) == 'trip-inquiry' ? 'active' : '' }}">
-                                    <a href="{{ url('trip-inquiry') }}">
-                                        <span class="fa fa fa-arrows-h"></span>
-                                        <span class="sidebar-title">Trip Inquiries</span>
-                                    </a>
-                                </li>
-                                {{-- <li class="{{ Request::segment(1) == 'trip-customize' ? 'active' : '' }}">
+                                <a href="{{ url('contact-inquiry') }}">
+                                    <span class="fa fa fa-arrows-h"></span>
+                                    <span class="sidebar-title">Contact Inquiry</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::segment(1) == 'admin-trip-booking' ? 'active' : '' }}">
+                                <a href="{{ route('trip-booking') }}">
+                                    <span class="fa fa fa-arrows-h"></span>
+                                    <span class="sidebar-title">Trip Booking</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::segment(1) == 'trip-inquiry' ? 'active' : '' }}">
+                                <a href="{{ url('trip-inquiry') }}">
+                                    <span class="fa fa fa-arrows-h"></span>
+                                    <span class="sidebar-title">Trip Inquiries</span>
+                                </a>
+                            </li>
+                            {{-- <li class="{{ Request::segment(1) == 'trip-customize' ? 'active' : '' }}">
                                     <a href="{{ url('trip-customize') }}">
                                         <span class="fa fa fa-arrows-h"></span>
                                         <span class="sidebar-title">Trip Customize</span>
                                     </a>
                                 </li> --}}
-                                <li
-                                    class="{{ Request::segment(1) == 'admin-plan-trip' || Request::segment(1) == 'admin-trip-planning' ? 'active' : '' }}">
-                                    <a href="{{ url('admin-plan-trip') }}">
-                                        <span class="fa fa fa-arrows-h"></span>
-                                        <span class="sidebar-title">Trip Plan</span>
-                                    </a>
-                                </li>
-                                {{-- <li class="{{ Request::segment(1) == 'trip-private' ? 'active' : '' }}">
+                            <li
+                                class="{{ Request::segment(1) == 'admin-plan-trip' || Request::segment(1) == 'admin-trip-planning' ? 'active' : '' }}">
+                                <a href="{{ url('admin-plan-trip') }}">
+                                    <span class="fa fa fa-arrows-h"></span>
+                                    <span class="sidebar-title">Trip Plan</span>
+                                </a>
+                            </li>
+                            {{-- <li class="{{ Request::segment(1) == 'trip-private' ? 'active' : '' }}">
                                     <a href="{{ url('trip-private') }}">
                                         <span class="fa fa fa-arrows-h"></span>
                                         <span class="sidebar-title">Trip Private</span>
@@ -349,7 +430,7 @@
                                     </a>
                                 </li> --}}
 
-                            </ul>
+                        </ul>
                     </li>
 
                     <li
@@ -373,6 +454,7 @@
                     </li>
             </div>
         </aside>
+        <div id="sidebar_mobile_overlay"></div>
 
         <section id="content_wrapper">
             <!-- End: Topbar-Dropdown -->
@@ -463,27 +545,27 @@
         referrerpolicy="origin"></script>
     <script src="{{ asset('tinymce/init-tinymce.js') }}"></script> --}}
     <script>
-        $(document).ready(function () {
-            $(".category-search").on("keyup", function () {
+        $(document).ready(function() {
+            $(".category-search").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
-                $(".category-list li").filter(function () {
+                $(".category-list li").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
         });
 
 
-        $(document).ready(function () {
-            $(".category-search1").on("keyup", function () {
+        $(document).ready(function() {
+            $(".category-search1").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
-                $(".category-list1 li").filter(function () {
+                $(".category-list1 li").filter(function() {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
         });
     </script>
     <script type="text/javascript">
-        jQuery(document).ready(function () {
+        jQuery(document).ready(function() {
 
             "use strict";
 
@@ -510,10 +592,10 @@
                 draggable: true,
                 preserveGrid: true,
                 mobile: false,
-                onStart: function () {
+                onStart: function() {
                     // Do something before AdminPanels runs
                 },
-                onFinish: function () {
+                onFinish: function() {
                     $('.admin-panels').addClass('animated fadeIn').removeClass('fade-onload');
 
                     // Init the rest of the plugins now that the panels
@@ -524,14 +606,14 @@
                         runVectorMaps();
                     }
                 },
-                onSave: function () {
+                onSave: function() {
                     $(window).trigger('resize');
                 }
             });
         });
 
         // Date picker for tender form
-        $(function () {
+        $(function() {
             $("#datepicker1").datepicker({
                 dateFormat: 'dd-mm-yy'
             });
@@ -541,6 +623,58 @@
         });
     </script>
     <!-- END: PAGE SCRIPTS -->
+    <script>
+        (function() {
+            const toggle = document.getElementById('toggle_sidemenu_l');
+            const overlay = document.getElementById('sidebar_mobile_overlay');
+            const sidebar = document.getElementById('sidebar_left');
+
+            if (!toggle || !overlay || !sidebar) return;
+
+            const isMobile = () => window.innerWidth <= 767;
+
+            function closeSidebar() {
+                document.body.classList.remove('mobile-sidebar-open');
+            }
+
+            function toggleSidebar() {
+                document.body.classList.toggle('mobile-sidebar-open');
+            }
+
+            toggle.addEventListener('click', function(e) {
+                if (!isMobile()) return;
+
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                toggleSidebar();
+            }, true);
+
+            overlay.addEventListener('click', closeSidebar);
+
+            sidebar.addEventListener('click', function(e) {
+                const link = e.target.closest('a');
+
+                if (link && link.getAttribute('href') &&
+                    !link.classList.contains('accordion-toggle') &&
+                    isMobile()) {
+                    closeSidebar();
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeSidebar();
+                }
+            });
+
+            window.addEventListener('resize', function() {
+                if (!isMobile()) {
+                    closeSidebar();
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>
