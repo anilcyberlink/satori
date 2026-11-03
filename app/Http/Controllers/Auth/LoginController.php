@@ -4,76 +4,87 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
-    use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
+    /** @var string */
     protected $redirectTo = RouteServiceProvider::HOME;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
     }
 
-    public function login(Request $request){
-        $g_recaptcha_response = $request->input('g_recaptcha_response');
-        $result = $this->getCaptcha($g_recaptcha_response);
-        // // Check if success is true and Score is greater than 0.5 [ $result->score > 0.5 ]
-        if($result->success == true ){
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'pin' => $request->pin])) {
+    public function login(Request $request)
+    {
+        // Verify Google reCAPTCHA
+        $captchaResponse = $request->input('g_recaptcha_response');
 
-            // Authentication passed...
-            if(Auth::user()->suspended){
+        if (!$this->verifyCaptcha($captchaResponse)) {
+            return redirect('adminisclient')
+                ->with('status', 'You are Robot!');
+        }
+
+        // Authenticate using email, password and PIN
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password,
+            'pin' => $request->pin,
+        ];
+
+        if (Auth::attempt($credentials)) {
+
+            $request->session()->regenerate();
+
+            // Check suspended account
+            if (Auth::user()->suspended) {
                 return redirect('account-suspended');
             }
+
             return redirect()->intended('admin/dashboard');
         }
-         return redirect()->intended('adminisclient')->with('status', 'Invalid Username, Password or PIN!');
-        }else{
-            return redirect('adminisclient')->with('status', 'You are Robot!');
+
+        return redirect('adminisclient')
+            ->with('status', 'Invalid Username, Password or PIN!');
+    }
+
+    private function verifyCaptcha(?string $captchaResponse): bool
+    {
+        if (empty($captchaResponse)) {
+            return false;
+        }
+
+        try {
+            $response = Http::asForm()
+                ->timeout(10)
+                ->post('https://www.google.com/recaptcha/api/siteverify', [
+                    'secret' => config('services.recaptcha.secret'),
+                    'response' => $captchaResponse,
+                ]);
+
+            if (!$response->successful()) {
+                return false;
+            }
+
+            return (bool) ($response->object()->success ?? false);
+
+        } catch (\Throwable $e) {
+            report($e);
+
+            return false;
         }
     }
 
-
-  private function getCaptcha($Secretkey)
+    public function logout(Request $request)
     {
-        $secret = env('SECRET_KEY');
+        Auth::logout();
 
-        $response = Http::asForm()->post(
-            'https://www.google.com/recaptcha/api/siteverify',
-            [
-                'secret' => $secret,
-                'response' => $Secretkey,
-            ]
-        );
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-        return $response->object();
+        return redirect('adminisclient');
     }
-
 }

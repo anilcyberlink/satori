@@ -2,20 +2,33 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Route;
 
 class ExampleTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testBasicTest()
+    public function test_important_cms_routes_are_registered(): void
     {
-        $response = $this->get('/');
+        $routes = Route::getRoutes();
 
-        $response->assertStatus(200);
+        $this->assertNotNull(
+            $routes->getByName('dashboard'),
+            'Admin dashboard route is missing.'
+        );
+
+        $this->assertNotNull(
+            $routes->getByName('settings.index'),
+            'Settings management route is missing.'
+        );
+
+        $this->assertNotNull(
+            $routes->getByName('trip.index'),
+            'Trip management route is missing.'
+        );
+
+        $this->assertNotNull(
+            $routes->getByName('user.index'),
+            'User management route is missing.'
+        );
     }
 }
