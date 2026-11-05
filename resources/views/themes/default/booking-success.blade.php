@@ -5,7 +5,8 @@
 
 @section('content')
 
-<div style="
+    <div
+        style="
     min-height:60vh;
     display:flex;
     justify-content:center;
@@ -13,13 +14,14 @@
     background:#f8f9fa;
 ">
 
-    <div style="
+        <div style="
         width:100%;
         max-width:650px;
         margin:0 auto;
     ">
 
-        <div style="
+            <div
+                style="
             background:#ffffff;
             padding:60px 50px;
             border-radius:14px;
@@ -27,9 +29,10 @@
             text-align:center;
         ">
 
-            <!-- Icon -->
-            <div style="margin-bottom:25px;">
-                <div style="
+                <!-- Icon -->
+                <div style="margin-bottom:25px;">
+                    <div
+                        style="
                     width:90px;
                     height:90px;
                     margin:0 auto;
@@ -39,54 +42,57 @@
                     align-items:center;
                     justify-content:center;
                 ">
-                    <i class="fa fa-check fa-2x" style="color:#28a745;"></i>
+                        <i class="fa fa-check fa-2x" style="color:#28a745;"></i>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Heading -->
-            <h2 style="color:#28a745; font-weight:700; margin-bottom:10px;">
-                {{ $heading }}
-            </h2>
+                <!-- Heading -->
+                <h2 style="color:#28a745; font-weight:700; margin-bottom:10px;">
+                    {{ $heading }}
+                </h2>
 
-            <!-- Name -->
-            <p style="font-size:18px; margin:0;">
-                Dear <strong>{{ $name }}</strong>,
-            </p>
+                <!-- Name -->
+                <p style="font-size:18px; margin:0;">
+                    Dear <strong>{{ $name }}</strong>,
+                </p>
 
-            <!-- Message -->
-            <p style="color:#666; margin-top:10px;">
-                {{ $information }}
-            </p>
+                <!-- Message -->
+                <p style="color:#666; margin-top:10px;">
+                    {{ $information }}
+                </p>
 
-            <!-- Divider -->
-            <div style="
+                <!-- Divider -->
+                <div
+                    style="
                 width:60px;
                 height:3px;
                 background:#28a745;
                 margin:30px auto;
                 border-radius:10px;
-            "></div>
+            ">
+                </div>
 
-            <!-- Footer -->
-            <p style="margin:0 0 25px 0;">
-                Best Wishes,<br>
-                <strong>Summit8000 </strong>
-            </p>
+                <!-- Footer -->
+                <p style="margin:0 0 25px 0;">
+                    Best Wishes,<br>
+                    <strong>Summit8000 </strong>
+                </p>
 
-            <!-- Button -->
-            <a href="{{ url('/') }}" style=" display:inline-block; padding:12px 40px; background:#0ea5e9;
+                <!-- Button -->
+                <a href="{{ url('/') }}"
+                    style=" display:inline-block; padding:12px 40px; background:#0ea5e9;
                    color:#fff;
                    border-radius:30px;
                    text-decoration:none;
                    font-weight:500;
                ">
-                Return to Home
-            </a>
+                    Return to Home
+                </a>
+
+            </div>
 
         </div>
 
     </div>
-
-</div>
 
 @endsection
