@@ -4,35 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <!-- Primary SEO Meta Tags -->
-    <title>{{ $setting->site_name }}</title>
-    <link rel="icon" type="image/webp" href="{{ asset('theme-assets/img/logo/favicon.webp') }}" sizes="any">
-    <meta name="title" content="Satori Adventures - Premier Mountain Trekking & Peak Climbing in Nepal">
-    <meta name="description"
-        content="Satori Adventures is your expert mountain guide in the Himalayas. Book Mera Peak climbing, Everest Base Camp trek, 8000m expeditions & custom Nepal tours.">
-    <meta name="keywords"
-        content="Nepal Trekking, Mera Peak Climbing, Everest Base Camp, Himalayas Expedition, Satori Adventures, Mountain Biking Nepal, Annapurna Trek">
-    <meta name="robots" content="index, follow">
-    <meta name="language" content="English">
-    <meta name="author" content="Satori Adventures Pvt. Ltd.">
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.satori-adventures.com/">
-    <meta property="og:title" content="Satori Adventures - Premier Mountain Trekking & Peak Climbing">
-    <meta property="og:description"
-        content="Expert guided Himalayan expeditions, peak climbing, and trekking in Nepal, Tibet, Bhutan, India, and Pakistan.">
-    <meta property="og:image"
-        content="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80">
+    <title>@yield('title')</title>
+    <meta name="description" content="@yield('meta_description')">
+    <meta name="robots" content="@yield('robots', 'index, follow')">
+    <link rel="canonical" href="@yield('canonical', url()->current())">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="@yield('title')">
+    <meta property="og:description" content="@yield('meta_description')">
+    <meta property="og:image" content="@yield('thumbnail', asset('theme-assets/cbrlink.png'))">
+    <meta property="og:image:alt" content="@yield('og_image_alt', 'Satori Adventures')">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:site_name" content="{{ $setting->site_name }}">
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title')">
+    <meta name="twitter:description" content="@yield('meta_description')">
+    <meta name="twitter:image" content="@yield('thumbnail', asset('theme-assets/cbrlink.png'))">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Tamil:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Tamil:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-        referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
-    <!-- Tailwind CSS CDN -->
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('theme-assets/favicon/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/webp" href="{{ asset('theme-assets/img/logo/favicon.webp') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('theme-assets/favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('theme-assets/favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('theme-assets/favicon/site.webmanifest') }}">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -55,8 +65,28 @@
             }
         }
     </script>
-    <!-- External Custom Stylesheet -->
+
+    <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="{{ asset('theme-assets/css/styles.css') }}">
+
+    {{-- GLOBAL ORGANIZATION SCHEMA --}}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TravelAgency",
+        "name": "Satori Advanture",
+        "url": "https://",
+        "logo": "{{ asset('theme-assets/cbrlink.png') }}",
+        "image": "{{ asset('theme-assets/cbrlink.png') }}",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Kathmandu",
+            "addressCountry": "NP"
+        }
+    }
+    </script>
+    <!-- Page Specific Schema -->
+    @yield('schema')
 </head>
 
 <body class="bg-white text-slate-800 antialiased selection:bg-[var(--primary)] selection:text-white">

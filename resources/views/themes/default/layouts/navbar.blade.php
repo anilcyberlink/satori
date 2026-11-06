@@ -2,13 +2,13 @@
     <div class="w-full max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-10 xl:px-12 2xl:px-16">
         <div class="flex items-center h-24">
             <!-- Brand Logo -->
-            <a href="index.php" class="flex items-center group">
+            <a href="{{url('/')}}" class="flex items-center group">
                 <img src="{{ asset('theme-assets/img/logo/logo.webp') }}" alt="SATzORI ADVENTURES" loading="lazy" class="h-24 w-auto object-contain">
             </a>
             <!-- Desktop Navigation Links -->
             <div class="hidden lg:flex items-center gap-1.5 xl:gap-2 text-lg font-medium uppercase tracking-wider text-[var(--text-primary)] flex-1 justify-center">
                 <!-- HOME -->
-                <a href="index.php" class="nav-link text-[var(--teal-brand)] font-semibold py-2">
+                <a href="{{url('/')}}" class="nav-link text-[var(--teal-brand)] font-semibold py-2">
                     HOME
                 </a>
                 <span class="text-[#607382]">
@@ -691,18 +691,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <span class="text-[#607382]">
-                    |
-                </span>
-                <a href="./equipment.php" class="nav-link py-2 uppercase hover:text-[var(--primary)]">
-                    EQUIPMENT
-                </a>
-                <span class="text-[#607382]">
-                    |
-                </span>
-                <a href="./contact.php" class="nav-link py-2 uppercase hover:text-[var(--primary)]">
-                    CONTACT
-                </a> -->
             </div>
             <!-- Right Navbar CTA & Icons -->
             <div class="flex items-center gap-2 xl:gap-2 shrink-0 ml-4">
