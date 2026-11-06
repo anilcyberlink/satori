@@ -76,6 +76,7 @@ class FrontpageController extends Controller
 {
     public function index()
     {
+        $setting= SettingModel::first() ;
         $banners = BannerModel::all();
         $expedition = ActivityModel::where(['activity_parent'=>'expedition', 'status' => '1'])->orderBy('ordering','asc')->get();
         $trekking = ActivityModel::where(['activity_parent'=>'trekking', 'status' => '1'])->orderBy('ordering','asc')->get();
@@ -101,8 +102,8 @@ class FrontpageController extends Controller
         // $blog = PostTypeModel::where('id' , 33)->first();
         // $blogs = PostModel::where('post_type' , $blog->id)->latest()->take(3)->get();
         // $homebrief = HomeBriefModel::where('id',1)->first();
-        // dd($reviews);
-        
+        // dd($setting);
+
         return view('themes.default.frontpage', compact('banners'));
     }
 
