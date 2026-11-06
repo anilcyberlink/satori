@@ -219,6 +219,8 @@ class SettingController extends Controller
         $data->site_name = $request->site_name;
         $data->phone = $request->phone;
         $data->fax = $request->fax;
+        $data->license_no = $request->license_no;
+        $data->reg_no = $request->reg_no;
         $data->usa_phone = $request->usa_phone;
         $data->link1 = $request->link1;
         $data->link2 = $request->link2;

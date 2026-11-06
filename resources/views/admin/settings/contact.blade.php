@@ -75,6 +75,26 @@
             </div>
 
             <div class="form-group">
+                <label class="col-lg-2 control-label" for="textArea2">Registration Number</label>
+                <div class="col-lg-8">
+                    <div class="bs-component">
+                        <input type="text" class="form-control" id="contentEditor4" name="reg_no"
+                            value="{{ $data->reg_no }}" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="textArea2">License Number</label>
+                <div class="col-lg-8">
+                    <div class="bs-component">
+                        <input type="text" class="form-control" id="contentEditor4" name="license_no"
+                            value="{{ $data->license_no }}" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label class="col-lg-2 control-label" for="textArea2">Copyright Text</label>
                 <div class="col-lg-8">
                     <div class="bs-component">
@@ -102,31 +122,14 @@
             </div>
 
             <!-- <div class="form-group">
-                        <label class="col-lg-2 control-label" for="textArea2"> Google Map iframe</label>
-                        <div class="col-lg-8">
-                            <div class="bs-component">
-                                <textarea class="form-control" id="contentEditor1" name="google_map2" rows="3">{{ $data->google_map2 }}</textarea>
-                            </div>
-                        </div>
-                    </div> -->
-            <div class="form-group">
-                <label for="inputStandard" class="col-lg-2 control-label">Meta Key</label>
+                <label class="col-lg-2 control-label" for="textArea2"> Google Map iframe</label>
                 <div class="col-lg-8">
                     <div class="bs-component">
-                        <input class="form-control" id="contentEditor5" name="meta_key"
-                            value="{{ $data->meta_key }}" />
+                        <textarea class="form-control" id="contentEditor1" name="google_map2" rows="3">{{ $data->google_map2 }}</textarea>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="form-group">
-                <label for="inputStandard" class="col-lg-2 control-label">Meta Description</label>
-                <div class="col-lg-8">
-                    <div class="bs-component">
-                        <textarea class="form-control" id="contentEditor5" name="meta_description" rows="3">{{ $data->meta_description }}</textarea>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
