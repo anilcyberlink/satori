@@ -23,8 +23,6 @@
     <meta name="twitter:description" content="@yield('meta_description')">
     <meta name="twitter:image" content="@yield('thumbnail', asset('theme-assets/assets/default-og.jpg'))">
 
-    <meta name="msvalidate.01" content="060425E21D342C866B90681D767B2665" />
-
     <!-- Inter Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Flowbite & Tailwind CDN -->

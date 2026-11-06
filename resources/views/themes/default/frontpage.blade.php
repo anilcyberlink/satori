@@ -5,7 +5,6 @@
 @section('content')
 
     <main>
-
         <section class="relative min-h-[80svh] md:min-h-[85vh] lg:min-h-[85vh] overflow-hidden bg-slate-900">
             <div id="hero-bg"
                 class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-700 z-0 opacity-100"
@@ -13,7 +12,7 @@
             </div>
             <video id="hero-video" class="hidden absolute inset-0 w-full h-full object-cover z-0" autoplay muted loop
                 playsinline>
-                <source src="assets/video/hero-video.mp4" type="video/mp4">
+                <source src="{{asset('theme-assets/video/hero-video.mp4')}}" type="video/mp4">
             </video>
             <div class="hero-top-vignette absolute top-0 left-0 right-0 h-56 z-10 pointer-events-none"></div>
             <div class="hero-bottom-vignette absolute bottom-0 left-0 right-0 h-80 z-10 pointer-events-none"></div>
