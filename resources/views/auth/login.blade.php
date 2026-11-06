@@ -6,18 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ config('app.name', 'Cyberlink') }}</title>
+    <meta name="robots" content="noindex, nofollow">
+
     <!---------------- Fav icon starts --------------------->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon/favicon.ico') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicon/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/favicon/favicon-16x16.png') }}">
-    <link rel="icon" type="image/png" sizes="192x192"
-        href="{{ asset('assets/favicon/android-chrome-192x192.png') }}">
-    <link rel="icon" type="image/png" sizes="512x512"
-        href="{{ asset('assets/favicon/android-chrome-512x512.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('assets/favicon/apple-touch-icon.png') }}">
-    <link rel="manifest" href="{{ asset('assets/favicon/site.webmanifest') }}">
-    <!--<link rel="shortcut icon" type="image/x-icon" href="{{ asset('theme-assets/images/favicon.png') }}">-->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('theme-assets/favicon/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('theme-assets/favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('theme-assets/favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('theme-assets/favicon/site.webmanifest') }}">
     <!---------------- Fav icon stops ----------------------->
+
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -28,15 +25,17 @@
             <div class="card login-card">
                 <div class="row no-gutters">
                     <div class="col-md-6">
-                        <img src="{{ asset('theme-assets/assets/2.jpg') }}" alt="login" class="login-card-img">
-
+                        <img src="{{ asset('theme-assets/about-banner.jpg') }}" alt="{{ $setting->site_name }}" class="login-card-img">
                     </div>
 
                     <div class="col-md-6">
                         <div class="card-body">
                             <div class="brand-wrapper">
-                                <img src="{{ asset('theme-assets/cbrlink.png') }}" alt="logo" width="200">
-
+                                <img src="{{ file_exists(public_path('site-logo/logo.webp'))
+                                    ? asset('site-logo/logo.webp')
+                                    : asset('site-logo/cbrlink.webp') }}"
+                                    alt="{{ $setting->site_name }}"
+                                    width="200">
                             </div>
                             <!-- Error Message -->
                             @if (session('status'))
