@@ -94,15 +94,16 @@ class FrontpageController extends Controller
                 };
                 return $item;
             });
-        $best_seller = TripModel::where(['trip_of_the_month' => '1', 'status' => '1'])->orderBy('ordering', 'asc')->get();
-        $about = PostTypeModel::where('id' , 22)->first();
-        $luxury_tirps = TripModel::where(['video_status' => '1', 'status' => '1'])->orderBy('ordering', 'asc')->get();
-        $reviews = TripReview::where('status', 1)->latest()->take(3)->get();
-        $blog = PostTypeModel::where('id' , 33)->first();
-        $blogs = PostModel::where('post_type' , $blog->id)->latest()->take(3)->get();
-        $homebrief = HomeBriefModel::where('id',1)->first();
+        // $best_seller = TripModel::where(['trip_of_the_month' => '1', 'status' => '1'])->orderBy('ordering', 'asc')->get();
+        // $about = PostTypeModel::where('id' , 22)->first();
+        // $luxury_tirps = TripModel::where(['video_status' => '1', 'status' => '1'])->orderBy('ordering', 'asc')->get();
+        // $reviews = TripReview::where('status', 1)->latest()->take(3)->get();
+        // $blog = PostTypeModel::where('id' , 33)->first();
+        // $blogs = PostModel::where('post_type' , $blog->id)->latest()->take(3)->get();
+        // $homebrief = HomeBriefModel::where('id',1)->first();
         // dd($reviews);
-        return view('themes.default.frontpage', compact('banners','allActivities','best_seller','about','luxury_tirps','blog','blogs','reviews','homebrief'));
+        
+        return view('themes.default.frontpage', compact('banners'));
     }
 
 
@@ -319,7 +320,7 @@ class FrontpageController extends Controller
         // dd($trip);
         return view('themes.default.booking',compact('trip'));
     }
-    
+
     public function post_tripbooking(Request $request)
     {
         // dd($request->all());
@@ -473,7 +474,7 @@ class FrontpageController extends Controller
             ]);
         }
     }
-    
+
     private function getCaptcha($secretKey)
     {
         $secret_key = env('SECRET_KEY');
@@ -495,7 +496,7 @@ class FrontpageController extends Controller
         }
         return view('themes.default.inquiry',compact('trips','activity','data','sidebar','uri'));
     }
-    
+
     public function post_inquiry(Request $request)
     {
         $g_recaptcha_response = $request->input('g_recaptcha_response4');
@@ -1228,7 +1229,7 @@ class FrontpageController extends Controller
     {
         $item= ActivityModel::where('uri', $request->uri)->firstOrFail();
         $data = $item->trips()->with('destinations')->where('status', 1)->orderBy('ordering', 'asc')->paginate(6);
-        
+
         // dd($item,$data);
         return view('themes.default.trip-list', compact('data','item'));
     }
