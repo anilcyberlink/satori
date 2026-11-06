@@ -8,7 +8,9 @@
     <!-- Primary SEO Meta Tags -->
     <title>@yield('title')</title>
     <meta name="description" content="@yield('meta_description')">
-    <meta name="robots" content="@yield('robots', 'index, follow')">
+    {{-- <meta name="robots" content="@yield('robots', 'index, follow')">
+        <meta name="robots" content="index, follow">
+    --}}
     <link rel="canonical" href="@yield('canonical', url()->current())">
 
     <!-- Open Graph -->
@@ -72,7 +74,7 @@
     {{-- GLOBAL ORGANIZATION SCHEMA --}}
     <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
+        "@@context": "https://schema.org",
         "@type": "TravelAgency",
         "name": "Satori Advanture",
         "url": "https://",

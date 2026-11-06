@@ -2,37 +2,32 @@
 <html>
 
 <head>
-    <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <title> {{ config('app.name', '') }} - @yield('title') </title>
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
     <meta name="author" content="Cyberlink">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <base href="<?= url('/') ?>" />
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600'>
-    @yield('additional-css')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/skin/default_skin/css/theme.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/skin/default_skin/css/theme2.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/skin/default_skin/css/theme3.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/admin-tools/admin-forms/css/admin-forms.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
-        integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    @yield('additional-css')
     <!---------------- Fav icon starts --------------------->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon/favicon.ico') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicon/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/favicon/favicon-16x16.png') }}">
-    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('assets/favicon/android-chrome-192x192.png') }}">
-    <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('assets/favicon/android-chrome-512x512.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('assets/favicon/apple-touch-icon.png') }}">
-    <link rel="manifest" href="{{ asset('assets/favicon/site.webmanifest') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('theme-assets/favicon/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('theme-assets/favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('theme-assets/favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('theme-assets/favicon/site.webmanifest') }}">
     <!---------------- Fav icon stops ----------------------->
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/skin/default_skin/css/bootstrap3-wysihtml5.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('assets/skin/default_skin/css/bootstrap3-wysihtml5.min.css') }}">
 
     <script src="{{ asset('vendor/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('tinymce/init-tinymce.js') }}"></script>
@@ -40,6 +35,7 @@
         span.panel-controls {
             display: none;
         }
+
         .tox-editor-container .tox-promotion {
             visibility: hidden !important;
         }
@@ -122,7 +118,6 @@
                 overflow: hidden;
             }
         }
-
     </style>
 </head>
 
@@ -133,23 +128,19 @@
         <header class="navbar navbar-fixed-top">
             <div class="navbar-branding">
                 <a class="navbar-brand" href="{{ url('/') }}" target="_blank">
-                    {{-- @if ($setting->logo)
-                    <img src="{{ asset('uploads/original/' . $setting->logo) }}" alt="{{ config('app.name') }}"
-                        width="100" />
-                    @else --}}
-                    <img src="{{ asset('theme-assets/cbrlink.png') }}" alt="{{ config('app.name') }}"
-                        width="100" />
-                    {{-- @endif --}}
+                    <img src="{{ file_exists(public_path('site-logo/logo.webp'))
+                        ? asset('site-logo/logo.webp')
+                        : asset('site-logo/cbrlink.webp') }}"
+                        alt="{{ config('app.name') }}" width="100">
                 </a>
                 <span id="toggle_sidemenu_l" class="ad ad-lines"></span>
             </div>
 
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="avoid:javascript;" class="dropdown-toggle fw600 p15" data-toggle="dropdown"> <img
-                            src="{{ asset(env('PUBLIC_PATH') . 'assets/img/avatars/1.png') }}" alt="avatar"
-                            class="mw30 br64 mr15">{{ Auth::user()->name }}<span
-                            class="caret caret-tp hidden-xs"></span></a>
+                    <a href="avoid:javascript;" class="dropdown-toggle fw600 p15" data-toggle="dropdown"> <img src="{{ asset(env('PUBLIC_PATH') . 'assets/img/avatars/1.png') }}" alt="avatar"
+                        class="mw30 br64 mr15">{{ Auth::user()->name }}<span
+                        class="caret caret-tp hidden-xs"></span></a>
                     <ul class="dropdown-menu list-group dropdown-persist w250" role="menu">
                         <!-- <li><a class="nav-link" href="{{ route('admin.userprofile') }}">User Profile</a></li> -->
                         <!-- <li><a class="nav-link" href="{{ route('admin.changepassword') }}">Change Password </a></li> -->
