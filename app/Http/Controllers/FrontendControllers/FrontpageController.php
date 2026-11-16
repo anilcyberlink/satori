@@ -76,25 +76,27 @@ class FrontpageController extends Controller
 {
     public function index()
     {
+        $des = DestinationModel::with('trips')->get();
+        // dd($des);
         $setting= SettingModel::first() ;
         $banners = BannerModel::all();
         $expedition = ActivityModel::where(['activity_parent'=>'expedition', 'status' => '1'])->orderBy('ordering','asc')->get();
         $trekking = ActivityModel::where(['activity_parent'=>'trekking', 'status' => '1'])->orderBy('ordering','asc')->get();
         $activities =  ActivityModel::where(['activity_parent'=>'activity', 'status' => '1'])->orderBy('ordering', 'asc')->get();
         // $allActivities = collect()->merge($expedition)->merge($trekking)->merge($activities);
-        $allActivities = ActivityModel::where('status', 1)
-            ->whereIn('activity_parent', ['expedition', 'trekking', 'activity'])
-            ->orderByRaw("FIELD(activity_parent, 'expedition', 'trekking', 'activity')")
-            ->orderBy('ordering', 'asc')
-            ->get()
-            ->map(function ($item) {
-                $item->route_url = match ($item->activity_parent) {
-                    'expedition' => route('expedition-list', $item->uri),
-                    'trekking'   => route('trekking-list', $item->uri),
-                    default      => route('tour-list', $item->uri),
-                };
-                return $item;
-            });
+        // $allActivities = ActivityModel::where('status', 1)
+        //     ->whereIn('activity_parent', ['expedition', 'trekking', 'activity'])
+        //     ->orderByRaw("FIELD(activity_parent, 'expedition', 'trekking', 'activity')")
+        //     ->orderBy('ordering', 'asc')
+        //     ->get()
+        //     ->map(function ($item) {
+        //         $item->route_url = match ($item->activity_parent) {
+        //             'expedition' => route('expedition-list', $item->uri),
+        //             'trekking'   => route('trekking-list', $item->uri),
+        //             default      => route('tour-list', $item->uri),
+        //         };
+        //         return $item;
+        //     });
         // $best_seller = TripModel::where(['trip_of_the_month' => '1', 'status' => '1'])->orderBy('ordering', 'asc')->get();
         // $about = PostTypeModel::where('id' , 22)->first();
         // $luxury_tirps = TripModel::where(['video_status' => '1', 'status' => '1'])->orderBy('ordering', 'asc')->get();
@@ -266,6 +268,15 @@ class FrontpageController extends Controller
             'photo_videos', 'activity','destinations','similar_trips','photos','videos','local','banner','setting','schedules','faqs','tripId', 'tripUri','reviews'));
     }
 
+    public function trip_lists($uri)
+    {
+        $data= DestinationModel::where('uri', $uri)->firstOrFail();
+        $related= DestinationModel::where('uri', '!=', $uri)->orderBy('ordering', 'asc')->get();
+        $trips = $data->trips()->where('status', 1)->orderBy('ordering', 'asc')->paginate(8);
+
+        // dd($item,$data);
+        return view('themes.default.trip-list', compact('data','trips','related'));
+    }
     //<------------------------------------------Activity Frontend---------------------------------------------->
 
     public function travellist($uri)
@@ -1226,14 +1237,6 @@ class FrontpageController extends Controller
 
     }
 
-    public function trip_lists(Request $request)
-    {
-        $item= ActivityModel::where('uri', $request->uri)->firstOrFail();
-        $data = $item->trips()->with('destinations')->where('status', 1)->orderBy('ordering', 'asc')->paginate(6);
-
-        // dd($item,$data);
-        return view('themes.default.trip-list', compact('data','item'));
-    }
 
     public function all_reviews()
     {

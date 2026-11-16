@@ -14,6 +14,7 @@
                 <span class="text-[#607382]">
                     |
                 </span>
+
                 <!-- COMPANY MEGA MENU TRIGGER -->
                 <div class="relative py-7">
                     <button data-mega-target="company" class="nav-link flex items-center gap-1 py-2 uppercase hover:text-[var(--primary)]">
@@ -91,9 +92,11 @@
                         </div>
                     </div>
                 </div>
+
                 <span class="text-[#607382]">
                     |
                 </span>
+
                 <!-- DESTINATION MEGA MENU TRIGGER -->
                 <div class="relative py-7">
                     <button data-mega-target="destination" class="nav-link flex items-center gap-1 py-2 uppercase hover:text-[var(--primary)]">
@@ -105,207 +108,59 @@
                             <div class="flex min-h-[300px]">
                                 <!-- Left Vertical Tabs -->
                                 <div class="w-1/4 bg-white border-r border-slate-200 py-3">
-                                    <button data-tab-group="dest" data-tab-target="nepal" class="tab-btn active w-full text-left px-6 py-2.5 flex items-center justify-between font-medium text-[19px] text-[var(--text-primary)]">
-                                        NEPAL
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
-                                    <button data-tab-group="dest" data-tab-target="india" class="tab-btn w-full text-left px-6 py-2.5 flex items-center justify-between font-normal text-[19px] text-[var(--text-primary)]">
-                                        INDIA
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
-                                    <button data-tab-group="dest" data-tab-target="pakistan" class="tab-btn w-full text-left px-6 py-2.5 flex items-center justify-between font-normal text-[19px] text-[var(--text-primary)]">
-                                        PAKISTAN
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
-                                    <button data-tab-group="dest" data-tab-target="tibet" class="tab-btn w-full text-left px-6 py-2.5 flex items-center justify-between font-normal text-[19px] text-[var(--text-primary)]">
-                                        TIBET
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
-                                    <button data-tab-group="dest" data-tab-target="bhutan" class="tab-btn w-full text-left px-6 py-2.5 flex items-center justify-between font-normal text-[19px] text-[var(--text-primary)]">
-                                        BHUTAN
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
+                                    @foreach ($destinations as $index => $des)
+                                        <button data-tab-group="dest" data-tab-target="{{ $des->uri }}" class="tab-btn {{ $index === 0 ? 'active' : '' }} w-full text-left px-6 py-2.5 flex items-center justify-between font-medium text-[19px] text-[var(--text-primary)]">
+                                            {{ strtoupper($des->title) }}
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </button>
+                                    @endforeach
                                 </div>
+
                                 <!-- Right Content Panels -->
                                 <div class="w-3/4 p-6 flex flex-col justify-between">
-                                    <!-- NEPAL CONTENT -->
-                                    <div data-content-group="dest" data-content-id="nepal" class="space-y-6">
-                                        <div class="grid grid-cols-3 gap-y-4 gap-x-6 capitalize">
-                                            <a href="./8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Trekking In Nepal
-                                            </a>
-                                            <a href="8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Educational Tour & Trek
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Jungle Safari In Nepal
-                                            </a>
-                                            <a href="./8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Peak Climbing In Nepal
-                                            </a>
-                                            <a href="./8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Helicopter Tour In Nepal
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Tour In Nepal
-                                            </a>
-                                            <a href="./8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Mountain Expedition In Nepal
-                                            </a>
-                                            <a href="./8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Mountain Biking In Nepal
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Adventure Sport In Nepal
-                                            </a>
+                                    @foreach ($destinations as $index => $des)
+                                        <div data-content-group="dest" data-content-id="{{ $des->uri }}" class="{{ $index === 0 ? '' : 'hidden' }} space-y-6">
+                                            <!-- Destination Trips -->
+                                            <div class="grid grid-cols-3 gap-y-4 gap-x-6 capitalize">
+                                                @foreach ($des->trips->take(9) as $trip)
+                                                    <a href="{{ route('trip.tripdetail',$trip->uri )}}"
+                                                        class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
+                                                        <span class="text-[var(--teal-brand)] font-bold">
+                                                            <i class="fa-solid fa-arrow-right"></i>
+                                                        </span>
+                                                        {{ $trip->trip_title }}
+                                                    </a>
+                                                @endforeach
+                                                @if ($des->trips->isEmpty())
+                                                    <p class="text-gray-500 col-span-3">
+                                                        No trips available for this destination.
+                                                    </p>
+                                                @endif
+                                            </div>
+                                            <!-- EXPLORE ALL BUTTON -->
+                                            <div class="pt-6">
+                                                <a href="{{ route('destination-list',$des->uri) }}" class="btn-join-group hidden sm:inline-flex">
+                                                    <span>EXPLORE ALL</span>
+                                                    <span class="w-5 h-5 rounded-full border border-white/40 flex items-center justify-center text-[16px]">
+                                                        <i class="fa-solid fa-arrow-right"></i>
+                                                    </span>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <!-- INDIA CONTENT -->
-                                    <div data-content-group="dest" data-content-id="india" class="hidden space-y-6">
-                                        <div class="grid grid-cols-3 gap-y-4 gap-x-6 capitalize">
-                                            <a href="./8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Ladakh Trekking
-                                            </a>
-                                            <a href="./8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Garhwal Expedition
-                                            </a>
-                                            <a href="./8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Sikkim Tour
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- PAKISTAN CONTENT -->
-                                    <div data-content-group="dest" data-content-id="pakistan" class="hidden space-y-6">
-                                        <div class="grid grid-cols-3 gap-y-4 gap-x-6 capitalize">
-                                            <a href="./8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                K2 Base Camp Trek
-                                            </a>
-                                            <a href="./8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Nanga Parbat Expedition
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- TIBET CONTENT -->
-                                    <div data-content-group="dest" data-content-id="tibet" class="hidden space-y-6">
-                                        <div class="grid grid-cols-3 gap-y-4 gap-x-6 capitalize">
-                                            <a href="./8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Mount Kailash Yatra
-                                            </a>
-                                            <a href="./8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Lhasa City Tour
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- BHUTAN CONTENT -->
-                                    <div data-content-group="dest" data-content-id="bhutan" class="hidden space-y-6">
-                                        <div class="grid grid-cols-3 gap-y-4 gap-x-6 capitalize">
-                                            <a href="./8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Tiger's Nest Trek
-                                            </a>
-                                            <a href="./8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Cultural Bhutan Tour
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- EXPLORE ALL BUTTON -->
-                                    <div class="pt-6">
-                                        <a href="./nepal.php" class="btn-join-group hidden sm:inline-flex">
-                                            <span>EXPLORE ALL</span>
-                                            <span class="w-5 h-5 rounded-full border border-white/40 flex items-center justify-center text-[16px]">
-                                                <i class="fa-solid fa-arrow-right"></i>
-                                            </span>
-                                        </a>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                             @include('themes.default.layouts.features_banner')
                         </div>
                     </div>
                 </div>
+
                 <span class="text-[#607382]">
                     |
                 </span>
+
                 <!-- TREKKING MEGA MENU TRIGGER -->
                 <div class="relative py-7">
                     <button data-mega-target="trekking" class="nav-link flex items-center gap-1 py-2 uppercase hover:text-[var(--primary)]">
@@ -523,9 +378,11 @@
                         </div>
                     </div>
                 </div>
+
                 <span class="text-[#607382]">
                     |
                 </span>
+
                 <!-- CLIMBING MEGA MENU TRIGGER -->
                 <div class="relative py-7">
                     <button data-mega-target="climbing" class="nav-link flex items-center gap-1 py-2 uppercase hover:text-[var(--primary)]">
@@ -692,6 +549,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- Right Navbar CTA & Icons -->
             <div class="flex items-center gap-2 xl:gap-2 shrink-0 ml-4">
                 <a href="./customize-your-trip.php" class="btn-customize-trip-group hidden sm:inline-flex">
@@ -774,6 +632,7 @@
         </div>
     </div>
 </nav>
+
 <!-- MOBILE NAVIGATION DRAWER -->
 <div id="mobile-menu-drawer" class="hidden fixed inset-0 z-[1000] bg-slate-900/60 backdrop-blur-sm lg:hidden">
     <div class="flex h-full w-[88%] max-w-md flex-col bg-white shadow-2xl">

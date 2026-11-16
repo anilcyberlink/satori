@@ -46,20 +46,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="inputStandard" class="col-lg-2 control-label"> Banner</label>
-                        <div class="col-lg-9">
-                            <div class="bs-component">
-                                <input type="file" name="banner" />
-                                @if ($data->banner)
-                                    <span class="bannerid{{ $data->id }}">
-                                        <a href="#{{ $data->id }}" class="delete_banner">X</a>
-                                        <img src="{{ asset('/uploads/original/' . $data->banner) }}" width="100%" />
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
 
             </div>
@@ -69,30 +55,7 @@
                     'seo' => $data->seo ?? null,
                 ])
             </div>
-            {{-- <div class="panel">
-                    <div class="panel-heading">
-                        <span class="panel-title">Related Activity</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <div class="col-lg-12">
-                                <div class="bs-component">
-                                    <select class="form-control related-activity" name="activity_id[]" multiple="multiple">
 
-                                        @foreach ($relatedActivities as $row)
-
-                                        @if (selected($row->id, $data->id) != null)
-                                        <option value="{{ $row->id }}" selected>{{ $row->title }}</option>
-                                        @else
-                                        <option value="{{ $row->id }}">{{ $row->title }}</option>
-                                        @endif
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
         </div>
 
         <div class="col-md-3">
@@ -149,6 +112,38 @@
                     </div>
                 </div>
 
+                <div class="sid_bvijay mb10">
+                    <h4>Banner</h4>
+                    <div class="hd_show_con">
+                        <div class="bs-component">
+                            <input type="file" name="banner" accept="image/*">
+                            @if ($data->banner)
+                                <span class="bannerid{{ $data->id }}">
+                                    <a href="#{{ $data->id }}" class="delete_banner">X</a>
+                                    <br>
+                                    <img src="{{ asset('uploads/original/' . $data->banner) }}" width="100%">
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sid_bvijay mb10">
+                    <h4>Multiple Banners</h4>
+                    <div class="hd_show_con">
+                        <div class="bs-component">
+                            <input type="file" name="multi_banners[]" multiple accept="image/*">
+                        </div>
+                        @foreach ($data->multiBanners as $multiBanner)
+                            <span class="multi-banner-id{{ $multiBanner->id }}" style="display:inline-block; margin:10px 5px;">
+                                <a href="javascript:void(0);" data-id="{{ $multiBanner->id }}" class="delete_multi_banner">X</a>
+                                <br>
+                                <img src="{{ asset('uploads/original/' . $multiBanner->image) }}" width="100%">
+                                <small>{{ $multiBanner->title }}</small>
+                            </span>
+                        @endforeach
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -228,6 +223,27 @@
 
                 toggleBtn.textContent = newText;
                 hiddenInput.value = newValue;
+            });
+        });
+    </script>
+    <script>
+        $(document).on('click', '.delete_multi_banner', function(e) {
+            e.preventDefault();
+            if (!confirm('Are you sure to delete this banner?')) return;
+            var id = $(this).data('id');
+            var url = "{{ route('multi-banner.destroy', ':id') }}".replace(':id', id);
+            $.ajax({
+                type: 'DELETE',
+                url: url,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function() {
+                    $('.multi-banner-id' + id).remove();
+                },
+                error: function() {
+                    alert('Error deleting banner!');
+                }
             });
         });
     </script>

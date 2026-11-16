@@ -2,12 +2,9 @@
 
 namespace App\Http\ViewComposers;
 
-use App\Models\Posts\PostModel;
-use App\Models\Travels\TripModel;
-use App\Models\Posts\PostTypeModel;
 use Illuminate\Contracts\View\view;
+use App\Models\Posts\PostTypeModel;
 use App\Models\Travels\ActivityModel;
-use App\Models\Travels\TripGroupModel;
 use App\Models\Destinations\DestinationModel;
 
 class HeaderComposer
@@ -20,6 +17,7 @@ class HeaderComposer
 
 	public function compose(View $view)
 	{
+        $view->with('destinations', DestinationModel::with('trips')->get());
 
 		$view->with('navigations', PostTypeModel::where(['is_menu' => '1'])
 			->orderBy('ordering', 'asc')

@@ -1,0 +1,94 @@
+span.panel-controls {
+    display: none;
+}
+
+.tox-editor-container .tox-promotion {
+    visibility: hidden !important;
+}
+
+/* Desktop Layout */
+@media (min-width: 768px) {
+    #content_wrapper {
+        margin-left: 230px;
+        padding-top: 60px;
+    }
+}
+
+/* Mobile sidebar only */
+@media (max-width: 767px) {
+
+    :root {
+        --admin-header-height: 60px;
+    }
+
+    /* Sidebar hidden by default */
+    #sidebar_left {
+        position: fixed !important;
+        top: var(--admin-header-height) !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        width: min(280px, 85vw) !important;
+        height: auto !important;
+        z-index: 1040 !important;
+
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        visibility: hidden;
+    }
+
+    /* Sidebar open */
+    body.mobile-sidebar-open #sidebar_left {
+        transform: translateX(0);
+        visibility: visible;
+    }
+
+    /* Sidebar scroll */
+    #sidebar_left .sidebar-left-content {
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Dark background overlay */
+    #sidebar_mobile_overlay {
+        display: none;
+        position: fixed;
+        top: var(--admin-header-height);
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1030;
+    }
+
+    body.mobile-sidebar-open #sidebar_mobile_overlay {
+        display: block;
+    }
+
+    /* Keep header above sidebar */
+    header.navbar {
+        z-index: 1050 !important;
+    }
+
+    /* Main content uses full width */
+    #content_wrapper {
+        margin-left: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+    }
+
+    /* Hamburger touch area */
+    #toggle_sidemenu_l {
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+
+    body.mobile-sidebar-open {
+        overflow: hidden;
+    }
+}

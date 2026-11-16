@@ -11,7 +11,7 @@
             <!-- Input Fields -->
             <div class="panel">
                 <div class="panel-heading">
-                    <span class="panel-title">Add Tour</span>
+                    <span class="panel-title">Add Destination</span>
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
@@ -40,46 +40,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="inputStandard" class="col-lg-2 control-label"> Banner</label>
-                        <div class="col-lg-9">
-                            <div class="bs-component">
-                                <input type="file" name="banner[]" multiple />
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
-                <!--<div class="panel">-->
-                <!--    <div class="panel-heading">-->
-                <!--        <span class="panel-title">Related Activity</span>-->
-                <!--    </div>-->
-                <!--    <div class="panel-body">-->
-                <!--        <div class="form-group">-->
-                <!--            <div class="col-lg-12">-->
-                <!--                <div class="bs-component">-->
-
-                <!--                    <select class="form-control related-activity" name="activity_id[]" multiple="multiple">-->
-                <!--                        @if ($relatedActivities->count() > 0)-->
-                <!--                            @foreach ($relatedActivities as $row)
-    -->
-                <!--                                {{-- @foreach ($data->relatedActivities as $_row) --}}-->
-                <!--                                    {{-- @if ($row->id == $_row->pivot->trip_id) --}}-->
-                <!--                                        <option value="{{ $row->id }}"> {{ $row->title }}-->
-                <!--                                        </option>-->
-                <!--                                        {{-- @continue --}}-->
-                <!--                                    {{-- @endif --}}-->
-                <!--                                {{-- @endforeach --}}-->
-                <!--                                {{-- <option value="{{ $row->id }}">{{ $row->title }}</option> --}}-->
-                <!--
-    @endforeach-->
-                <!--                        @endif-->
-                <!--                    </select>-->
-                <!--                </div>-->
-                <!--            </div>-->
-                <!--        </div>-->
-                <!--    </div>-->
-                <!--</div>-->
             </div>
 
             <div class="panel">
@@ -114,12 +76,6 @@
                             value="{{ $ordering }}" />
                     </label>
                 </div>
-                <!--<div class="sid_bvijay mb10">-->
-                <!--    <label class="field">Video ID-->
-                <!--        <input type="text" id="video" name="video" class="form-control" />-->
-                <!--        <br>https://youtu.be/<b>iwhpS4ow7Zc</b>-->
-                <!--    </label>-->
-                <!--</div>-->
 
                 <div class="sid_bvijay mb10">
                     <h4> Thumbnail </h4>
@@ -127,6 +83,20 @@
                         <div id="xedit-demo">
                             <input type="file" name="thumbnail" />
                         </div>
+                    </div>
+                </div>
+                <div class="sid_bvijay mb10">
+                    <h4> Banner </h4>
+                    <div class="hd_show_con">
+                        <div class="bs-component">
+                            <input type="file" name="banner" />
+                        </div>
+                    </div>
+                </div>
+                <div class="sid_bvijay mb10">
+                    <h4>Multiple Banners</h4>
+                    <div class="hd_show_con">
+                        <input type="file" name="multi_banners[]" multiple accept="image/*">
                     </div>
                 </div>
 
