@@ -5,6 +5,7 @@ use App\Http\Controllers\FrontendControllers\FrontpageController;
 use App\Http\Controllers\HBLController;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminControllers\Banners\MultiBannerController;
 
 Route::get('/sitemap.xml', 'FrontendControllers\FrontpageController@sitemap');
 /************************** Sangam Routes Starts *********************************/
@@ -30,6 +31,12 @@ Route::redirect('/dashboard', '/admin/dashboard', 301);
 
 
 //================== Frontend Routes=================//
+// only used routes
+Route::get('trip/{uri}', 'FrontendControllers\FrontpageController@tripdetail')->name('trip.tripdetail');
+Route::get('destination/{uri}', 'FrontendControllers\FrontpageController@trip_lists')->name('destination-list');
+
+// Till here
+
 Route::post('subscribe', 'FrontendControllers\FrontpageController@subscribe')->name('subscribe');
 Route::get('/verify/{token}', 'FrontendControllers\FrontpageController@verifyUser')->name('verify-user');
 Route::get('/contact-verify/{token}', 'FrontendControllers\FrontpageController@verifyContact')->name('verify-contact');
@@ -39,18 +46,10 @@ Route::get('blogs/{uri}', 'FrontendControllers\FrontpageController@pagedetail')-
 Route::get('team/{uri}', 'FrontendControllers\FrontpageController@pagedetail')->name('page.teamdetail');
 Route::get('company/{uri}', 'FrontendControllers\FrontpageController@posttype')->name('page.posttype_detail');
 
-Route::get('expeditions/{uri}', 'FrontendControllers\FrontpageController@trip_lists')->name('expedition-list');
 Route::get('treks/{uri}', 'FrontendControllers\FrontpageController@trip_lists')->name('trekking-list');
 Route::get('tours/{uri}', 'FrontendControllers\FrontpageController@trip_lists')->name('tour-list');
 Route::get('reviews', 'FrontendControllers\FrontpageController@all_reviews')->name('reviews');
 Route::post('reviews', 'FrontendControllers\FrontpageController@review_post')->name('review.post');
-
-// Route::get('page/expedition/{uri}.html', 'FrontendControllers\FrontpageController@expedition')->name('expedition-list');
-// Route::get('page/tour.html', 'FrontendControllers\FrontpageController@tour')->name('tour');
-// Route::get('page/trekking-region/{uri}.html', 'FrontendControllers\FrontpageController@trekking')->name('trekking-list');
-// Route::get('page/package/{uri}.html', 'FrontendControllers\FrontpageController@package')->name('package-list');
-// Route::get('package/{uri}', 'FrontendControllers\FrontpageController@packageDetail')->name('packageDetail');
-
 
 // Trip Pages
 Route::get('plan-trip', 'FrontendControllers\FrontpageController@plan_trip')->name('plan-trip');
@@ -65,7 +64,6 @@ Route::get('/get-trips', 'FrontendControllers\FrontpageController@getTrips')->na
 Route::any('book/{uri}.html', 'FrontendControllers\FrontpageController@showbooking')->name('page.booking');
 Route::get('booking-success', 'FrontendControllers\FrontpageController@showbookingsuccess')->name('page.bookingsuccess');
 // Route::get('page/{uri}.html', 'FrontendControllers\FrontpageController@tripdetail')->name('page.tripdetail');
-Route::get('trip/{uri}', 'FrontendControllers\FrontpageController@tripdetail')->name('trip.tripdetail');
 Route::get('/download-trip/{uri}', 'FrontendControllers\FrontpageController@downloadPdf')->name('trip.download');
 
 Route::get('activity/{uri}.html', 'FrontendControllers\FrontpageController@travellist')->name('page.activitydetail');
@@ -92,6 +90,7 @@ Route::get('related-list/{tripId}', 'FrontendControllers\FrontpageController@rel
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
+
 //================================= Backend Routes ============================//
 Route::middleware(['auth'])->group(function () {
 
@@ -141,6 +140,9 @@ Route::middleware(['auth'])->group(function () {
     Route::put('admin/past-trips/{id}', 'AdminControllers\Travels\PastTripController@update')->name('pasttrip.update');
     Route::put('admin/past-trips/{id}/status', 'AdminControllers\Travels\PastTripController@status')->name('pasttrip.status');
     Route::delete('admin/past-trips/{id}', 'AdminControllers\Travels\PastTripController@destroy')->name('pasttrip.destroy');
+
+    // Multibanner of trip categories Delete
+    Route::delete('/multi-banner/{id}', [MultiBannerController::class, 'destroy'])->name('multi-banner.destroy');
 
     // Past Trip Images
     Route::get('admin/past-images/{id}/create', 'AdminControllers\Travels\PastTripImageController@addImages')->name('pasttrip.image.create');

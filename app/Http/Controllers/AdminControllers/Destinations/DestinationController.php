@@ -10,13 +10,16 @@ use Intervention\Image\Facades\Image;
 use App\Models\Destinations\DestinationModel;
 use App\Models\Destinations\DestinationActivityrelModel;
 use App\Services\SeoService;
+use App\Services\ModelImageService;
 
 class DestinationController extends Controller
 {
     protected $seoService;
-    public function __construct(SeoService $seoService)
+    protected $modelImageService;
+    public function __construct(SeoService $seoService, ModelImageService $modelImageService)
     {
         $this->seoService = $seoService;
+        $this->modelImageService = $modelImageService;
     }
     /**
      * Display a listing of the resource.
@@ -49,49 +52,42 @@ class DestinationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
-
         $request->validate([
             'title' => 'required',
             'uri' => 'required|unique:cl_trip_destinations',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'banner' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'multi_banners' => 'nullable|array',
+            'multi_banners.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
-        $medium_width = env('MEDIUM_WIDTH');
-        $medium_height = env('MEDIUM_HEIGHT');
-        $data = $request->all();
 
-        // dd($data);
-        $file = $request->file('thumbnail');
-        $file2 = $request->file('banner');
-        $banner = [];
-        $thumbnail = '';
+        $destinationOriginal = public_path('uploads/original');
+
+        if (!file_exists($destinationOriginal)) {
+            mkdir($destinationOriginal, 0755, true);
+        }
+
+        // Thumbnail
+        $thumbnail = null;
         if ($request->hasFile('thumbnail')) {
             $file = $request->file('thumbnail');
             $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $thumbnail = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
-            $destinationOriginal = public_path('uploads/original');
+
             Image::make($file->getRealPath())->encode('webp', 85)->save($destinationOriginal . '/' . $thumbnail);
         }
 
-        if ($request->hasfile('banner')) {
-            $product = $request->file('banner')->getClientOriginalName();
-            $extension = $request->file('banner')->getClientOriginalExtension();
-            $product = explode('.', $product);
-            $banner = Str::slug($product[0]) . '-' . Str::random(40) . '.' . $extension;
-            $destinationOriginal = public_path('uploads/original');
+        // Single Banner
+        $banner = null;
+        if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $banner = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
 
-            $banner_picture = Image::make($file2->getRealPath());
-            $width = Image::make($file2->getRealPath())->width();
-            $height = Image::make($file2->getRealPath())->height();
-
-            $banner_picture->save($destinationOriginal . '/' . $banner);
-        }
-        if ($request->hasfile('banner')) {
-            foreach ($request->file('banner') as $image) {
-                $name = time() . rand(1, 50) . '.' . $image->extension();
-                $image->move(public_path('uploads/original/'), $name);
-                $banner[] = $name;
-            }
+            Image::make($file->getRealPath())->encode('webp', 85)->save($destinationOriginal . '/' . $banner);
         }
 
         $result = new DestinationModel();
@@ -106,23 +102,25 @@ class DestinationController extends Controller
         $result->brief = $request->brief;
         $result->save();
 
+        // Multiple Banners
+        $this->modelImageService->save($result, $request->file('multi_banners', []));
+
         // SEO
         $this->seoService->save($result, $request);
 
-        $activities = $request->activity_id;
-        $data = [];
-        foreach ($activities as $item) {
-            $data[] = [
+        // Activities
+        $activities = [];
+        foreach ($request->activity_id ?? [] as $item) {
+            $activities[] = [
                 'destination_id' => $result->id,
                 'activity_id' => $item,
             ];
         }
-        // dd($data);
-        $destinationActivity = DestinationActivityrelModel::insert($data);
-        if ($result) {
-            return redirect()->back()->with('success', 'Successfully added.');
+        if (!empty($activities)) {
+            DestinationActivityrelModel::insert($activities);
         }
-        return redirect()->back()->with('message', 'Try again!');
+
+        return redirect()->back()->with('success', 'Successfully added.');
     }
 
     /**
@@ -144,7 +142,7 @@ class DestinationController extends Controller
      */
     public function edit($id)
     {
-        $data = DestinationModel::with('seo')->find($id);
+        $data = DestinationModel::with(['seo', 'multiBanners'])->findOrFail($id);
         $relatedActivities = ActivityModel::get();
         $selected = DestinationActivityrelModel::where('destination_id', $id)->get();
         // dd($selected);
@@ -158,53 +156,60 @@ class DestinationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function update(Request $request, $id)
     {
-        // dd($request->all());
         $request->validate([
             'title' => 'required',
             'uri' => 'required|unique:cl_trip_destinations,uri,' . $id,
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'banner' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'multi_banners' => 'nullable|array',
+            'multi_banners.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
-        $data = DestinationModel::find($id);
-        $file = $request->file('thumbnail');
-        $file2 = $request->file('banner');
 
+        $data = DestinationModel::findOrFail($id);
+        $destinationPath = public_path('uploads/original');
+
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
+
+        // Update Thumbnail
         if ($request->hasFile('thumbnail')) {
-            if ($data->thumbnail && file_exists(public_path('uploads/original/' . $data->thumbnail))) {
-                unlink(public_path('uploads/original/' . $data->thumbnail));
+            if ($data->thumbnail && file_exists($destinationPath . '/' . $data->thumbnail)) {
+                unlink($destinationPath . '/' . $data->thumbnail);
             }
 
             $image = $request->file('thumbnail');
-            $name = Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '-' . Str::random(5) . '.webp';
-            $destinationPath = public_path('uploads/original');
+            $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $name = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
 
-            Image::make($image->getRealPath())->encode('webp', 85)->save($destinationPath . '/' . $name);
+            Image::make($image->getRealPath())
+                ->encode('webp', 85)
+                ->save($destinationPath . '/' . $name);
 
-            $data['thumbnail'] = $name;
+            $data->thumbnail = $name;
         }
 
+        // Update Single Banner
         if ($request->hasFile('banner')) {
-            // Remove old file if exists
-            if ($data->banner) {
-                if (file_exists(env('PUBLIC_PATH') . 'uploads/original/' . $data->banner)) {
-                    unlink(env('PUBLIC_PATH') . 'uploads/original/' . $data->banner);
-                }
+            if ($data->banner && file_exists($destinationPath . '/' . $data->banner)) {
+                unlink($destinationPath . '/' . $data->banner);
             }
-            // if($request->hasfile('banner')){
-            //   foreach($request->file('banner') as $image)
-            //   {
-            //     $name = time().rand(1,50).'.'.$image->extension();
-            //     $image->move(public_path('uploads/original/'),$name);
-            //     $banner[] = $name;
-            //   }
-            // }
+
             $image = $request->file('banner');
-            $name = time() . '.' . $image->getClientOriginalExtension();
-            $destinationPath = public_path('/uploads/original/');
-            $image->move($destinationPath, $name);
-            $data['banner'] = $name;
+            $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $name = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
+
+            Image::make($image->getRealPath())
+                ->encode('webp', 85)
+                ->save($destinationPath . '/' . $name);
+
+            $data->banner = $name;
         }
 
+        // Update Destination Details
         $data->title = $request->title;
         $data->uri = Str::slug($request->uri);
         $data->content = $request->content;
@@ -214,16 +219,22 @@ class DestinationController extends Controller
         $data->status = $request->status;
 
         if ($data->save()) {
+
+            // Save New Multiple Banners
+            $this->modelImageService->save($data, $request->file('multi_banners', []));
+
             // SEO
             $this->seoService->save($data, $request);
 
-            $data->activities()->detach();
-            $data->activities()->attach($request->activity_id);
+            // Update Activities
+            $data->activities()->sync($request->activity_id ?? []);
 
             return redirect()->back()->with('success', 'Update Successful.');
         }
+
         return redirect()->back()->with('message', 'Try again!');
     }
+
 
     /**
      * Remove the specified resource from storage.
