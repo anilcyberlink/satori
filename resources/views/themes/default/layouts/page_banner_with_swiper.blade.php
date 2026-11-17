@@ -1,26 +1,23 @@
 <section class="group relative h-[60vh] overflow-hidden sm:h-[70vh] lg:h-[80vh] no-print" aria-labelledby="package-title">
     <div class="swiper hero-image-swiper absolute inset-0 z-10 h-full w-full">
         <div class="swiper-wrapper h-full">
-            <div class="swiper-slide !h-full !w-full">
-                <img src="https://images.unsplash.com/photo-1518002054494-3a6f94352e9d?auto=format&fit=crop&w=1920&q=85"
-                    alt="Everest Base Camp Trekking" width="1920" height="700" fetchpriority="high" decoding="async"
-                    class="h-full w-full object-cover object-center">
-            </div>
-            <div class="swiper-slide !h-full !w-full">
-                <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1920&q=85"
-                    alt="Himalayan trekking" width="1920" height="700" decoding="async"
-                    class="h-full w-full object-cover object-center">
-            </div>
-            <div class="swiper-slide !h-full !w-full">
-                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=85"
-                    alt="Nepal Himalayas" width="1920" height="700" decoding="async"
-                    class="h-full w-full object-cover object-center">
-            </div>
-            <div class="swiper-slide !h-full !w-full">
-                <img src="https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1920&q=85"
-                    alt="Mountain trekking in Nepal" width="1920" height="700" decoding="async"
-                    class="h-full w-full object-cover object-center">
-            </div>
+            @forelse($banners as $banner)
+                <div class="swiper-slide !h-full !w-full">
+                    <img src="{{ asset('uploads/original/'.$banner->image) }}"
+                        alt="{{ $page_title }}" width="1920" height="700" @if($loop->first) fetchpriority="high" @endif decoding="async"
+                        class="h-full w-full object-cover object-center">
+                </div>
+            @empty
+                <div class="swiper-slide !h-full !w-full">
+                    <img src="{{ asset('uploads/original/'.$page_banner) }}"
+                        alt="{{ $page_title }}"
+                        width="1920"
+                        height="700"
+                        fetchpriority="high"
+                        decoding="async"
+                        class="h-full w-full object-cover object-center">
+                </div>
+            @endforelse
         </div>
     </div>
     <button type="button"
@@ -33,6 +30,7 @@
         aria-label="Next image">
         <i class="fa-solid fa-caret-right pointer-events-none text-xl"></i>
     </button>
+    
     <div class="absolute inset-x-0 bottom-0 z-30 px-4 pb-4 sm:px-8 sm:pb-5 lg:px-12 lg:pb-6 xl:px-16">
         <div class="mx-auto max-w-8xl">
             <div class="mb-3 flex justify-end lg:mb-4">
@@ -45,22 +43,22 @@
                             </a>
                         </li>
                         <?php if (isset($nav1)) { ?>
-                        <li aria-hidden="true" class="shrink-0 text-white/50">
-                            /
-                        </li>
-                        <li class="min-w-0 truncate">
-                            <a class="transition-colors hover:text-[#39b8e8]">
-                                <?= ucwords(strtolower($nav1)) ?>
-                            </a>
-                        </li>
+                            <li aria-hidden="true" class="shrink-0 text-white/50">
+                                /
+                            </li>
+                            <li class="min-w-0 truncate">
+                                <a class="transition-colors hover:text-[#39b8e8]">
+                                    <?= ucwords(strtolower($nav1)) ?>
+                                </a>
+                            </li>
                         <?php } ?>
                         <?php if (isset($nav2)) { ?>
-                        <li aria-hidden="true" class="shrink-0 text-white/50">
-                            /
-                        </li>
-                        <li class="min-w-0 truncate text-white" aria-current="page">
-                            <?= ucwords(strtolower($nav2)) ?>
-                        </li>
+                            <li aria-hidden="true" class="shrink-0 text-white/50">
+                                /
+                            </li>
+                            <li class="min-w-0 truncate text-white" aria-current="page">
+                                <?= ucwords(strtolower($nav2)) ?>
+                            </li>
                         <?php } ?>
                     </ol>
                 </nav>
@@ -78,36 +76,35 @@
                                 </h1>
 
                                 <?php if (isset($nav2) && $nav2 == "PACKAGE") { ?>
-                                <div class="mt-2 flex items-center gap-2.5 sm:mt-2.5">
-                                    <div class="flex shrink-0 items-center gap-0.5 text-amber-500"
-                                        aria-label="5 star rating">
-                                        <i class="fa-solid fa-star text-sm sm:text-base"></i>
-                                        <i class="fa-solid fa-star text-sm sm:text-base"></i>
-                                        <i class="fa-solid fa-star text-sm sm:text-base"></i>
-                                        <i class="fa-solid fa-star text-sm sm:text-base"></i>
-                                        <i class="fa-solid fa-star text-sm sm:text-base"></i>
-                                    </div>
+                                    <div class="mt-2 flex items-center gap-2.5 sm:mt-2.5">
+                                        <div class="flex shrink-0 items-center gap-0.5 text-amber-500"
+                                            aria-label="5 star rating">
+                                            <i class="fa-solid fa-star text-sm sm:text-base"></i>
+                                            <i class="fa-solid fa-star text-sm sm:text-base"></i>
+                                            <i class="fa-solid fa-star text-sm sm:text-base"></i>
+                                            <i class="fa-solid fa-star text-sm sm:text-base"></i>
+                                            <i class="fa-solid fa-star text-sm sm:text-base"></i>
+                                        </div>
 
-                                    <span
-                                        class="text-sm font-semibold tracking-wide text-[var(--text-primary)] sm:text-base">
-                                        1,789 Reviews
-                                    </span>
-                                </div>
+                                        <span
+                                            class="text-sm font-semibold tracking-wide text-[var(--text-primary)] sm:text-base">
+                                            1,789 Reviews
+                                        </span>
+                                    </div>
                                 <?php } ?>
                             </div>
 
                             <?php if (isset($page_desc)) { ?>
-                            <div class="mt-1 sm:mt-1.5">
-                                <p
-                                    class="max-w-5xl text-xs font-medium leading-relaxed text-black sm:text-sm md:text-[17px]">
-                                    <?= $page_desc ?>
-                                </p>
-                            </div>
+                                <div class="mt-1 sm:mt-1.5">
+                                    <p
+                                        class="max-w-5xl text-xs font-medium leading-relaxed text-black sm:text-sm md:text-[17px]">
+                                        <?= $page_desc ?>
+                                    </p>
+                                </div>
                             <?php } ?>
                         </div>
 
-                        <a
-                            class="hero-explore-btn shrink-0 md:w-auto justify-center md:justify-start md:absolute md:right-[-0px] md:top-1/2 md:-translate-y-1/2"
+                        <a class="hero-explore-btn shrink-0 md:w-auto justify-center md:justify-start md:absolute md:right-[-0px] md:top-1/2 md:-translate-y-1/2"
                             aria-label="Explore Mera Peak Climbing">
                             <span class="hero-explore-icon" aria-hidden="true">
                                 <i class="fa-solid fa-chevron-right"></i>

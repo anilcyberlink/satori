@@ -270,11 +270,11 @@ class FrontpageController extends Controller
 
     public function trip_lists($uri)
     {
-        $data= DestinationModel::where('uri', $uri)->firstOrFail();
+        $data= DestinationModel::with('multiBanners')->where('uri', $uri)->firstOrFail();
         $related= DestinationModel::where('uri', '!=', $uri)->orderBy('ordering', 'asc')->get();
         $trips = $data->trips()->where('status', 1)->orderBy('ordering', 'asc')->paginate(8);
 
-        // dd($item,$data);
+        // dd($trips,$data);
         return view('themes.default.trip-list', compact('data','trips','related'));
     }
     //<------------------------------------------Activity Frontend---------------------------------------------->
