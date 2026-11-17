@@ -75,22 +75,6 @@
                     </div>
                 </div>
             </div>
-            <!--  <div class="panel">-->
-            <!--    <div class="panel-heading">-->
-            <!--        <span class="panel-title"> Video ID </span>-->
-            <!--    </div>-->
-            <!--    <div class="panel-body">-->
-            <!--        <div class="form-group">-->
-            <!--            <div class="col-lg-12">-->
-            <!--                <div class="bs-component">-->
-            <!--                    <input type="text" class="form-control" name="category_video" value="{{ old('category_video') }}"-->
-            <!--                       placeholder="Unique Video ID of youtube video"/>-->
-            <!--                       <span>https://youtu.be/<b>iwhpS4ow7Zc</b></span>                        -->
-            <!--                </div>-->
-            <!--            </div>             -->
-            <!--        </div>-->
-            <!--    </div>-->
-            <!--</div>-->
 
 
             <div class="panel">
@@ -160,7 +144,7 @@
                     <h4> Thumbnail </h4>
                     <div class="hd_show_con">
                         <div id="xedit-demo">
-                            <input type="file" name="icon" />
+                            <input type="file" name="thumbnail" />
                             ( Width: 1500px, Height:971px )
                         </div>
                     </div>
@@ -178,7 +162,7 @@
                     <h4> Banner </h4>
                     <div class="hd_show_con">
                         <div id="xedit-demo">
-                            <input type="file" name="banner[]" />
+                            <input type="file" name="banner" />
                         </div>
                     </div>
                     <h4>Banner Alt Text</h4>
@@ -188,6 +172,12 @@
                                 <input type="text" name="banner_alt" class="form-control" placeholder="" />
                             </label>
                         </div>
+                    </div>
+                </div>
+                <div class="sid_bvijay mb10">
+                    <h4>Multiple Banners</h4>
+                    <div class="hd_show_con">
+                        <input type="file" name="multi_banners[]" multiple accept="image/*">
                     </div>
                 </div>
 

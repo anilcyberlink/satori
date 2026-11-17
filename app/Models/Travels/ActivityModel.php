@@ -4,6 +4,7 @@ namespace App\Models\Travels;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\HasSeo;
+use App\Models\Banners\MultiBannerModel;
 
 class ActivityModel extends Model
 {
@@ -23,5 +24,9 @@ class ActivityModel extends Model
     public function relatedActivities()
     {
         return $this->belongsToMany('App\Models\Travels\ActivityModel', 'cl_trip_activity_rel', 'activity_id', 'trip_id');
+    }
+    public function multiBanners()
+    {
+        return $this->morphMany(MultiBannerModel::class, 'bannerable');
     }
 }

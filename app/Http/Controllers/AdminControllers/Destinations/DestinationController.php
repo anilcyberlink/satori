@@ -65,9 +65,13 @@ class DestinationController extends Controller
         ]);
 
         $destinationOriginal = public_path('uploads/original');
+        $thumbnailPath = public_path('uploads/thumbnails');
 
         if (!file_exists($destinationOriginal)) {
             mkdir($destinationOriginal, 0755, true);
+        }
+        if (!file_exists($thumbnailPath)) {
+            mkdir($thumbnailPath, 0755, true);
         }
 
         // Thumbnail
@@ -77,7 +81,7 @@ class DestinationController extends Controller
             $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $thumbnail = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
 
-            Image::make($file->getRealPath())->encode('webp', 85)->save($destinationOriginal . '/' . $thumbnail);
+            Image::make($file->getRealPath())->encode('webp', 85)->save($thumbnailPath . '/' . $thumbnail);
         }
 
         // Single Banner
@@ -170,15 +174,19 @@ class DestinationController extends Controller
 
         $data = DestinationModel::findOrFail($id);
         $destinationPath = public_path('uploads/original');
+        $thumbnailPath = public_path('uploads/thumbnails');
 
         if (!file_exists($destinationPath)) {
             mkdir($destinationPath, 0755, true);
         }
+        if (!file_exists($thumbnailPath)) {
+            mkdir($thumbnailPath, 0755, true);
+        }
 
         // Update Thumbnail
         if ($request->hasFile('thumbnail')) {
-            if ($data->thumbnail && file_exists($destinationPath . '/' . $data->thumbnail)) {
-                unlink($destinationPath . '/' . $data->thumbnail);
+            if ($data->thumbnail && file_exists($thumbnailPath . '/' . $data->thumbnail)) {
+                unlink($thumbnailPath . '/' . $data->thumbnail);
             }
 
             $image = $request->file('thumbnail');
@@ -187,7 +195,7 @@ class DestinationController extends Controller
 
             Image::make($image->getRealPath())
                 ->encode('webp', 85)
-                ->save($destinationPath . '/' . $name);
+                ->save($thumbnailPath . '/' . $name);
 
             $data->thumbnail = $name;
         }
@@ -246,8 +254,8 @@ class DestinationController extends Controller
     {
         $data = DestinationModel::find($id);
         if ($data->thumbnail) {
-            if (file_exists(env('PUBLIC_PATH') . 'uploads/original/' . $data->thumbnail)) {
-                unlink(env('PUBLIC_PATH') . 'uploads/original/' . $data->thumbnail);
+            if (file_exists(env('PUBLIC_PATH') . 'uploads/thumbnails/' . $data->thumbnail)) {
+                unlink(env('PUBLIC_PATH') . 'uploads/thumbnails/' . $data->thumbnail);
             }
         }
         if ($data->banner) {
@@ -255,7 +263,12 @@ class DestinationController extends Controller
                 unlink(env('PUBLIC_PATH') . 'uploads/original/' . $data->banner);
             }
         }
+        // Delete all associated multiple banners
+        foreach ($data->multiBanners as $multiBanner) {
+            $this->modelImageService->delete($multiBanner);
+        }
         $data->delete();
+
         return "Delete Success";
     }
 
@@ -282,8 +295,8 @@ class DestinationController extends Controller
     {
         $data = DestinationModel::find($id);
         if ($data->thumbnail) {
-            if (file_exists(env('PUBLIC_PATH') . 'uploads/original/' . $data->thumbnail)) {
-                unlink(env('PUBLIC_PATH') . 'uploads/original/' . $data->thumbnail);
+            if (file_exists(env('PUBLIC_PATH') . 'uploads/thumbnails/' . $data->thumbnail)) {
+                unlink(env('PUBLIC_PATH') . 'uploads/thumbnails/' . $data->thumbnail);
             }
         }
         $data->thumbnail = NULL;

@@ -34,6 +34,7 @@ Route::redirect('/dashboard', '/admin/dashboard', 301);
 // only used routes
 Route::get('trip/{uri}', 'FrontendControllers\FrontpageController@tripdetail')->name('trip.tripdetail');
 Route::get('destination/{uri}', 'FrontendControllers\FrontpageController@trip_lists')->name('destination-list');
+Route::get('trek/{uri}', 'FrontendControllers\FrontpageController@trekking_list')->name('trekking-list');
 
 // Till here
 
@@ -46,7 +47,6 @@ Route::get('blogs/{uri}', 'FrontendControllers\FrontpageController@pagedetail')-
 Route::get('team/{uri}', 'FrontendControllers\FrontpageController@pagedetail')->name('page.teamdetail');
 Route::get('company/{uri}', 'FrontendControllers\FrontpageController@posttype')->name('page.posttype_detail');
 
-Route::get('treks/{uri}', 'FrontendControllers\FrontpageController@trip_lists')->name('trekking-list');
 Route::get('tours/{uri}', 'FrontendControllers\FrontpageController@trip_lists')->name('tour-list');
 Route::get('reviews', 'FrontendControllers\FrontpageController@all_reviews')->name('reviews');
 Route::post('reviews', 'FrontendControllers\FrontpageController@review_post')->name('review.post');
