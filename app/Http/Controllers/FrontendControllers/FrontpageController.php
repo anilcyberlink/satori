@@ -76,7 +76,7 @@ class FrontpageController extends Controller
 {
     public function index()
     {
-        $des = DestinationModel::with('trips')->get();
+        $des = ActivityModel::where('activity_parent','trekking')->with('trips')->orderBy('ordering','asc')->get();
         // dd($des);
         $setting= SettingModel::first() ;
         $banners = BannerModel::all();
@@ -276,6 +276,15 @@ class FrontpageController extends Controller
 
         // dd($trips,$data);
         return view('themes.default.trip-list', compact('data','trips','related'));
+    }
+    public function trekking_list($uri)
+    {
+        $data= ActivityModel::where('uri', $uri)->firstOrFail();
+        $related= ActivityModel::where('activity_parent',$data->activity_parent)->where('uri', '!=', $uri)->orderBy('ordering', 'asc')->get();
+        $trips = $data->trips()->where('status', 1)->orderBy('ordering', 'asc')->paginate(8);
+
+        // dd($trips,$data);
+        return view('themes.default.trekking-list', compact('data','trips','related'));
     }
     //<------------------------------------------Activity Frontend---------------------------------------------->
 

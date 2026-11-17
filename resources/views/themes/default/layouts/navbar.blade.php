@@ -172,206 +172,43 @@
                             <div class="flex min-h-[340px]">
                                 <!-- Left Side Tabs -->
                                 <div class="w-1/4 bg-white border-r border-slate-200 py-3">
-                                    <button data-tab-group="trek" data-tab-target="annapurna" class="tab-btn active w-full text-left px-6 py-3.5 flex items-center justify-between font-medium text-[19px] text-[var(--text-primary)]">
-                                        ANNAPURNA REGION
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
-                                    <button data-tab-group="trek" data-tab-target="everest" class="tab-btn w-full text-left px-6 py-2.5 flex items-center justify-between font-normal text-[19px] text-[var(--text-primary)]">
-                                        EVEREST REGION
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
-                                    <button data-tab-group="trek" data-tab-target="makalu" class="tab-btn w-full text-left px-6 py-2.5 flex items-center justify-between font-normal text-[19px] text-[var(--text-primary)]">
-                                        MAKALU REGION
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
-                                    <button data-tab-group="trek" data-tab-target="dolpa" class="tab-btn w-full text-left px-6 py-2.5 flex items-center justify-between font-normal text-[19px] text-[var(--text-primary)]">
-                                        DOLPA REGION
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
-                                    <button data-tab-group="trek" data-tab-target="mustang" class="tab-btn w-full text-left px-6 py-2.5 flex items-center justify-between font-normal text-[19px] text-[var(--text-primary)]">
-                                        MUSTANG REGION
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
-                                    <button data-tab-group="trek" data-tab-target="langtang" class="tab-btn w-full text-left px-6 py-2.5 flex items-center justify-between font-normal text-[19px] text-[var(--text-primary)]">
-                                        LANGTANG REGION
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
-                                    <button data-tab-group="trek" data-tab-target="kanchunja" class="tab-btn w-full text-left px-6 py-2.5 flex items-center justify-between font-normal text-[19px] text-[var(--text-primary)]">
-                                        KANCHUNJA REGION
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
+                                    @foreach ($trekking as $row)
+                                        <button data-tab-group="trek" data-tab-target="{{ $row->uri }}" class="tab-btn {{ $loop->first ? 'active' : '' }} w-full text-left px-6 py-3.5 flex items-center justify-between font-medium text-[19px] text-[var(--text-primary)]">
+                                            {{$row->title}}
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </button>
+                                    @endforeach
                                 </div>
                                 <!-- Right Content Panels -->
                                 <div class="w-3/4 p-6 flex flex-col justify-between">
-                                    <div data-content-group="trek" data-content-id="annapurna" class="space-y-6">
-                                        <div class="grid grid-cols-3 gap-y-3.5 gap-x-6 capitalize">
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Annapurna Base Camp Trek
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Annapurna Circuit Trek
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Annapurna Sanctuary Trek
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Annapurna Biking Tou
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Ghandruk Loop Trek
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Toannapurna Circuit Trek
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Dhaulagiri Circuit Trekking
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Ghorepani Poon Hill Trek
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Siklis And Ghale Gaun
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Panchase Hill Trekking
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Annapurna Khopra Danda Trek
-                                            </a>
+                                    @foreach ($trekking as $row)
+                                        <div data-content-group="trek" data-content-id="{{ $row->uri }}" class="{{ $loop->first ? '' : 'hidden' }} space-y-6">
+                                            <div class="grid grid-cols-3 gap-y-3.5 gap-x-6 capitalize">
+                                                @forelse ($row->trips as $trip)
+                                                    <a href="{{ route('trip.tripdetail',$trip->uri )}}" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
+                                                        <span class="text-[var(--teal-brand)] font-bold">
+                                                            <i class="fa-solid fa-arrow-right">
+                                                            </i>
+                                                        </span>
+                                                        {{ $trip->trip_title }}
+                                                    </a>
+                                                @empty
+                                                    <p class="text-gray-500 col-span-3">No trips available.</p>
+                                                @endforelse
+                                            </div>
+                                            <!-- EXPLORE ALL BUTTON -->
+                                            <div class="pt-6">
+                                                <a href="{{ route('trekking-list',$row->uri) }}" class="btn-join-group hidden sm:inline-flex">
+                                                    <span> EXPLORE ALL </span>
+                                                    <span class="w-5 h-5 rounded-full border border-white/40 flex items-center justify-center text-[16px]">
+                                                        <i class="fa-solid fa-arrow-right"></i>
+                                                    </span>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div data-content-group="trek" data-content-id="everest" class="hidden space-y-6">
-                                        <div class="grid grid-cols-3 gap-y-3.5 gap-x-6 capitalize">
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Everest Base Camp Trek
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Gokyo Lakes Trek
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right">
-                                                    </i>
-                                                </span>
-                                                Everest Three Passes Trek
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div data-content-group="trek" data-content-id="makalu" class="hidden">
-                                        <a href="./package-details.php" class="flex items-center gap-2 text-[19px] capitalize font-medium text-black hover:text-[var(--primary)]">
-                                            <span class="text-[var(--teal-brand)] font-bold">
-                                                <i class="fa-solid fa-arrow-right"></i>
-                                            </span>
-                                            Makalu Region Treks & Expeditions
-                                        </a>
-                                    </div>
-                                    <div data-content-group="trek" data-content-id="dolpa" class="hidden">
-                                        <a href="./package-details.php" class="flex items-center gap-2 text-[19px] capitalize font-medium text-black hover:text-[var(--primary)]">
-                                            <span class="text-[var(--teal-brand)] font-bold">
-                                                <i class="fa-solid fa-arrow-right"></i>
-                                            </span>
-                                            Upper & Lower Dolpa Circuit Treks
-                                        </a>
-                                    </div>
-                                    <div data-content-group="trek" data-content-id="mustang" class="hidden">
-                                        <a href="./package-details.php" class="flex items-center gap-2 text-[19px] capitalize font-medium text-black hover:text-[var(--primary)]">
-                                            <span class="text-[var(--teal-brand)] font-bold">
-                                                <i class="fa-solid fa-arrow-right"></i>
-                                            </span>
-                                            Upper Mustang Restricted Area Trek
-                                        </a>
-                                    </div>
-                                    <div data-content-group="trek" data-content-id="langtang" class="hidden">
-                                        <a href="./package-details.php" class="flex items-center gap-2 text-[19px] capitalize font-medium text-black hover:text-[var(--primary)]">
-                                            <span class="text-[var(--teal-brand)] font-bold">
-                                                <i class="fa-solid fa-arrow-right"></i>
-                                            </span>
-                                            Langtang Valley & Gosaikunda Lakes Trek
-                                        </a>
-                                    </div>
-                                    <div data-content-group="trek" data-content-id="kanchunja" class="hidden">
-                                        <a href="./package-details.php" class="flex items-center gap-2 text-[19px] capitalize font-medium text-black hover:text-[var(--primary)]">
-                                            <span class="text-[var(--teal-brand)] font-bold">
-                                                <i class="fa-solid fa-arrow-right"></i>
-                                            </span>
-                                            Kanchenjunga North & South Base Camp
-                                        </a>
-                                    </div>
-                                    <!-- EXPLORE ALL BUTTON -->
-                                    <div class="pt-6">
-                                        <a href="./8000-region.php" class="btn-join-group hidden sm:inline-flex">
-                                            <span> EXPLORE ALL </span>
-                                            <span class="w-5 h-5 rounded-full border border-white/40 flex items-center justify-center text-[16px]">
-                                                <i class="fa-solid fa-arrow-right"></i>
-                                            </span>
-                                        </a>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                             @include('themes.default.layouts.features_banner')

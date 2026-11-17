@@ -4,18 +4,20 @@ namespace App\Http\Controllers\AdminControllers\Travels;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\Travels\TripModel;
 use App\Http\Controllers\Controller;
 use App\Models\Travels\ActivityModel;
 use Intervention\Image\Facades\Image;
 use App\Services\SeoService;
+use App\Services\ModelImageService;
 
 class ActivityController extends Controller
 {
     protected $seoService;
-    public function __construct(SeoService $seoService)
+    protected $modelImageService;
+    public function __construct(SeoService $seoService, ModelImageService $modelImageService)
     {
         $this->seoService = $seoService;
+        $this->modelImageService = $modelImageService;
     }
 
     /**
@@ -70,46 +72,54 @@ class ActivityController extends Controller
     {
         $request->validate([
             'title' => 'required',
-            'uri' => 'required|unique:cl_trip_activities',
+            'uri' => 'required|unique:cl_trip_activities,uri',
+            'banner' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'multi_banners' => 'nullable|array',
+            'multi_banners.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
-        $data = $request->all();
-        $file = $request->file('banner');
-        $banner_name = [];
+        $destinationOriginal = public_path('uploads/original');
+        $iconPath = public_path('uploads/thumbnails');
 
+        if (!file_exists($destinationOriginal)) {
+            mkdir($destinationOriginal, 0755, true);
+        }
+
+        if (!file_exists($iconPath)) {
+            mkdir($iconPath, 0755, true);
+        }
+
+        // Single Banner
+        $bannerName = null;
         if ($request->hasFile('banner')) {
-            foreach ($request->file('banner') as $image) {
-                $name = Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '-' . Str::random(5) . '.webp';
-                Image::make($image->getRealPath())->encode('webp', 85)->save(public_path('uploads/banners/' . $name));
-                $banner_name[] = $name;
-            }
+            $image = $request->file('banner');
+            $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $bannerName = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
+
+            Image::make($image->getRealPath())->encode('webp', 85)->save($destinationOriginal . '/' . $bannerName);
         }
 
-        $icon_file = $request->file('icon');
-        $icon_name = '';
+        // Thumbnail / Icon
+        $iconName = null;
+        if ($request->hasFile('thumbnail')) {
+            $image = $request->file('thumbnail');
+            $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $iconName = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
 
-        if ($request->hasFile('icon')) {
-            $image = $request->file('icon');
-            $icon_name = Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '-' . Str::random(5) . '.webp';
-            Image::make($image->getRealPath())->encode('webp', 85)->save(public_path('uploads/icon/' . $icon_name));
+            Image::make($image->getRealPath())->encode('webp', 85)->save($iconPath . '/' . $iconName);
         }
-
-        $data['thumbnail'] = $icon_name;
-        $data['banner'] = $banner_name;
-        $data['uri'] = Str::slug($request->uri);
 
         $isChecked = $request->has('status');
-        $data['status'] = ($isChecked) ? '1' : '0';
 
         $result = new ActivityModel();
         $result->activity_parent = $request->activity_parent;
         $result->title = $request->title;
         $result->sub_title = $request->sub_title;
         $result->template = $request->template;
-        //   $result->uri = Str::slug($request->uri);
-        $result->uri = generate_unique_uri('App\Models\Travels\ActivityModel', Str::slug($request->uri));
-        $result->thumbnail = $icon_name;
-        $result->banner = implode(',', $banner_name);
+        $result->uri = generate_unique_uri(ActivityModel::class, Str::slug($request->uri));
+        $result->thumbnail = $iconName;
+        $result->banner = $bannerName;
         $result->excerpt = $request->excerpt;
         $result->content = $request->content;
         $result->external_link = $request->external_link;
@@ -117,17 +127,15 @@ class ActivityController extends Controller
         $result->meta_keyword = $request->meta_keyword;
         $result->meta_description = $request->meta_description;
         $result->ordering = $request->ordering;
-        $result->status = ($isChecked) ? '1' : '0';
+        $result->status =  1;
         $result->isdefault = $request->isdefault;
         $result->save();
 
+        // Multiple Banners
+        $this->modelImageService->save($result, $request->file('multi_banners', []));
+
         // SEO
         $this->seoService->save($result, $request);
-
-        $last_id = $result->id;
-        /************/
-        $_data = ActivityModel::find($last_id);
-        /************/
 
         return redirect()->back()->with('success', 'Successfully added.');
     }
@@ -166,9 +174,7 @@ class ActivityController extends Controller
         }
         $templates = $file1;
 
-        /*********/
-
-        $data = ActivityModel::with('seo')->find($id);
+        $data = ActivityModel::with('seo','multiBanners')->find($id);
 
         return view('admin.activities.edit', compact('data', 'templates', 'relatedActivities'));
     }
@@ -185,40 +191,55 @@ class ActivityController extends Controller
         $request->validate([
             'title' => 'required',
             'uri' => 'required|unique:cl_trip_activities,uri,' . $id,
+            'banner' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'multi_banners' => 'nullable|array',
+            'multi_banners.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
-        $data = ActivityModel::find($id);
-        $file = $request->file('banner');
-        $banner_name = [];
-        if ($request->hasFile('banner')) {
-            if ($data->banner) {
-                foreach (explode(',', $data->banner) as $banner) {
-                    if (file_exists(public_path('uploads/banners/' . $banner))) unlink(public_path('uploads/banners/' . $banner));
-                }
-            }
+        $data = ActivityModel::findOrFail($id);
+        $bannerPath = public_path('uploads/original');
+        $thumbnailPath = public_path('uploads/thumbanils');
 
-            $banner_name = [];
-
-            foreach ($request->file('banner') as $image) {
-                $name = Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '-' . Str::random(5) . '.webp';
-                Image::make($image->getRealPath())->encode('webp', 85)->save(public_path('uploads/banners/' . $name));
-                $banner_name[] = $name;
-            }
-
-            $data->banner = implode(',', $banner_name);
+        if (!file_exists($bannerPath)) {
+            mkdir($bannerPath, 0755, true);
         }
 
+        if (!file_exists($thumbnailPath)) {
+            mkdir($thumbnailPath, 0755, true);
+        }
+
+        // Update Single Banner
+        if ($request->hasFile('banner')) {
+            if ($data->banner && file_exists($bannerPath . '/' . $data->banner)) {
+                unlink($bannerPath . '/' . $data->banner);
+            }
+
+            $image = $request->file('banner');
+            $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $name = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
+
+            Image::make($image->getRealPath())->encode('webp', 85)->save($bannerPath . '/' . $name);
+
+            $data->banner = $name;
+        }
+
+        // Update Thumbnail
         if ($request->hasFile('thumbnail')) {
-            if ($data->thumbnail && file_exists(public_path('uploads/icon/' . $data->thumbnail))) unlink(public_path('uploads/icon/' . $data->thumbnail));
+            if ($data->thumbnail && file_exists($thumbnailPath . '/' . $data->thumbnail)) {
+                unlink($thumbnailPath . '/' . $data->thumbnail);
+            }
 
             $image = $request->file('thumbnail');
-            $name = Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '-' . Str::random(5) . '.webp';
+            $originalName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $name = Str::slug($originalName) . '-' . Str::random(5) . '.webp';
 
-            Image::make($image->getRealPath())->encode('webp', 85)->save(public_path('uploads/icon/' . $name));
+            Image::make($image->getRealPath())->encode('webp', 85)->save($thumbnailPath . '/' . $name);
 
             $data->thumbnail = $name;
         }
 
+        // Update Activity Details
         $data->title = $request->title;
         $data->sub_title = $request->sub_title;
         $data->banner_alt = $request->banner_alt;
@@ -229,27 +250,23 @@ class ActivityController extends Controller
         $data->content = $request->content;
         $data->external_link = $request->external_link;
         $data->uri = Str::slug($request->uri);
-        //   $data->uri = generate_unique_uri('App\Models\Travels\ActivityModel', Str::slug($request->uri));
         $data->ordering = $request->ordering;
         $data->meta_keyword = $request->meta_keyword;
         $data->meta_description = $request->meta_description;
         $data->category_video = $request->category_video;
-        $isChecked = $request->has('status');
-        $data->status = ($isChecked) ? '1' : '0';
-
-        /************/
-        // $_data = ActivityModel::find($id);
-        // $_data->relatedActivities()->detach();
-        // $_data->relatedActivities()->attach($request->related_activity);
-
-        /************/
+        $data->status = $request->has('status') ? 1 : 0;
 
         if ($data->save()) {
+            // Save New Multiple Banners
+            $this->modelImageService->save($data, $request->file('multi_banners', []));
+
             // SEO
             $this->seoService->save($data, $request);
 
-            return redirect()->back()->with('success', 'Update Sucessfully.');
+            return redirect()->back()->with('success', 'Update Successfully.');
         }
+
+        return redirect()->back()->with('message', 'Try again!');
     }
 
     /**
@@ -267,12 +284,17 @@ class ActivityController extends Controller
             }
         }
         if ($data->thumbnail != NULL) {
-            if (file_exists(env('PUBLIC_PATH') . 'uploads/icon/' . $data->thumbnail)) {
-                unlink(env('PUBLIC_PATH') . 'uploads/icon/' . $data->thumbnail);
+            if (file_exists(env('PUBLIC_PATH') . 'uploads/thumbnails/' . $data->thumbnail)) {
+                unlink(env('PUBLIC_PATH') . 'uploads/thumbnails/' . $data->thumbnail);
             }
         }
+        // Delete all associated multiple banners
+        foreach ($data->multiBanners as $multiBanner) {
+            $this->modelImageService->delete($multiBanner);
+        }
+
         $data->delete();
-        return 'Are you sure to delete?';
+        return 'Deletion Success';
     }
 
     // Filter Template Child
@@ -316,8 +338,8 @@ class ActivityController extends Controller
     {
         $icon_data = ActivityModel::find($id);
         if ($icon_data->thumbnail) {
-            if (file_exists(env('PUBLIC_PATH') . 'uploads/icon/' . $icon_data->thumbnail)) {
-                unlink(env('PUBLIC_PATH') . 'uploads/icon/' . $icon_data->thumbnail);
+            if (file_exists(env('PUBLIC_PATH') . 'uploads/thumbnails/' . $icon_data->thumbnail)) {
+                unlink(env('PUBLIC_PATH') . 'uploads/thumbnails/' . $icon_data->thumbnail);
             }
         }
         $icon_data->thumbnail = NULL;

@@ -131,7 +131,7 @@
 
             <div class="panel">
                 @include('admin.seo.seo-form', [
-                    'seo' => $data->seo ?? null
+                    'seo' => $data->seo ?? null,
                 ])
             </div>
         </div>
@@ -236,7 +236,7 @@
                             </span>
                         @endif
                         <div id="xedit-demo">
-                            <input type="file" name="banner[]" />
+                            <input type="file" name="banner" />
                         </div>
                     </div>
                     <h4>Banner Alt Text</h4>
@@ -247,6 +247,23 @@
                                     value="{{ $data->banner_alt }}" />
                             </label>
                         </div>
+                    </div>
+                </div>
+
+                <div class="sid_bvijay mb10">
+                    <h4>Multiple Banners</h4>
+                    <div class="hd_show_con">
+                        <div class="bs-component">
+                            <input type="file" name="multi_banners[]" multiple accept="image/*">
+                        </div>
+                        @foreach ($data->multiBanners as $multiBanner)
+                            <span class="multi-banner-id{{ $multiBanner->id }}" style="display:inline-block; margin:10px 5px;">
+                                <a href="javascript:void(0);" data-id="{{ $multiBanner->id }}" class="delete_multi_banner">X</a>
+                                <br>
+                                <img src="{{ asset('uploads/original/' . $multiBanner->image) }}" width="100%">
+                                <small>{{ $multiBanner->title }}</small>
+                            </span>
+                        @endforeach
                     </div>
                 </div>
 
@@ -316,6 +333,27 @@
             window.location = url;
         });
         $('.related-activity').select2();
+    </script>
+    <script>
+        $(document).on('click', '.delete_multi_banner', function(e) {
+            e.preventDefault();
+            if (!confirm('Are you sure to delete this banner?')) return;
+            var id = $(this).data('id');
+            var url = "{{ route('multi-banner.destroy', ':id') }}".replace(':id', id);
+            $.ajax({
+                type: 'DELETE',
+                url: url,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function() {
+                    $('.multi-banner-id' + id).remove();
+                },
+                error: function() {
+                    alert('Error deleting banner!');
+                }
+            });
+        });
     </script>
 @endsection
 @section('additional-css')
