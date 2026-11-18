@@ -186,7 +186,7 @@
                                     @foreach ($trekking as $row)
                                         <div data-content-group="trek" data-content-id="{{ $row->uri }}" class="{{ $loop->first ? '' : 'hidden' }} space-y-6">
                                             <div class="grid grid-cols-3 gap-y-3.5 gap-x-6 capitalize">
-                                                @forelse ($row->trips as $trip)
+                                                @forelse ($row->trips->take(9) as $trip)
                                                     <a href="{{ route('trip.tripdetail',$trip->uri )}}" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
                                                         <span class="text-[var(--teal-brand)] font-bold">
                                                             <i class="fa-solid fa-arrow-right">
@@ -231,154 +231,42 @@
                             <div class="flex min-h-[300px]">
                                 <!-- Left Side Tabs -->
                                 <div class="w-1/4 bg-white border-r border-slate-200 py-3">
-                                    <button data-tab-group="climb" data-tab-target="8000m" class="tab-btn active w-full text-left px-6 py-3.5 flex items-center justify-between font-normal text-[19px] text-[var(--text-primary)]">
-                                        8000M EXPEDITION
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
-                                    <button data-tab-group="climb" data-tab-target="7000m" class="tab-btn w-full text-left px-6 py-2.5 flex items-center justify-between font-normal text-[19px] text-[var(--text-primary)]">
-                                        7000M PEAKS
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
-                                    <button data-tab-group="climb" data-tab-target="6000m" class="tab-btn w-full text-left px-6 py-2.5 flex items-center justify-between font-normal text-[19px] text-[var(--text-primary)]">
-                                        6000M PEAK CLIMBING
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
-                                    <button data-tab-group="climb" data-tab-target="multiple" class="tab-btn w-full text-left px-6 py-2.5 flex items-center justify-between font-normal text-[19px] text-[var(--text-primary)]">
-                                        MULTIPLE PEAK CLIMB
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </button>
+                                    @foreach ($expedition as $row)
+                                        <button data-tab-group="climb" data-tab-target="{{ $row->uri }}" class="tab-btn {{ $loop->first ? 'active' : '' }} w-full text-left px-6 py-3.5 flex items-center justify-between font-normal text-[19px] text-[var(--text-primary)]">
+                                            {{$row->title}}
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </button>
+                                    @endforeach
                                 </div>
                                 <!-- Right Content Panels -->
                                 <div class="w-3/4 p-6 flex flex-col justify-between">
-                                    <div data-content-group="climb" data-content-id="8000m" class="space-y-6">
-                                        <div class="grid grid-cols-3 gap-y-3.5 gap-x-6 capitalize">
-                                            <a href="./8000-region.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Everest Expedition South
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Everest Expedition North
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Kanchenjunga Expedition
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Makalu Expedition
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Lhotse Expedition
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Annapurna Expedition
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Manaslu Expedition
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Dhaulagiri Expedition
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Shishapangma Expedition
-                                            </a>
+                                    @foreach ($expedition as $row)
+                                        <div data-content-group="climb" data-content-id="{{ $row->uri }}" class="{{ $loop->first ? '' : 'hidden' }} space-y-6">
+                                            <div class="grid grid-cols-3 gap-y-3.5 gap-x-6 capitalize">
+                                                @forelse ($row->trips->take(9) as $trip)
+                                                    <a href="{{ route('trip.tripdetail',$trip->uri )}}" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
+                                                        <span class="text-[var(--teal-brand)] font-bold">
+                                                            <i class="fa-solid fa-arrow-right"></i>
+                                                        </span>
+                                                        {{ $trip->trip_title }}
+                                                    </a>
+                                                @empty
+                                                    <p class="text-gray-500 col-span-3">No trips available.</p>
+                                                @endforelse
+                                            </div>
+                                            <!-- EXPLORE ALL BUTTON -->
+                                            <div class="pt-6">
+                                                <a href="{{ route('expedition-list',$row->uri) }}" class="btn-join-group hidden sm:inline-flex">
+                                                    <span> EXPLORE ALL </span>
+                                                    <span class="w-5 h-5 rounded-full border border-white/40 flex items-center justify-center text-[16px]">
+                                                        <i class="fa-solid fa-arrow-right"></i>
+                                                    </span>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div data-content-group="climb" data-content-id="7000m" class="hidden space-y-6">
-                                        <div class="grid grid-cols-3 gap-y-3.5 gap-x-6 capitalize">
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Baruntse Expedition
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Pumori Expedition
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Himlung Himal Expedition
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div data-content-group="climb" data-content-id="6000m" class="hidden space-y-6">
-                                        <div class="grid grid-cols-3 gap-y-3.5 gap-x-6 capitalize">
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Mera Peak Climbing
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Island Peak Climbing
-                                            </a>
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Lobuche East Peak
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div data-content-group="climb" data-content-id="multiple" class="hidden space-y-6">
-                                        <div class="grid grid-cols-3 gap-y-3.5 gap-x-6 capitalize">
-                                            <a href="./package-details.php" class="flex items-center gap-2 text-[19px] font-medium text-black hover:text-[var(--primary)]">
-                                                <span class="text-[var(--teal-brand)] font-bold">
-                                                    <i class="fa-solid fa-arrow-right"></i>
-                                                </span>
-                                                Mera & Island Peak Combo
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!-- EXPLORE ALL BUTTON -->
-                                    <div class="pt-6">
-                                        <a href="./8000-region.php" class="btn-join-group hidden sm:inline-flex">
-                                            <span> EXPLORE ALL </span>
-                                            <span class="w-5 h-5 rounded-full border border-white/40 flex items-center justify-center text-[16px]">
-                                                <i class="fa-solid fa-arrow-right"></i>
-                                            </span>
-                                        </a>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                             @include('themes.default.layouts.features_banner')

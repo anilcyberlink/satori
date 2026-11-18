@@ -1505,10 +1505,6 @@ class TripController extends Controller
         $data->update([
             'trip_of_the_month' => $data->trip_of_the_month === '1' ? '0' : '1'
         ]);
-
-        return back()->with([
-            'status' => 'success',
-            'message' => 'Trip Updated Successfully!'
-        ]);
+        return redirect()->back()->with('success', 'Updated Successfully.');
     }
 }
