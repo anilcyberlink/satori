@@ -1,90 +1,93 @@
 @php
     $current = $paginator->currentPage();
     $last = $paginator->lastPage();
-    $range = 1;
+
+    if ($last <= 5) {
+        $start = 1;
+        $end = $last;
+        $showLeftDots = false;
+        $showRightDots = false;
+    } elseif ($current <= 3) {
+        $start = 1;
+        $end = 3;
+        $showLeftDots = false;
+        $showRightDots = true;
+    } elseif ($current >= $last - 2) {
+        $start = $last - 3;
+        $end = $last;
+        $showLeftDots = true;
+        $showRightDots = false;
+    } else {
+        $start = $current - 1;
+        $end = $current + 1;
+        $showLeftDots = true;
+        $showRightDots = true;
+    }
 @endphp
 
 @if ($paginator->hasPages())
-<nav class="flex justify-center mt-8">
-    <ul class="inline-flex items-center gap-1 text-sm">
+    <nav class="flex items-center justify-center mt-8 gap-1" aria-label="pagination">
 
         {{-- Previous --}}
-        <li>
-            @if ($paginator->onFirstPage())
-                <span class="px-3 h-9 flex items-center text-gray-300 border border-gray-200 rounded-lg">
-                    ‹ Previous
-                </span>
-            @else
-                <a href="{{ $paginator->previousPageUrl() }}"
-                   class="px-3 h-9 flex items-center text-gray-400 border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-600 hover:border-gray-300 transition">
-                    ‹ Previous
-                </a>
-            @endif
-        </li>
+        @if ($paginator->onFirstPage())
+            <span
+                class="w-6 h-8 rounded-xl bg-[#42A3DA]/40 text-white flex items-center justify-center text-sm cursor-not-allowed">
+                <i class="fa-solid fa-angle-left" aria-hidden="true"></i>
+            </span>
+        @else
+            <a href="{{ $paginator->previousPageUrl() }}" aria-label="Previous page"
+                class="w-6 h-8 rounded-xl bg-[#42A3DA] text-white flex items-center justify-center text-sm hover:bg-[var(--teal-brand)] transition-colors">
+                <i class="fa-solid fa-angle-left" aria-hidden="true"></i>
+            </a>
+        @endif
 
-        {{-- First --}}
-        <li>
+        {{-- First Page --}}
+        @if ($start > 1)
             <a href="{{ $paginator->url(1) }}"
-               class="h-9 w-9 flex items-center justify-center rounded-lg border border-gray-200
-               {{ $current == 1 ? 'bg-blue-50 text-blue-600 border-blue-400' : 'text-gray-400 hover:bg-gray-50 hover:text-gray-600 hover:border-gray-300' }}">
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-[18px] font-semibold text-black hover:text-[#42A3DA] transition-colors">
                 1
             </a>
-        </li>
-
-        {{-- Left dots --}}
-        @if ($current - $range > 2)
-            <li>
-                <span class="h-9 w-9 flex items-center justify-center text-gray-300 border border-gray-200 rounded-lg">
-                    …
-                </span>
-            </li>
         @endif
 
-        {{-- Middle --}}
-        @for ($i = max(2, $current - $range); $i <= min($last - 1, $current + $range); $i++)
-            <li>
-                <a href="{{ $paginator->url($i) }}"
-                   class="h-9 w-9 flex items-center justify-center rounded-lg border border-gray-200
-                   {{ $current == $i ? 'bg-blue-50 text-blue-600 border-blue-400' : 'text-gray-400 hover:bg-gray-50 hover:text-gray-600 hover:border-gray-300' }}">
-                    {{ $i }}
-                </a>
-            </li>
+        {{-- Left Dots --}}
+        @if ($showLeftDots)
+            <span class="w-8 h-8 flex items-center justify-center text-gray-500 text-lg">...</span>
+        @endif
+
+        {{-- Page Numbers --}}
+        @for ($i = $start; $i <= $end; $i++)
+            <a href="{{ $paginator->url($i) }}" @if ($current == $i) aria-current="page" @endif
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-[18px] font-semibold transition-all
+           {{ $current == $i ? 'bg-[#42A3DA] text-white shadow-sm' : 'text-black hover:text-[#42A3DA] hover:bg-white/60' }}">
+                {{ $i }}
+            </a>
         @endfor
 
-        {{-- Right dots --}}
-        @if ($current + $range < $last - 1)
-            <li>
-                <span class="h-9 w-9 flex items-center justify-center text-gray-300 border border-gray-200 rounded-lg">
-                    …
-                </span>
-            </li>
+        {{-- Right Dots --}}
+        @if ($showRightDots)
+            <span class="w-8 h-8 flex items-center justify-center text-gray-500 text-lg">...</span>
         @endif
 
-        {{-- Last --}}
-        @if ($last > 1)
-            <li>
-                <a href="{{ $paginator->url($last) }}"
-                   class="h-9 w-9 flex items-center justify-center rounded-lg border border-gray-200
-                   {{ $current == $last ? 'bg-blue-50 text-blue-600 border-blue-400' : 'text-gray-400 hover:bg-gray-50 hover:text-gray-600 hover:border-gray-300' }}">
-                    {{ $last }}
-                </a>
-            </li>
+        {{-- Last Page --}}
+        @if ($end < $last)
+            <a href="{{ $paginator->url($last) }}"
+                class="w-8 h-8 flex items-center justify-center rounded-lg text-[18px] font-semibold text-black hover:text-[#42A3DA] transition-colors">
+                {{ $last }}
+            </a>
         @endif
 
         {{-- Next --}}
-        <li>
-            @if ($paginator->hasMorePages())
-                <a href="{{ $paginator->nextPageUrl() }}"
-                   class="px-3 h-9 flex items-center text-gray-400 border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-600 hover:border-gray-300 transition">
-                    Next ›
-                </a>
-            @else
-                <span class="px-3 h-9 flex items-center text-gray-300 border border-gray-200 rounded-lg">
-                    Next ›
-                </span>
-            @endif
-        </li>
+        @if ($paginator->hasMorePages())
+            <a href="{{ $paginator->nextPageUrl() }}" aria-label="Next page"
+                class="w-6 h-8 rounded-xl bg-[#42A3DA] text-white flex items-center justify-center text-sm hover:bg-[var(--teal-brand)] transition-colors">
+                <i class="fa-solid fa-angle-right" aria-hidden="true"></i>
+            </a>
+        @else
+            <span
+                class="w-6 h-8 rounded-xl bg-[#42A3DA]/40 text-white flex items-center justify-center text-sm cursor-not-allowed">
+                <i class="fa-solid fa-angle-right" aria-hidden="true"></i>
+            </span>
+        @endif
 
-    </ul>
-</nav>
+    </nav>
 @endif
