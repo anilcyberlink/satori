@@ -279,12 +279,39 @@ class FrontpageController extends Controller
     }
     public function trekking_list($uri)
     {
-        $data= ActivityModel::where('uri', $uri)->firstOrFail();
-        $related= ActivityModel::where('activity_parent',$data->activity_parent)->where('uri', '!=', $uri)->orderBy('ordering', 'asc')->get();
-        $trips = $data->trips()->where('status', 1)->orderBy('ordering', 'asc')->paginate(8);
+        $data = ActivityModel::where('uri', $uri)->firstOrFail();
+        $related = ActivityModel::where('activity_parent', $data->activity_parent)
+            ->where('uri', '!=', $uri)
+            ->orderBy('ordering', 'asc')
+            ->get();
 
-        // dd($trips,$data);
-        return view('themes.default.trekking-list', compact('data','trips','related'));
+        $sort = request('sort', 'featured');
+        $tripsQuery = $data->trips()->where('status', 1);
+        switch ($sort) {
+            case 'price-low':
+                $tripsQuery->orderBy('price', 'asc');
+                break;
+
+            case 'price-high':
+                $tripsQuery->orderBy('price', 'desc');
+                break;
+
+            case 'name':
+                $tripsQuery->orderBy('trip_title', 'asc');
+                break;
+
+            default:
+                $tripsQuery->orderBy('ordering', 'asc');
+                $sort = 'featured';
+                break;
+        }
+        $trips = $tripsQuery->paginate(6)->appends(request()->query());
+
+        if (request()->ajax()) {
+            return view('themes.default.layouts.trip-results', compact('trips'));
+        }
+
+        return view('themes.default.trekking-list', compact('data', 'trips', 'related', 'sort'));
     }
     //<------------------------------------------Activity Frontend---------------------------------------------->
 

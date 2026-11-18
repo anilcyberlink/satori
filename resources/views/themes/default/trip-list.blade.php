@@ -130,6 +130,7 @@
                         </a>
                     @endforeach
                 </div>
+                {!! $trips->links('themes.default.common.pagination') !!}
             </div>
         </section>
     </main>
