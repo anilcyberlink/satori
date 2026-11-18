@@ -18,9 +18,9 @@
                     <li>
                         <a href="#tab1_2" data-toggle="tab">Trekking</a>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="#tab1_3" data-toggle="tab">Tours</a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
             <div class="panel-body">

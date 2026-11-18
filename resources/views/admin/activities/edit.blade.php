@@ -174,8 +174,8 @@
                                 Expedition</option>
                             <option value="trekking" {{ $data->activity_parent == 'trekking' ? 'selected' : '' }}>Trekking
                             </option>
-                            <option value="activity" {{ $data->activity_parent == 'activity' ? 'selected' : '' }}>Tours
-                            </option>
+                            {{-- <option value="activity" {{ $data->activity_parent == 'activity' ? 'selected' : '' }}>Tours
+                            </option> --}}
                         </select>
                         <i class="arrow"></i>
                     </label>

@@ -75,7 +75,7 @@ class TripController extends Controller
         $ordering += 1;
         $all_trips = TripModel::get();
         $grades = TripGradeModel::all();
-        $trip_type = TripTypeModel::get();
+        $trip_type = TripTypeModel::where('status','1')->get();
         $trek = TripGradeModel::get();
         $trekking = ActivityModel::where('activity_parent', 'trekking')->get();
         $expeditions = ActivityModel::where('activity_parent', 'expedition')->get();
@@ -589,7 +589,7 @@ class TripController extends Controller
         $costexcludes = $data->costexcludes()->orderBy('ordering', 'asc')->get();
         $all_trips = TripModel::get();
         $grades = TripGradeModel::all();
-        $trip_type = TripTypeModel::get();
+        $trip_type = TripTypeModel::where('status','1')->get();
         $trek = TripGradeModel::get();
         $trekking = ActivityModel::where('activity_parent', 'trekking')->get();
         $expeditions = ActivityModel::where('activity_parent', 'expedition')->get();
