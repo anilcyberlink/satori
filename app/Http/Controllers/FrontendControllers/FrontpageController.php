@@ -268,16 +268,16 @@ class FrontpageController extends Controller
             'photo_videos', 'activity','destinations','similar_trips','photos','videos','local','banner','setting','schedules','faqs','tripId', 'tripUri','reviews'));
     }
 
-    public function trip_lists($uri)
+    public function destination_list($uri)
     {
         $data= DestinationModel::with('multiBanners')->where('uri', $uri)->firstOrFail();
         $related= DestinationModel::where('uri', '!=', $uri)->orderBy('ordering', 'asc')->get();
         $trips = $data->trips()->where('status', 1)->orderBy('ordering', 'asc')->paginate(8);
 
         // dd($trips,$data);
-        return view('themes.default.trip-list', compact('data','trips','related'));
+        return view('themes.default.tripcategory-list', compact('data','trips','related'));
     }
-    public function trekking_list($uri)
+    public function trip_list($uri)
     {
         $data = ActivityModel::where('uri', $uri)->firstOrFail();
         $related = ActivityModel::where('activity_parent', $data->activity_parent)
@@ -311,7 +311,7 @@ class FrontpageController extends Controller
             return view('themes.default.layouts.trip-results', compact('trips'));
         }
 
-        return view('themes.default.trekking-list', compact('data', 'trips', 'related', 'sort'));
+        return view('themes.default.trip-list', compact('data', 'trips', 'related', 'sort'));
     }
     //<------------------------------------------Activity Frontend---------------------------------------------->
 

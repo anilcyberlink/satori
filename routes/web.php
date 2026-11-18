@@ -33,8 +33,9 @@ Route::redirect('/dashboard', '/admin/dashboard', 301);
 //================== Frontend Routes=================//
 // only used routes
 Route::get('trip/{uri}', 'FrontendControllers\FrontpageController@tripdetail')->name('trip.tripdetail');
-Route::get('destination/{uri}', 'FrontendControllers\FrontpageController@trip_lists')->name('destination-list');
-Route::get('trek/{uri}', 'FrontendControllers\FrontpageController@trekking_list')->name('trekking-list');
+Route::get('destination/{uri}', 'FrontendControllers\FrontpageController@destination_list')->name('destination-list');
+Route::get('trek/{uri}', 'FrontendControllers\FrontpageController@trip_list')->name('trekking-list');
+Route::get('expedition/{uri}', 'FrontendControllers\FrontpageController@trip_list')->name('expedition-list');
 
 // Till here
 
@@ -83,7 +84,7 @@ Route::post('page/customize-trip', 'FrontendControllers\FrontpageController@cust
 Route::any('search-page', 'FrontendControllers\FrontpageController@search_all')->name('search-all');
 Route::get('activity-list', 'FrontendControllers\FrontpageController@activitylist')->name('page.activitylist');
 Route::get('trekking-list', 'FrontendControllers\FrontpageController@trekkinglist')->name('page.trekkinglist');
-Route::get('expedition-list', 'FrontendControllers\FrontpageController@expeditionlist')->name('page.expeditionlist');
+// Route::get('expedition-list', 'FrontendControllers\FrontpageController@expeditionlist')->name('page.expeditionlist');
 Route::get('related-list/{tripId}', 'FrontendControllers\FrontpageController@relatedlist')->name('page.relatedlist');
 
 
