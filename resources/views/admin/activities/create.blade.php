@@ -119,7 +119,7 @@
                             <option value="" disabled selected>---- Select ----</option>
                             <option value="expedition">Expedition</option>
                             <option value="trekking">Trekking</option>
-                            <option value="activity">Tours</option>
+                            {{-- <option value="activity">Tours</option> --}}
                         </select>
                         <i class="arrow"></i>
                     </label>
