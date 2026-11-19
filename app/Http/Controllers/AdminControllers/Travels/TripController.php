@@ -117,7 +117,8 @@ class TripController extends Controller
                     'trip_title' => 'required|unique:cl_trip_details,trip_title',
                     'uri' => 'required|unique:cl_trip_details,uri',
                     'trip_type' => 'required',
-                    'destination' => 'required|array|min:1',
+                    'destination_id' => 'required|exists:cl_trip_destinations,id',
+                    'dest_cat_id' => 'nullable|exists:cl_trip_destination_categories,id',
                     'activity' => 'required|array|min:1',
 
                     // Thumbnail
@@ -514,7 +515,6 @@ class TripController extends Controller
 
             /************Attach******************/
             $_data = TripModel::find($last_id);
-            $_data->destinations()->attach($request->destination);
             $_data->regions()->attach($request->region);
             $_data->activities()->attach($request->activity);
             $_data->tripgroups()->attach($request->tripgroup);
@@ -558,10 +558,6 @@ class TripController extends Controller
         $checked_activities = array();
         $checked_tripgroups = array();
 
-
-        foreach ($data->destinations as $value) {
-            $checked_destinations[] = $value->pivot->destination_id;
-        }
         foreach ($data->regions as $value) {
             $checked_regions[] = $value->pivot->region_id;
         }
@@ -704,7 +700,8 @@ class TripController extends Controller
                     'trip_title' => 'required|unique:cl_trip_details,trip_title,' . $id,
                     'uri' => 'required|unique:cl_trip_details,uri,' . $id,
                     'trip_type' => 'required',
-                    'destination' => 'required|array|min:1',
+                    'destination_id' => 'required|exists:cl_trip_destinations,id',
+                    'dest_cat_id' => 'nullable|exists:cl_trip_destination_categories,id',
                     'activity' => 'required|array|min:1',
 
                     // Thumbnail
@@ -865,6 +862,8 @@ class TripController extends Controller
             $data->trip_highlight = $request->trip_highlight;
             $data->peak_name = $request->peak_name;
             $data->trip_type = $request->trip_type;
+            $data->destination_id = $request->destination_id;
+            $data->dest_cat_id = $request->dest_cat_id ?: null;
             $data->starting_price = $request->starting_price;
             $data->trip_video = $request->trip_video;
             $data->trip_excerpt = $request->trip_excerpt;
@@ -887,8 +886,6 @@ class TripController extends Controller
             $data->tripmap_alt = $request->tripmap_alt;
 
             $_data = TripModel::find($id);
-            $_data->destinations()->detach();
-            $_data->destinations()->attach($request->destination);
             $_data->regions()->detach();
             $_data->regions()->attach($request->region);
             $_data->activities()->detach();
@@ -1402,7 +1399,6 @@ class TripController extends Controller
             }
         }
 
-        $data->destinations()->detach();
         $data->regions()->detach();
         $data->activities()->detach();
         $data->tripgroups()->detach();

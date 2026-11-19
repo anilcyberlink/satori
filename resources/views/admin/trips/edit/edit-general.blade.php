@@ -327,9 +327,10 @@
                                     @foreach ($destinations as $row)
                                         <li>
                                             <label class="option">
-                                                <input type="radio" name="destination[]"
+                                                <input type="radio" name="destination_id"
                                                     value="{{ $row->id }}"
-                                                    {{ in_array($row->id, $checked_destinations) ? 'checked' : '' }}
+                                                    class="destination-radio"
+                                                    {{ old('destination_id', $data->destination_id) == $row->id ? 'checked' : '' }}
                                                     required>
                                                 <span class="checkbox"></span> {{ $row->title }}
                                             </label>
@@ -338,6 +339,31 @@
                                 </ul>
                             @endif
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sid_bvijay mb10 destination_category" style="display: none;">
+                <h4>Activities</h4>
+                <div class="hd_show_con">
+                    <div class="ctgor category-list1">
+                        @foreach ($destinations as $destination)
+                            <div class="destination-categories"
+                                id="categories-{{ $destination->id }}"
+                                style="display: none;">
+
+                                @foreach ($destination->categories as $category)
+                                    <label class="option" style="display: block;">
+                                        <input type="radio"
+                                            name="dest_cat_id"
+                                            value="{{ $category->id }}"
+                                            {{ old('dest_cat_id') == $category->id ? 'checked' : '' }}>
+                                        <span class="checkbox"></span>
+                                        {{ $category->title }}
+                                    </label>
+                                @endforeach
+
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>

@@ -92,3 +92,17 @@ span.panel-controls {
         overflow: hidden;
     }
 }
+
+
+.destination-categories .option {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.destination-categories .option:last-child {
+    margin-bottom: 0;
+}
+
+.destination-categories {
+    padding: 5px 0;
+}

@@ -182,7 +182,7 @@
                                 </a>
                             </li>
                             <li
-                                class="{{ Request::segment(2) == 'destination' ||Request::segment(2) == 'destination-category' || Request::segment(2) == 'tour-trip' ? 'active' : '' }}">
+                                class="{{ Request::segment(2) == 'destination-category' ? 'active' : '' }}">
                                 <a href="{{ route('destination-category.index') }}">
                                     <span class="fa fa fa-arrows-h"></span>
                                     Destinations Activities

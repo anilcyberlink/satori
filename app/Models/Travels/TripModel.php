@@ -7,6 +7,7 @@ use App\Models\Travels\PackageDetail;
 use App\Models\Travels\PackageService;
 use App\Models\Travels\PastTripModel;
 use App\Models\Traits\HasSeo;
+use App\Models\Destinations\DestinationModel;
 
 class TripModel extends Model
 {
@@ -26,6 +27,8 @@ class TripModel extends Model
         'trip_highlight',
         'peak_name',
         'trip_type',
+        'destination_id',
+        'dest_cat_id',
         'starting_price',
         'trip_map',
         'trip_video',
@@ -56,9 +59,9 @@ class TripModel extends Model
     ];
 
     /* The destinations that belongs to the trip */
-    public function destinations()
+    public function destination()
     {
-        return $this->belongsToMany('App\Models\Destinations\DestinationModel', 'cl_trip_destination_rel', 'trip_id', 'destination_id');
+        return $this->belongsTo(DestinationModel::class, 'destination_id', 'id');
     }
 
     // Related Trips
