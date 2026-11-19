@@ -110,6 +110,7 @@ Route::middleware(['auth'])->group(function () {
         'admin/activity' => 'AdminControllers\Travels\ActivityController',
         'admin/tripgroup' => 'AdminControllers\Travels\TripGroupController',
         'admin/destination' => 'AdminControllers\Destinations\DestinationController',
+        'admin/destination-category' => 'AdminControllers\Destinations\DestinationCategoryController',
         'admin/teams' => 'AdminControllers\Teams\TeamController',
         'admin/teamcategory' => 'AdminControllers\Teams\TeamCategoryController',
         'admin.testimonials' => 'AdminControllers\Cost\CostIncludesController',
@@ -122,6 +123,9 @@ Route::middleware(['auth'])->group(function () {
         'admin.faq' => 'AdminControllers\Faqs\FaqController',
 
     ]);
+    Route::delete('delete_destcategory_thumb/{id}', 'AdminControllers\Destinations\DestinationCategoryController@deleteThumb')->name('delete.destcategory.thumb');
+    Route::delete('delete_destategory_banner/{id}', 'AdminControllers\Destinations\DestinationCategoryController@deleteBanner')->name('delete.destcategory.banner');
+
     Route::delete('delete_teamcategory_thumb/{id}', 'AdminControllers\Teams\TeamCategoryController@delete_teamcategory_thumb');
     Route::post('admin/teamcategory/status', 'AdminControllers\Teams\TeamCategoryController@updateStatus');
     Route::post('admin/teams/{id}/toggle-status', 'AdminControllers\Teams\TeamController@toggleStatus')->name('teams.toggleStatus');

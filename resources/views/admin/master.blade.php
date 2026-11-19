@@ -155,6 +155,7 @@
 
                     <li class="">
                         @if (Request::segment(2) == 'destination' ||
+                                Request::segment(2) == 'destination-category' ||
                                 Request::segment(2) == 'tour-trip' ||
                                 Request::segment(2) == 'region' ||
                                 Request::segment(2) == 'trip-region' ||
@@ -178,6 +179,13 @@
                                 <a href="{{ route('destination.index') }}">
                                     <span class="fa fa fa-arrows-h"></span>
                                     Destinations
+                                </a>
+                            </li>
+                            <li
+                                class="{{ Request::segment(2) == 'destination' ||Request::segment(2) == 'destination-category' || Request::segment(2) == 'tour-trip' ? 'active' : '' }}">
+                                <a href="{{ route('destination-category.index') }}">
+                                    <span class="fa fa fa-arrows-h"></span>
+                                    Destinations Activities
                                 </a>
                             </li>
                             <li class="{{ Request::segment(2) == 'activity' ? 'active' : '' }}">
