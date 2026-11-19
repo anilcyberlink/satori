@@ -66,7 +66,7 @@ class TripController extends Controller
      */
     public function create($training = null)
     {
-        $destinations = DestinationModel::all();
+        $destinations = DestinationModel::with('categories')->get();
         $regions = RegionModel::all();
         $activities = ActivityModel::all();
         $trip_groups = TripGroupModel::all();
@@ -576,7 +576,7 @@ class TripController extends Controller
             'AVAILABLE' => 'AVAILABLE',
             'CLOSED' => 'CLOSED'
         );
-        $destinations = DestinationModel::all();
+        $destinations = DestinationModel::with('categories')->get();
         $regions = RegionModel::all();
         $activities = ActivityModel::all();
         $trip_groups = TripGroupModel::all();

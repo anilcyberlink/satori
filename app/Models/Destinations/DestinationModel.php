@@ -5,6 +5,7 @@ namespace App\Models\Destinations;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\HasSeo;
 use App\Models\Banners\MultiBannerModel;
+use App\Models\Destinations\DestinationCategoryModel;
 
 class DestinationModel extends Model
 {
@@ -19,6 +20,10 @@ class DestinationModel extends Model
     public function activities()
     {
         return $this->belongsToMany('App\Models\Travels\ActivityModel', 'destination_activity_rel', 'destination_id', 'activity_id');
+    }
+    public function categories()
+    {
+        return $this->hasMany(DestinationCategoryModel::class, 'destination_id', 'id');
     }
     public function multiBanners()
     {
