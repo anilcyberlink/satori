@@ -238,13 +238,13 @@
                 'seo' => $data->seo ?? null
             ])
         </div>
-
     </div>
+
     <div class="col-md-4">
         <div class="admin-form">
-            <!-- // -->
+            {{-- DESTINATIONS --}}
             <div class="sid_bvijay mb10">
-                <h4> Destinations </h4>
+                <h4>Destinations</h4>
                 <div class="hd_show_con">
                     <div class="tab-content mb15">
                         <div id="tab1" class="tab-pane active">
@@ -253,15 +253,49 @@
                                     @foreach ($destinations as $row)
                                         <li>
                                             <label class="option">
-                                                <input type="radio" name="destination[]"
+                                                <input type="radio" name="destination_id"
                                                     value="{{ $row->id }}"
-                                                    @if (is_array(old('destination')) && in_array($row->id, old('destination'))) checked @endif required />
-                                                <span class="checkbox"></span> {{ $row->title }}
+                                                    class="destination-radio"
+                                                    {{ old('destination_id') == $row->id ? 'checked' : '' }}
+                                                    required>
+                                                <span class="checkbox"></span>
+                                                {{ $row->title }}
                                             </label>
                                         </li>
                                     @endforeach
                                 </ul>
                             @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="destination_category" style="display: none;">
+                <div class="sid_bvijay mb10">
+                    <h4>Activities</h4>
+                    <div class="hd_show_con">
+                        <div class="tab-content mb15">
+                            <div id="tab1" class="tab-pane active">
+                                <ul class="ctgor category-list1">
+                                    @foreach ($destinations as $destination)
+                                        <div class="destination-categories"
+                                            id="categories-{{ $destination->id }}"
+                                            style="display: none;">
+
+                                            @foreach ($destination->categories as $category)
+                                                <label class="option">
+                                                    <input type="radio"
+                                                        name="dest_cat_id"
+                                                        value="{{ $category->id }}"
+                                                        {{ old('dest_cat_id') == $category->id ? 'checked' : '' }}>
+                                                    <span class="checkbox"></span>
+                                                    {{ $category->title }}
+                                                </label>
+                                            @endforeach
+                                        </div>
+                                    @endforeach
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>

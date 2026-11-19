@@ -15,13 +15,18 @@
         <section class="content">
             <div class="container-fluid">
 
-                <footer>
-                    <div id="publishing-action">
-                        <button type="submit" name="submit" class="btn btn-success" value="publish" id="publishBtn">
-                            Publish</button>
+                <div style="display: flex; align-items: center; width: 100%; gap: 15px;">
+                    <div id="form-error" class="uk-alert-danger" uk-alert style="display:none; flex: 1; margin: 0;">
+                        <a href class="uk-alert-close" uk-close></a>
+                        <p id="form-error-message">Unable to submit your request. Please try again.</p>
                     </div>
-                    <div class="clearfix"></div>
-                </footer>
+
+                    <div id="publishing-action" style="margin-left: auto; float: none;">
+                        <button type="submit" name="submit" class="btn btn-success" value="publish" id="publishBtn">
+                            Publish
+                        </button>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col-12">
@@ -32,17 +37,21 @@
                                 <ul class="nav nav-pills ml-auto p4 mb10 mt10 nav-custom">
                                     <li class="nav-item active"><a class="nav-link active" href="#tab_1"
                                             data-toggle="tab">GENERAL</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="#tab_6" data-toggle="tab"> BANNER </a></li>
-                                    <li class="nav-item"><a class="nav-link" href="#tab_9" data-toggle="tab"> ITINERARY </a>
+                                    <li class="nav-item"><a class="nav-link" href="#tab_6" data-toggle="tab"> BANNER </a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="#tab_9" data-toggle="tab"> ITINERARY
+                                        </a>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_10" data-toggle="tab"> PACKAGES </a>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">MILESTONES</a>
                                     </li>
-                                    <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab"> HIGHTLIGHTS </a></li>
+                                    <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab"> HIGHTLIGHTS
+                                        </a></li>
                                     {{-- <li class="nav-item"><a class="nav-link" href="#tab_4" data-toggle="tab"> COST
                                             EXCLUDES</a></li> --}}
-                                    <li class="nav-item"><a class="nav-link" href="#tab_5" data-toggle="tab"> TRAVEL PHOTOS </a>
+                                    <li class="nav-item"><a class="nav-link" href="#tab_5" data-toggle="tab"> TRAVEL PHOTOS
+                                        </a>
                                     </li>
                                     <li class="nav-item"><a class="nav-link" href="#tab_7" data-toggle="tab"> DATES </a>
                                     </li>
@@ -327,6 +336,9 @@
                     contentType: false,
                     beforeSend: function() {},
                     success: function(data) {
+                        // Hide previous error message
+                        $('#form-error').hide();
+
                         if (data.status == 'success') {
                             document.getElementById("tripData").reset();
                             toastr.success(data.message);
@@ -345,13 +357,23 @@
                             btn.innerHTML = "Publish";
                         }
                     },
+                    // error: function(xhr, status, error) {
+                    //     // Re-enable on HTTP error
+                    //     btn.disabled = false;
+                    //     btn.innerHTML = "Publish";
+                    //     var err = JSON.parse(xhr.responseText);
+                    //     alert(err.Message);
+                    // }
+                    
                     error: function(xhr, status, error) {
-                        // Re-enable on HTTP error
                         btn.disabled = false;
                         btn.innerHTML = "Publish";
-                        var err = JSON.parse(xhr.responseText);
-                        alert(err.Message);
 
+                        $('#form-error-message').text(
+                            'Unable to submit your request. Please try again.'
+                        );
+
+                        $('#form-error').show();
                     }
                 });
             });
@@ -374,6 +396,41 @@
         $('.backlink').click(function() {
             var url = '<?= url()->previous() ?>';
             window.location = url;
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            function showDestinationCategories(destinationId) {
+
+                $('.destination-categories').hide();
+
+                $('.destination_category').hide();
+
+                // Clear previous activity selection
+                $('input[name="dest_cat_id"]').prop('checked', false);
+
+                if (destinationId) {
+                    $('#categories-' + destinationId).show();
+                    $('.destination_category').show();
+                }
+            }
+
+            // On destination change
+            $('.destination-radio').on('change', function() {
+                showDestinationCategories($(this).val());
+            });
+
+            // Restore previously selected destination after validation error
+            let selectedDestination = $('.destination-radio:checked').val();
+
+            if (selectedDestination) {
+                showDestinationCategories(selectedDestination);
+
+                // Restore old activity selection
+                $('input[name="dest_cat_id"][value="{{ old('dest_cat_id') }}"]').prop('checked', true);
+            }
+
         });
     </script>
 @endsection

@@ -14,12 +14,18 @@
         <section class="content">
             <div class="container-fluid">
 
-                <footer>
-                    <div id="publishing-action">
-                        <button type="submit" name="submit" class="btn btn-success" value="publish" id="publishBtn"> Publish </button>
+                <div style="display: flex; align-items: center; width: 100%; gap: 15px;">
+                    <div id="form-error" class="uk-alert-danger" uk-alert style="display:none; flex: 1; margin: 0;">
+                        <a href class="uk-alert-close" uk-close></a>
+                        <p id="form-error-message">Unable to submit your request. Please try again.</p>
                     </div>
-                    <div class="clearfix"></div>
-                </footer>
+
+                    <div id="publishing-action" style="margin-left: auto; float: none;">
+                        <button type="submit" name="submit" class="btn btn-success" value="publish" id="publishBtn">
+                            Publish
+                        </button>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col-12">
@@ -550,6 +556,10 @@
                     processData: false,
                     beforeSend: function () { },
                     success: function (data) {
+
+                        // Hide previous error message
+                        $('#form-error').hide();
+
                         if (data.status == 'success') {
                             toastr.success(data.message);
                             location.reload();
@@ -564,11 +574,22 @@
                             btn.innerHTML = "Publish";
                         }
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        // Re-enable on HTTP error
+                    error: function(jqXHR, textStatus, errorThrown) {
                         btn.disabled = false;
                         btn.innerHTML = "Publish";
+
+                        $('#form-error-message').text(
+                            'Unable to submit your request. Please try again.'
+                        );
+
+                        $('#form-error').show();
                     }
+
+                    // error: function (jqXHR, textStatus, errorThrown) {
+                    //     // Re-enable on HTTP error
+                    //     btn.disabled = false;
+                    //     btn.innerHTML = "Publish";
+                    // }
                 });
             });
 
@@ -677,6 +698,34 @@
 
             // Select Related Trips
             $('.realted-trips').select2();
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            function showDestinationCategories(destinationId) {
+
+                $('.destination-categories').hide();
+                $('.destination_category').hide();
+
+                if (destinationId) {
+                    $('#categories-' + destinationId).show();
+                    $('.destination_category').show();
+                }
+            }
+
+            $('.destination-radio').on('change', function () {
+                $('input[name="dest_cat_id"]').prop('checked', false);
+                showDestinationCategories($(this).val());
+            });
+
+            // Restore selected destination and activity on edit
+            let selectedDestination = $('.destination-radio:checked').val();
+
+            if (selectedDestination) {
+                showDestinationCategories(selectedDestination);
+            }
+
         });
 
     </script>
