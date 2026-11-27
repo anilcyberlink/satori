@@ -20,13 +20,13 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div class="form-group">
+                <div class="form-group">
                     <div class="col-lg-12">
                         <div class="bs-component">
                             <textarea type="text" id="sub_title" name="sub_title" class="form-control" placeholder="Sub Title">{{ $data->sub_title }}</textarea>
                         </div>
                     </div>
-                </div> --}}
+                </div>
             </div>
         </div>
 
@@ -39,8 +39,7 @@
                     <div class="col-lg-6">
                         <div class="bs-component">
                             <label>Location</label>
-                            <input type="text" name="location" class="form-control"
-                                value="{{ $data->location }}" />
+                            <input type="text" name="location" class="form-control" value="{{ $data->location }}" />
                         </div>
                     </div>
 
@@ -63,32 +62,28 @@
                     <div class="col-lg-6">
                         <div class="bs-component">
                             <label>End Date</label>
-                            <input type="text" name="end_date" class="form-control"
-                                value="{{ $data->end_date }}" />
+                            <input type="text" name="end_date" class="form-control" value="{{ $data->end_date }}" />
                         </div>
                     </div>
 
                     <div class="col-lg-6">
                         <div class="bs-component">
                             <label>Route</label>
-                            <input type="text" name="route" class="form-control"
-                                value="{{ $data->route }}" />
+                            <input type="text" name="route" class="form-control" value="{{ $data->route }}" />
                         </div>
                     </div>
 
                     <div class="col-lg-6">
                         <div class="bs-component">
                             <label>Meals</label>
-                            <input type="text" name="meals" class="form-control"
-                                value="{{ $data->meals }}" />
+                            <input type="text" name="meals" class="form-control" value="{{ $data->meals }}" />
                         </div>
                     </div>
 
                     <div class="col-lg-6">
                         <div class="bs-component">
                             <label>Duration</label>
-                            <input type="text" name="duration" class="form-control"
-                                value="{{ $data->duration }}" />
+                            <input type="text" name="duration" class="form-control" value="{{ $data->duration }}" />
                         </div>
                     </div>
 
@@ -108,7 +103,8 @@
                                     <option value="0"> Select Grade </option>
                                     @foreach ($trek as $row)
                                         <option value="{{ $row->id }}"
-                                            {{ $row->id == $data->trip_grade ? 'selected' : '' }}>{{ $row->trip_grade }}
+                                            {{ $row->id == $data->trip_grade ? 'selected' : '' }}>
+                                            {{ $row->trip_grade }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -154,8 +150,7 @@
                 <div class="col-lg-6">
                     <div class="bs-component">
                         <label>Price</label>
-                        <input type="text" name="price" class="form-control"
-                            value="{{ $data->price }}" />
+                        <input type="text" name="price" class="form-control" value="{{ $data->price }}" />
                     </div>
                 </div>
 
@@ -257,7 +252,7 @@
 
         <div class="panel">
             @include('admin.seo.seo-form', [
-                'seo' => $data->seo ?? null
+                'seo' => $data->seo ?? null,
             ])
         </div>
     </div>
@@ -328,8 +323,7 @@
                                         <li>
                                             <label class="option">
                                                 <input type="radio" name="destination_id"
-                                                    value="{{ $row->id }}"
-                                                    class="destination-radio"
+                                                    value="{{ $row->id }}" class="destination-radio"
                                                     {{ old('destination_id', $data->destination_id) == $row->id ? 'checked' : '' }}
                                                     required>
                                                 <span class="checkbox"></span> {{ $row->title }}
@@ -347,15 +341,12 @@
                 <div class="hd_show_con">
                     <div class="ctgor category-list1">
                         @foreach ($destinations as $destination)
-                            <div class="destination-categories"
-                                id="categories-{{ $destination->id }}"
+                            <div class="destination-categories" id="categories-{{ $destination->id }}"
                                 style="display: none;">
 
                                 @foreach ($destination->categories as $category)
                                     <label class="option" style="display: block;">
-                                        <input type="radio"
-                                            name="dest_cat_id"
-                                            value="{{ $category->id }}"
+                                        <input type="radio" name="dest_cat_id" value="{{ $category->id }}"
                                             {{ old('dest_cat_id') == $category->id ? 'checked' : '' }}>
                                         <span class="checkbox"></span>
                                         {{ $category->title }}
@@ -591,35 +582,34 @@
                 </div>
             </div>
 
-            <!-- trip chart -->
-            <!--<div class="sid_bvijay mb10">-->
-            <!--    <h4> Altitude Chart </h4>-->
-            <!--    <div class="hd_show_con">-->
-            <!--        <div class="bs-component">-->
-            <!--            <label class="field prepend-icon append-button file mb20">-->
-            <!--                <span class="button btn btn-primary">{{ $data->trip_chart ? 'Change' : 'Choose File' }}</span>-->
-            <!--                <input type="file" class="gui-file" name="trip_chart" id="file2"-->
-            <!--                    onChange="document.getElementById('trip_chart').value = this.value;">-->
-            <!--                <input type="text" class="gui-input" id="trip_chart"-->
-            <!--                    placeholder="Please select a photo">-->
-            <!--                <label class="field-icon">-->
-            <!--                    <i class="fa fa-upload"></i>-->
-            <!--                </label>-->
-            <!--            </label>-->
-            <!--        </div>-->
-            <!--        @if ($data->trip_chart)
--->
-            <!--            <div class="delete-fe-image chart_id{{ $data->id }}">-->
-            <!--                <img src="{{ asset(env('PUBLIC_PATH') . 'uploads/original/' . $data->trip_chart) }}"-->
-            <!--                    width="200px" />-->
-            <!--                <a href="#{{ $data->id }}" class="chartdelete">X</a>-->
-            <!--            </div>-->
-            <!--
-@endif-->
-            <!--        <small> (Width: 1500px Height: 1500px) </small>-->
-            <!--    </div>-->
-            <!--</div>-->
-            <!-- trip banner -->
+            {{-- trip chart --}}
+            <div class="sid_bvijay mb10">
+                <h4> Altitude Chart </h4>
+                <div class="hd_show_con">
+                    <div class="bs-component">
+                        <label class="field prepend-icon append-button file mb20">
+                            <span
+                                class="button btn btn-primary">{{ $data->trip_chart ? 'Change' : 'Choose File' }}</span>
+                            <input type="file" class="gui-file" name="trip_chart" id="file2"
+                                onChange="document.getElementById('trip_chart').value = this.value;">
+                            <input type="text" class="gui-input" id="trip_chart"
+                                placeholder="Please select a photo">
+                            <label class="field-icon">
+                                <i class="fa fa-upload"></i>
+                            </label>
+                        </label>
+                    </div>
+                    @if ($data->trip_chart)
+                        <div class="delete-fe-image chart_id{{ $data->id }}">
+                            <img src="{{ asset(env('PUBLIC_PATH') . 'uploads/original/' . $data->trip_chart) }}"
+                                width="200px" />
+                            <a href="#{{ $data->id }}" class="chartdelete">X</a>
+                        </div>
+                    @endif
+                    <small> (Width: 1500px Height: 1500px) </small>
+                </div>
+            </div>
+            {{-- trip banner --}}
             <div class="sid_bvijay mb10">
                 <h4> Trip Banner </h4>
                 <div class="hd_show_con">
