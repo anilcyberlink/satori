@@ -222,24 +222,22 @@ class FrontpageController extends Controller
     {
         $data = TripModel::where('uri', $uri)->orWhere('trip_code', $uri)->first();
         $local = PostTypeModel::whereIn('id', ['20', '19'])->get();
-        if ($data->id) {
-            $itinerary = $data->itineraries()->orderBy('ordering', 'asc')->get();
-            // For the altitude chart
-            $chartData = [];
-            foreach ($itinerary as $item)
-            {
-                $chartData[] = [
-                    'day' => $item->days,
-                    'altitude' => (int)$item->max_altitude,
-                    'title' => $item->title
-                ];
-            }
-            // Till here
+        if ($data->id)
+        {
             $schedules = $data->schedules()->orderBy('ordering', 'asc')->get();
             $faqs = $data->faqs()->orderBy('ordering', 'asc')->get();
-            $cost_includes = CostIncludesModel::where('trip_detail_id', $data->id)->orderBy('ordering', 'asc')->get();
-            $cost_excludes = CostExcludesModel::where('trip_detail_id', $data->id)->orderBy('ordering', 'asc')->get();
+            $fullBoardIncludes = $data->packageDetails()->where('service', 'full_board')->where('type', 'include')->get();
+            $fullBoardExcludes = $data->packageDetails()->where('service', 'full_board')->where('type', 'exclude')->get();
+            $baseCampIncludes = $data->packageDetails()->where('service', 'base_camp')->where('type', 'include')->get();
+            $baseCampExcludes = $data->packageDetails()->where('service', 'base_camp')->where('type', 'exclude')->get();
+            $highlights = CostIncludesModel::where('trip_detail_id', $data->id)->orderBy('ordering', 'asc')->get();
+            $milestones = $data->itineraries()->orderBy('ordering', 'asc')->get();
             $photo_videos = TripGearModel::where('trip_detail_id', $data->id)->orderBy('ordering', 'asc')->get();
+
+
+            $full_board_services = $data->fullBoardService()->first();
+            $base_camp_services = $data->baseCampService()->first();
+            $cost_excludes = CostExcludesModel::where('trip_detail_id', $data->id)->orderBy('ordering', 'asc')->get();
             $photos = TripGearModel::where('trip_detail_id', $data->id)->where('thumbnail', '!=', 'NULL')->orderBy('ordering', 'desc')->get();
             $videos = TripGearModel::where('trip_detail_id', $data->id)->where('video', '!=', 'NULL')->orderBy('ordering', 'asc')->get();
             $trip_review = TripReview::where('trip_id', $data->id)->where('status', 1)->get();
@@ -252,20 +250,18 @@ class FrontpageController extends Controller
         $tripUri = $uri;
         $similar_tripsId= $tripId->relatedtrips()->pluck('related_trip_id');
         if ($similar_tripsId->isNotEmpty()) {
-            $similar_trips = TripModel::with('destinations')->whereIn('id', $similar_tripsId)->take(3)->get();
+            $similar_trips = TripModel::whereIn('id', $similar_tripsId)->take(6)->get();
         }
         else{
-            $similar_trips = TripModel::with('destinations')->where('uri', '!=', $uri)->orderBy('ordering', 'desc')->take(3)->get();
+            $similar_trips = TripModel::where('uri', '!=', $uri)->orderBy('ordering', 'desc')->take(6)->get();
         }
         $activity = TripModel::find($data->id)->activities()->first();
-        $destinations = TripModel::find($data->id)->destinations()->first();
+        $destinations = '';
         $setting = SettingModel::where('id',1)->first();
         $reviews = TripReview::where('status', 1)->where('trip_id',$data->id)->get();
 
-        // dd($data,$reviews);
-        return view('themes.default.tripdetail', compact('data', 'trip_review',
-            'cost_includes', 'cost_excludes', 'itinerary','chartData',
-            'photo_videos', 'activity','destinations','similar_trips','photos','videos','local','banner','setting','schedules','faqs','tripId', 'tripUri','reviews'));
+        // dd($data,$similar_trips);
+        return view('themes.default.tripdetail', compact('data','fullBoardIncludes','fullBoardExcludes','baseCampIncludes','baseCampExcludes','full_board_services','base_camp_services','highlights','milestones','similar_trips','schedules','faqs','photo_videos'));
     }
 
     public function destination_list($uri)

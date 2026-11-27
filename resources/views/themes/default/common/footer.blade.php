@@ -7,12 +7,12 @@
                 <div class="flex min-w-0 flex-col">
                     <h3 class="mb-4 text-center text-[20px] font-bold leading-none text-[var(--text-primary)] sm:text-[22px] lg:text-[25px]">RECOMMENDED ON</h3>
                     <div class="grid grid-cols-3 gap-3">
-                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] rounded-lg bg-[#F8F8F8] sm:h-[94px]"><img src="./assets/img/logo/nepal-government.webp" alt="Nepal Government" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
-                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] rounded-lg bg-[#F8F8F8] sm:h-[94px]"><img src="./assets/img/logo/ntb.webp" alt="Nepal Tourism Board" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
-                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] rounded-lg bg-[#F8F8F8] sm:h-[94px]"><img src="./assets/img/logo/nma.webp" alt="Nepal Mountaineering Association" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
-                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] rounded-lg bg-[#F8F8F8] sm:h-[94px]"><img src="./assets/img/logo/taan.webp" alt="Trekking Agencies Association of Nepal" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
-                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] rounded-lg bg-[#F8F8F8] sm:h-[94px]"><img src="./assets/img/logo/eoa-nepal.webp" alt="EOA Nepal" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
-                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] rounded-lg bg-[#F8F8F8] sm:h-[94px]"><img src="./assets/img/logo/keep.webp" alt="Keep Nepal" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
+                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] rounded-lg bg-[#F8F8F8] sm:h-[94px]"><img src="{{asset('theme-assets/img/logo/nepal-government.webp')}}" alt="Nepal Government" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
+                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] rounded-lg bg-[#F8F8F8] sm:h-[94px]"><img src="{{asset('theme-assets/img/logo/ntb.webp')}}" alt="Nepal Tourism Board" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
+                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] rounded-lg bg-[#F8F8F8] sm:h-[94px]"><img src="{{asset('theme-assets/img/logo/nma.webp')}}" alt="Nepal Mountaineering Association" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
+                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] rounded-lg bg-[#F8F8F8] sm:h-[94px]"><img src="{{asset('theme-assets/img/logo/taan.webp')}}" alt="Trekking Agencies Association of Nepal" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
+                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] rounded-lg bg-[#F8F8F8] sm:h-[94px]"><img src="{{asset('theme-assets/img/logo/eoa-nepal.webp')}}" alt="EOA Nepal" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
+                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] rounded-lg bg-[#F8F8F8] sm:h-[94px]"><img src="{{asset('theme-assets/img/logo/keep.webp')}}" alt="Keep Nepal" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
                     </div>
                 </div>
 
@@ -20,12 +20,12 @@
                 <div class="flex min-w-0 flex-col">
                     <h3 class="mb-4 text-center text-[20px] font-bold leading-none text-[var(--text-primary)] sm:text-[22px] lg:text-[25px]">FEATURED ON</h3>
                     <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] bg-white sm:h-[94px]"><img src="./assets/img/logo/bbc-news.webp" alt="BBC News" loading="lazy" decoding="async" class="h-full w-full object-cover"></div>
-                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] bg-white sm:h-[94px]"><img src="./assets/img/logo/reuters.webp" alt="Reuters" loading="lazy" decoding="async" class="h-full w-full object-cover"></div>
-                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] bg-[#fdfdfd] sm:h-[94px]"><img src="./assets/img/logo/the-himalayan.webp" alt="The Himalayan" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
-                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] bg-white sm:h-[94px]"><img src="./assets/img/logo/everest-news.webp" alt="The Everest News" loading="lazy" decoding="async" class="h-full w-full object-cover p-1"></div>
-                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] bg-white sm:h-[94px]"><img src="./assets/img/logo/yatra.webp" alt="Yatra Magazine" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
-                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] bg-[#fdfdfd] sm:h-[94px]"><img src="./assets/img/logo/uiaa.webp" alt="UIAA" loading="lazy" decoding="async" class="h-full w-full object-cover p-1"></div>
+                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] bg-white sm:h-[94px]"><img src="{{asset('theme-assets/img/logo/bbc-news.webp')}}" alt="BBC News" loading="lazy" decoding="async" class="h-full w-full object-cover"></div>
+                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] bg-white sm:h-[94px]"><img src="{{asset('theme-assets/img/logo/reuters.webp')}}" alt="Reuters" loading="lazy" decoding="async" class="h-full w-full object-cover"></div>
+                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] bg-[#fdfdfd] sm:h-[94px]"><img src="{{asset('theme-assets/img/logo/the-himalayan.webp')}}" alt="The Himalayan" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
+                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] bg-white sm:h-[94px]"><img src="{{asset('theme-assets/img/logo/everest-news.webp')}}" alt="The Everest News" loading="lazy" decoding="async" class="h-full w-full object-cover p-1"></div>
+                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] bg-white sm:h-[94px]"><img src="{{asset('theme-assets/img/logo/yatra.webp')}}" alt="Yatra Magazine" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
+                        <div class="flex h-[86px] items-center justify-center border border-[#dfe4e8] bg-[#fdfdfd] sm:h-[94px]"><img src="{{asset('theme-assets/img/logo/uiaa.webp')}}" alt="UIAA" loading="lazy" decoding="async" class="h-full w-full object-cover p-1"></div>
                     </div>
                 </div>
 
@@ -33,10 +33,10 @@
                 <div class="flex min-w-0 flex-col">
                     <h3 class="mb-4 text-center text-[20px] font-bold leading-none text-[var(--text-primary)] sm:text-[22px] lg:text-[25px]">AFFILIATED WITH</h3>
                     <div class="grid flex-1 grid-cols-2 items-stretch gap-3 sm:grid-cols-4">
-                        <div class="flex min-h-[100px] items-center justify-center border border-[#e1e5e9] bg-white lg:min-h-0"><img src="./assets/img/logo/petit-fute.webp" alt="Petit Futé" loading="lazy" decoding="async" class="h-full w-full object-contain"></div>
-                        <div class="flex min-h-[100px] items-center justify-center border-2 border-[#FFEBCF] bg-white lg:min-h-0"><img src="./assets/img/logo/tripadvisor.webp" alt="TripAdvisor Travellers' Choice" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
-                        <div class="flex min-h-[100px] items-center justify-center border-2 border-[#FFD0D7] bg-white lg:min-h-0"><img src="./assets/img/logo/rise-shield.webp" alt="Rise and Shield" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
-                        <div class="flex min-h-[100px] items-center justify-center border border-[#212026] bg-[#212026] lg:min-h-0"><img src="./assets/img/logo/hero.webp" alt="Content Safety Hero" loading="lazy" decoding="async" class="h-full w-full object-contain"></div>
+                        <div class="flex min-h-[100px] items-center justify-center border border-[#e1e5e9] bg-white lg:min-h-0"><img src="{{asset('theme-assets/img/logo/petit-fute.webp')}}" alt="Petit Futé" loading="lazy" decoding="async" class="h-full w-full object-contain"></div>
+                        <div class="flex min-h-[100px] items-center justify-center border-2 border-[#FFEBCF] bg-white lg:min-h-0"><img src="{{asset('theme-assets/img/logo/tripadvisor.webp')}}" alt="TripAdvisor Travellers' Choice" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
+                        <div class="flex min-h-[100px] items-center justify-center border-2 border-[#FFD0D7] bg-white lg:min-h-0"><img src="{{asset('theme-assets/img/logo/rise-shield.webp')}}" alt="Rise and Shield" loading="lazy" decoding="async" class="h-full w-full object-contain p-1"></div>
+                        <div class="flex min-h-[100px] items-center justify-center border border-[#212026] bg-[#212026] lg:min-h-0"><img src="{{asset('theme-assets/img/logo/hero.webp')}}" alt="Content Safety Hero" loading="lazy" decoding="async" class="h-full w-full object-contain"></div>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@
                         <!-- White background ONLY in top half -->
                         <div class="absolute inset-0 bg-white [clip-path:inset(0_0_50%_0)] z-0"></div>
                         <!-- TripAdvisor Image -->
-                        <img src="./assets/img/background/tripadvisor.webp" alt="Recommended on TripAdvisor" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[125%] h-[125%] max-w-none object-contain z-[5] p-2 sm:p-2.5">
+                        <img src="{{asset('theme-assets/img/background/tripadvisor.webp')}}" alt="Recommended on TripAdvisor" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[125%] h-[125%] max-w-none object-contain z-[5] p-2 sm:p-2.5">
                         <!-- White semicircle border ONLY on top -->
                         <div class="absolute inset-[1px] rounded-full border-[1.5px] border-white [clip-path:inset(0_0_50%_0)] pointer-events-none z-10"></div>
                         <!-- Blue semicircle border ONLY on top -->
@@ -188,10 +188,10 @@
                     PAYMENT <br class="hidden sm:flex"> METHODS
                 </span>
                 <div class="flex items-center justify-center gap-2">
-                    <div class="rounded-lg shadow-sm flex items-center justify-center"><img src="assets/img/footer/visa.png" alt="Visa payment" title="Visa" width="48" height="30" loading="lazy" decoding="async" class="h-10 sm:h-11 lg:h-12 w-auto object-contain"></div>
-                    <div class="rounded-lg shadow-sm flex items-center justify-center"><img src="assets/img/footer/mastercard.png" alt="Mastercard payment" title="Mastercard" width="48" height="30" loading="lazy" decoding="async" class="h-10 sm:h-11 lg:h-12 w-auto object-contain"></div>
-                    <div class="rounded-lg shadow-sm flex items-center justify-center"><img src="assets/img/footer/americanexpress.png" alt="American Express payment" title="American Express" width="48" height="30" loading="lazy" decoding="async" class="h-10 sm:h-11 lg:h-12 w-auto object-contain"></div>
-                    <div class="rounded-lg shadow-sm flex items-center justify-center"><img src="assets/img/footer/unionpay.png" alt="UnionPay payment" title="UnionPay" width="48" height="30" loading="lazy" decoding="async" class="h-10 sm:h-11 lg:h-12 w-auto object-contain"></div>
+                    <div class="rounded-lg shadow-sm flex items-center justify-center"><img src="{{asset('theme-assets/img/footer/visa.png')}}" alt="Visa payment" title="Visa" width="48" height="30" loading="lazy" decoding="async" class="h-10 sm:h-11 lg:h-12 w-auto object-contain"></div>
+                    <div class="rounded-lg shadow-sm flex items-center justify-center"><img src="{{asset('theme-assets/img/footer/mastercard.png')}}" alt="Mastercard payment" title="Mastercard" width="48" height="30" loading="lazy" decoding="async" class="h-10 sm:h-11 lg:h-12 w-auto object-contain"></div>
+                    <div class="rounded-lg shadow-sm flex items-center justify-center"><img src="{{asset('theme-assets/img/footer/americanexpress.png')}}" alt="American Express payment" title="American Express" width="48" height="30" loading="lazy" decoding="async" class="h-10 sm:h-11 lg:h-12 w-auto object-contain"></div>
+                    <div class="rounded-lg shadow-sm flex items-center justify-center"><img src="{{asset('theme-assets/img/footer/unionpay.png')}}" alt="UnionPay payment" title="UnionPay" width="48" height="30" loading="lazy" decoding="async" class="h-10 sm:h-11 lg:h-12 w-auto object-contain"></div>
                 </div>
             </div>
         </div>

@@ -852,6 +852,7 @@ class TripController extends Controller
             $data->trip_title = $request->trip_title;
             $data->sub_title = $request->sub_title;
             $data->duration = $request->duration;
+            $data->location = $request->location;
             $data->max_altitude = $request->max_altitude;
             $data->best_season = $request->best_season;
             $data->walking_per_day = $request->walking_per_day;
@@ -879,6 +880,7 @@ class TripController extends Controller
             $data->is_draft = $is_draft;
             $data->video_status = $request->video_status;
             $data->start_date = $request->start_date;
+            $data->end_date = $request->end_date;
             $data->price = $request->price;
             $data->discount = $request->discount;
             $data->banner_alt = $request->banner_alt;
@@ -1154,28 +1156,23 @@ class TripController extends Controller
                 }
             }
 
-            if (
-                $request->has('package_service') &&
-                is_array($request->package_service)
-            ) {
-
+            if ($request->has('package_service') && is_array($request->package_service)) {
                 foreach ($request->package_service as $serviceKey => $serviceData) {
-
                     if (!is_array($serviceData)) {
                         continue;
                     }
 
-                    PackageService::where('trip_detail_id', $data->id)
-                        ->where('service', $serviceKey)
-                        ->update([
-
+                    PackageService::updateOrCreate(
+                        [
+                            'trip_detail_id' => $data->id,
+                            'service' => $serviceKey,
+                        ],
+                        [
                             'price_1' => $serviceData['price_1'] ?? null,
-
                             'price_2' => $serviceData['price_2'] ?? null,
-
                             'description' => $serviceData['description'] ?? null,
-
-                        ]);
+                        ]
+                    );
                 }
             }
 
